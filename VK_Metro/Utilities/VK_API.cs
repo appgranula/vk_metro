@@ -10,7 +10,10 @@ using VK_Metro.Models;
 
 namespace VK_Metro
 {
+    public delegate void EventHandler(Newtonsoft.Json.Linq.JToken updates);
+
     public delegate void CallBack(object param);
+
     public class VK_API
     {
         private string access_token;
@@ -26,7 +29,7 @@ namespace VK_Metro
         }
 
         public VK_API()
-        {            
+        {
             this.cookie = new CookieContainer();
             this._connect = false;
         }
@@ -77,7 +80,7 @@ namespace VK_Metro
                         for (var i = 0; i < 5; i++)
                         {
                             if (friends[i] != null)
-                                friends[i].hint = i+1;
+                                friends[i].hint = i + 1;
                         }
                         onSuccess(friends);
                     }
@@ -266,6 +269,58 @@ namespace VK_Metro
             }
             else { MessageBox.Show("Введите логин/пароль"); }
         }*/
-    }
 
+        public event EventHandler NewsArrived;
+
+        public void GetAccessToLongPoll()
+        {
+            string key, server, ts;
+            var url = "https://api.vk.com/method/messages.getLongPollServer";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   {"access_token", this.access_token}
+                               };
+
+            this.GetQuery(url, sendData, res =>
+                                                {
+                                                    var responseString = (string)res;
+                                                    var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                                                    var response = obj["response"].ToString();
+                                                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
+                                                    key = decodedResponse["key"].ToString();
+                                                    ts = decodedResponse["ts"].ToString();
+                                                    server = decodedResponse["server"].ToString();
+                                                    this.BeginReceiving(server, key, ts);
+                                                }, res =>
+                                                       {
+                                                           // DO_SOMETHING
+                                                       });
+        }
+
+        public void BeginReceiving(string server, string key, string ts)
+        {
+            var url = "http://" + server;
+            var sendData = new Dictionary<string, string>
+                               {
+                                   {"act", "a_check"},
+                                   {"key", key},
+                                   {"ts", ts},
+                                   {"wait", "10"},
+                                   {"mode", "2"}
+                               };
+
+            this.GetQuery(url, sendData, res =>
+                                                   {
+                                                       var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                                                       var j = decodedResponse["updates"];
+                                                       NewsArrived.Invoke(j);
+                                                       this.BeginReceiving(server, key, decodedResponse["ts"].ToString());
+                                                   },
+                                                    res =>
+                                                    {
+                                                        // DO_SOMETHING
+                                                    });
+        }
+
+    }
 }
