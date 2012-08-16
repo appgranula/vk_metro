@@ -83,5 +83,10 @@ namespace VK_Metro.Views
                 this.ColorTextEnterButton = (App.Current.Resources["PhoneDisabledBrush"] as Brush);
             NotifyPropertyChanged("ColorTextEnterButton");
         }
+
+        private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SignUp.xaml", UriKind.Relative));
+        }
     }
 }

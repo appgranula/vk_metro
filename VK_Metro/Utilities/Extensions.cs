@@ -11,9 +11,7 @@ namespace VK_Metro
     {
         public static string ToUrlData(this Dictionary<string, string> dict)
         {
-            //var sortData = dict.OrderBy(pair => pair.Key);
             var outData = new StringBuilder();
-            //foreach (var item in sortData)
             foreach (var item in dict)
             {
                 outData.AppendFormat("{0}={1}&", item.Key, item.Value);
