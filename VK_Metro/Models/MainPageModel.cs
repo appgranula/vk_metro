@@ -52,6 +52,10 @@ namespace VK_Metro.Models
             }
         }
 
+        /// <summary>
+        /// Добавить
+        /// </summary>
+        /// <param name="VKFriends"></param>
         public void AddFriend(VKFriendModel[] VKFriends)
         {
             foreach (var friend in VKFriends)
