@@ -274,6 +274,9 @@ namespace VK_Metro
 
         public void GetAccessToLongPoll()
         {
+            if (!this.connected)
+                return;
+
             string key, server, ts;
             var url = "https://api.vk.com/method/messages.getLongPollServer";
             var sendData = new Dictionary<string, string>
@@ -297,7 +300,7 @@ namespace VK_Metro
                                                        });
         }
 
-        public void BeginReceiving(string server, string key, string ts)
+        private void BeginReceiving(string server, string key, string ts)
         {
             var url = "http://" + server;
             var sendData = new Dictionary<string, string>
@@ -305,7 +308,7 @@ namespace VK_Metro
                                    {"act", "a_check"},
                                    {"key", key},
                                    {"ts", ts},
-                                   {"wait", "10"},
+                                   {"wait", "25"},
                                    {"mode", "2"}
                                };
 
