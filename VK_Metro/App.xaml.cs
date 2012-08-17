@@ -132,20 +132,9 @@ namespace VK_Metro
             }
         }
 
-        private class QuitException : Exception { }
-
-        // Выход
-        public static void Quit()
-        {
-            throw new QuitException();
-        }
-
         // Код для выполнения на необработанных исключениях
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (e.ExceptionObject is QuitException)
-                return;
-
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Произошло необработанное исключение; перейти в отладчик

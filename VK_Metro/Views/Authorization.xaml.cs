@@ -111,8 +111,10 @@ namespace VK_Metro.Views
 
         private void PhoneApplicationPage_BackKeyPress(object sender, CancelEventArgs e)
         {
-            App.Quit();
-            e.Cancel = true;
+            // Exit
+            if (NavigationService.CanGoBack)
+                while (NavigationService.RemoveBackEntry() != null)
+                    NavigationService.RemoveBackEntry();
         }
     }
 }
