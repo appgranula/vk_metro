@@ -37,14 +37,12 @@
             <TextBlock Canvas.Left="24" Canvas.Top="80"
                        Text="Номер телефона, логин или e-mail"
                        FontSize="19"/>
-            <TextBox Canvas.Left="12" Canvas.Top="100"
-                     x:Name="email" Text="{Binding EMail}"
+            <TextBox Canvas.Left="12" Canvas.Top="100" x:Name="email"
                      Height="72" Width="456" TextChanged="email_TextChanged" />
             <TextBlock Canvas.Left="24" Canvas.Top="192"
                        Text="Пароль"
                        FontSize="19"/>
-            <PasswordBox Canvas.Left="12" Canvas.Top="212"
-                         x:Name="pass" Password="{Binding Pass}"
+            <PasswordBox Canvas.Left="12" Canvas.Top="212" x:Name="pass"
                          Height="72" Width="456" PasswordChanged="pass_PasswordChanged" />
             <Button Canvas.Left="12" Canvas.Top="300" x:Name="EnterButton"
                     Height="72" Width="225"

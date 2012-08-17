@@ -53,14 +53,12 @@ namespace VK_Metro.Views
                 }
             }
         }
-        public string EMail { get { return "ravikwow@rambler.ru"; } }
-        public string Pass { get { return "G4zOVBnlzU"; } }
         public bool EnterButtonEnabled { get; private set; }
         public Brush ColorTextEnterButton { get; private set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (this.email.Text != "" && this.pass.Password != "")//если поля не пустые
+            if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)//если поля не пустые
             {
                 App.VK.Connect(this.email.Text, this.pass.Password,
                     result2 =>
@@ -80,7 +78,7 @@ namespace VK_Metro.Views
         private void pass_PasswordChanged(object sender, RoutedEventArgs e) { this.TextChanged(); }
         private void TextChanged()
         {
-            if (email.Text.Length != 0 && pass.Password.Length != 0)
+            if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
                 this.EnterButtonEnabled = true;
             else
                 this.EnterButtonEnabled = false;
