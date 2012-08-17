@@ -35,6 +35,24 @@ namespace VK_Metro
             }
         }
 
+        private static VK_Metro.Models.MainPageModel mainpagedata = null;
+
+        /// <summary>
+        /// MainPageModel
+        /// </summary>
+        /// <returns>Объект MainPageModel</returns>
+        public static VK_Metro.Models.MainPageModel MainPageData
+        {
+            get
+            {
+                // Отложить создание модели представления до необходимости
+                if (mainpagedata == null)
+                    mainpagedata = new VK_Metro.Models.MainPageModel();
+
+                return mainpagedata;
+            }
+        }
+
         /// <summary>
         /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
         /// </summary>
@@ -114,9 +132,20 @@ namespace VK_Metro
             }
         }
 
+        private class QuitException : Exception { }
+
+        // Выход
+        public static void Quit()
+        {
+            throw new QuitException();
+        }
+
         // Код для выполнения на необработанных исключениях
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (e.ExceptionObject is QuitException)
+                return;
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Произошло необработанное исключение; перейти в отладчик

@@ -11,9 +11,31 @@ namespace VK_Metro.Views
     {
         public Authorization()
         {
+            IsEnabled = false;
             InitializeComponent();
             DataContext = this;
             EnterButtonEnabled = false;
+            this.Loaded += new RoutedEventHandler(Authorization_Loaded);
+        }
+
+        void Authorization_Loaded(object sender, RoutedEventArgs e)
+        {
+            App.VK.CheckOldSession(
+                result =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        NavigationService.Navigate(new Uri("/Views/MainPage.xaml", UriKind.Relative));
+                        IsEnabled = true;
+                    });
+                },
+                error =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        IsEnabled = true;
+                    });
+                });
         }
 
         public string TitleImageUri
@@ -41,16 +63,16 @@ namespace VK_Metro.Views
             if (this.email.Text != "" && this.pass.Password != "")//если поля не пустые
             {
                 App.VK.Connect(this.email.Text, this.pass.Password,
-                        result =>
+                    result2 =>
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                {
-                                    NavigationService.Navigate(new Uri("/Views/MainPage.xaml", UriKind.Relative));
-                                });
-                        },
-                        error =>
-                        {
+                            NavigationService.Navigate(new Uri("/Views/MainPage.xaml", UriKind.Relative));
                         });
+                    },
+                    error2 =>
+                    {
+                    });
             }
         }
 
@@ -87,6 +109,12 @@ namespace VK_Metro.Views
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/SignUp.xaml", UriKind.Relative));
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, CancelEventArgs e)
+        {
+            App.Quit();
+            e.Cancel = true;
         }
     }
 }

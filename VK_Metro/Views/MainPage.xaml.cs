@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.Collections.ObjectModel;
 using VK_Metro.Models;
 using System.Collections;
+using System;
 
 namespace VK_Metro.Views
 {
@@ -15,7 +16,7 @@ namespace VK_Metro.Views
         {
             InitializeComponent();
 
-            this.dataContext = new VK_Metro.Models.MainPageModel();
+            this.dataContext = App.MainPageData;
             DataContext = this.dataContext;
             // Задайте для контекста данных элемента управления listbox пример данных
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
@@ -26,16 +27,31 @@ namespace VK_Metro.Views
         // Загрузка данных для элементов ViewModel
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            App.VK.GetUsers(result =>
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            this.dataContext.AddFriend((VKFriendModel[])result);
-                        });
-                },
-                error =>
-                {
-                });
+            if (!this.dataContext.IsDataLoaded)
+            {
+                App.VK.GetUsers(result =>
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                this.dataContext.AddFriend((VKFriendModel[])result);
+                                this.dataContext.IsDataLoaded = true;
+                            });
+                    },
+                    error =>
+                    {
+                    });
+            }
+        }
+
+        private void AdvancedApplicationBarMenuItem_Click(object sender, System.EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Settings.xaml", UriKind.Relative));
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.Quit();
+            e.Cancel = true;
         }
     }
 }

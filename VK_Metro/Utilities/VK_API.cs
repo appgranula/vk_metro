@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using VK_Metro.Models;
+using System.IO.IsolatedStorage;
 
 namespace VK_Metro
 {
@@ -52,6 +53,15 @@ namespace VK_Metro
                     this.access_token = obj["access_token"].ToString();
                     this.user_id = obj["user_id"].ToString();
                     this._connect = true;
+                    IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+                    if (settings.Contains("access_token"))
+                        settings["access_token"] = access_token;
+                    else
+                        settings.Add("access_token", access_token);
+                    if (settings.Contains("user_id"))
+                        settings["user_id"] = user_id;
+                    else
+                        settings.Add("user_id", user_id);
                     onSuccess(new object());
                 },
                 error =>
@@ -77,7 +87,8 @@ namespace VK_Metro
                     if (obj["response"] != null)
                     {
                         VKFriendModel[] friends = obj["response"].ToObject<VKFriendModel[]>();
-                        for (var i = 0; i < 5; i++)
+                        var n = friends.Length <= 5 ? friends.Length : 5;
+                        for (var i = 0; i < n; i++)
                         {
                             if (friends[i] != null)
                                 friends[i].hint = i + 1;
@@ -172,7 +183,55 @@ namespace VK_Metro
             }), request);
         }
 
-        //private bool CheckAccessToken
+        public void CheckOldSession(CallBack onSuccess, CallBack onError)
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains("access_token") && settings.Contains("user_id"))
+            {
+                var access_token = (string)settings["access_token"];
+                var user_id = (string)settings["user_id"];
+                string URL = "https://api.vk.com/method/messages.get";
+                Dictionary<string, string> sendData = new Dictionary<string, string>();
+                sendData.Add("access_token", access_token);
+                sendData.Add("count", "1");
+                this.GetQuery(URL, sendData, result =>
+                {
+                    var responseString = (string)result;
+                    Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                    if (obj["response"] != null)
+                    {
+                        this.access_token = access_token;
+                        this.user_id = user_id;
+                        this._connect = true;
+                        onSuccess(new object());
+                    }
+                    else
+                    {
+                        onError(new object());
+                    }
+                }, error =>
+                {
+                    onError(error);
+                });
+            }
+            else
+            {
+                onError(new object());
+            }
+        }
+
+        public void Disconnect()
+        {
+            this._connect = false;
+            this.access_token = null;
+            this.user_id = null;
+            this.cookie = new CookieContainer();
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains("access_token"))
+                settings.Remove("access_token");
+            if (settings.Contains("user_id"))
+                settings.Remove("user_id");
+        }
 
         public event EventHandler NewsArrived;
 
