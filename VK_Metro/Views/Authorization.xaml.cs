@@ -3,7 +3,6 @@ using System.Windows;
 using Microsoft.Phone.Controls;
 using System.ComponentModel;
 using System.Windows.Media;
-using System.Windows.Controls;
 
 namespace VK_Metro.Views
 {

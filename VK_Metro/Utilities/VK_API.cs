@@ -1,15 +1,15 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Collections.ObjectModel;
-using VK_Metro.Models;
-
-namespace VK_Metro
+﻿namespace VK_Metro
 {
+    using System;
+    using System.Net;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using Newtonsoft.Json;
+    using System.Text.RegularExpressions;
+    using System.Collections.ObjectModel;
+    using VK_Metro.Models;
+
     public delegate void EventHandler(Newtonsoft.Json.Linq.JToken updates);
 
     public delegate void CallBack(object param);
@@ -20,6 +20,10 @@ namespace VK_Metro
         private string user_id;
         private CookieContainer cookie;
         private bool _connect;
+        private Dictionary<string, string> lastRequest;
+
+        public string captchaImageAddress;
+
         public bool connected
         {
             get
@@ -37,7 +41,7 @@ namespace VK_Metro
         public void Connect(string email, string password, CallBack onSuccess, CallBack onError)
         {
             string URL = "https://api.vk.com/oauth/token";
-            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            var sendData = new Dictionary<string, string>();
             sendData.Add("grant_type", "password");
             sendData.Add("client_id", "3070837");
             sendData.Add("client_secret", "VykBAOy47loHDoOq9L54");
@@ -95,8 +99,48 @@ namespace VK_Metro
             }
         }
 
-        public void SignUp(string NummberPhone, string FirstName, string LastName, CallBack onSuccess, CallBack onError)
+        public void SignUp(string nummberPhone, string firstName, string lastName, CallBack onSuccess, CallBack onError)
         {
+            var url = "https://api.vk.com/method/auth.signup";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   {"phone", nummberPhone},
+                                   {"first_name", firstName},
+                                   {"last_name", lastName},
+                                   {"client_id", "3070837"},
+                                   {"client_secret", "VykBAOy47loHDoOq9L54"}
+                               };
+
+            this.GetQuery(url, sendData, res =>
+            {
+                var responseString = (string)res;
+                var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                string response ="";
+                if (obj["response"] != null)
+                {
+                    response = obj["response"]["sid"].ToString();
+                }
+                else if (obj["error"] != null)
+                {
+                    var code = obj["error"]["error_code"].ToString();
+                    if (code == "14")
+                    {
+                        var captchaSid = obj["error"]["captcha_sid"].ToString();
+                        this.captchaImageAddress = obj["error"]["captcha_img"].ToString();
+                        
+                        sendData.Add("captcha_sid", captchaSid);
+                        
+                        this.lastRequest = sendData;
+                        onSuccess("captcha");
+                        return;
+                    }
+                }
+                //var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
+                //var sid = decodedResponse["sid"].ToString();
+            }, res =>
+            {
+                // DO_SOMETHING
+            });
         }
 
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
@@ -181,7 +225,6 @@ namespace VK_Metro
             if (!this.connected)
                 return;
 
-            string key, server, ts;
             var url = "https://api.vk.com/method/messages.getLongPollServer";
             var sendData = new Dictionary<string, string>
                                {
@@ -194,9 +237,9 @@ namespace VK_Metro
                                                     var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
                                                     var response = obj["response"].ToString();
                                                     var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
-                                                    key = decodedResponse["key"].ToString();
-                                                    ts = decodedResponse["ts"].ToString();
-                                                    server = decodedResponse["server"].ToString();
+                                                    var key = decodedResponse["key"].ToString();
+                                                    var ts = decodedResponse["ts"].ToString();
+                                                    var server = decodedResponse["server"].ToString();
                                                     this.BeginReceiving(server, key, ts);
                                                 }, res =>
                                                        {

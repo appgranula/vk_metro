@@ -94,11 +94,20 @@ namespace VK_Metro.Views
             App.VK.SignUp(NumberPhone.Text, First_Name.Text, Last_Name.Text,
                 result =>
                 {
+                    if ((string)result == "captcha")
+                    {
+                        this.GoToCaptchaPage();
+                    }
                 },
                 error =>
                 {
                 });
         }
 
+        private void GoToCaptchaPage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Captcha.xaml",
+                                                                                               UriKind.Relative)));
+        }
     }
 }
