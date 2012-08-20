@@ -11,9 +11,16 @@ namespace VK_Metro.Models
     {
         public MainPageModel()
         {
-            this.vkFriend = new ObservableCollection<VKFriendModel>();
+            this.Init();
         }
+        public void Init()
+        {
+            this.vkFriend = new ObservableCollection<VKFriendModel>();
+            this.IsDataLoaded = false;
+        }
+
         private ObservableCollection<VKFriendModel> vkFriend;
+        public bool IsDataLoaded { get; set; }
 
         public string TitleImageUri
         {

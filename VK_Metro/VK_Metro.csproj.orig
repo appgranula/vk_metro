@@ -84,11 +84,13 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
- <Compile Include="Views\Captcha.xaml.cs">
+<<<<<<< HEAD
+    <Compile Include="Views\Captcha.xaml.cs">
       <DependentUpon>Captcha.xaml</DependentUpon>
-    </Compile>
+=======
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
+>>>>>>> 60b8e4617f2b655b56e85c3323214cc57b73d5a8
     </Compile>
     <Compile Include="Views\SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
@@ -107,11 +109,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+<<<<<<< HEAD
     <Page Include="Views\Captcha.xaml">
+=======
+    <Page Include="Views\Settings.xaml">
+>>>>>>> 60b8e4617f2b655b56e85c3323214cc57b73d5a8
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

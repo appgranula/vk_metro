@@ -14,7 +14,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    BackKeyPress="PhoneApplicationPage_BackKeyPress">
 
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent" >
@@ -93,8 +94,7 @@
             </controls:PivotItem>
         </controls:Pivot>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarMenuItem Text="Настройки"/>
-            <WPExtensions:AdvancedApplicationBarMenuItem Text="Транспорты"/>
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="Настройки" Click="AdvancedApplicationBarMenuItem_Click"/>
         </WPExtensions:AdvancedApplicationBar>
     </Grid>
 

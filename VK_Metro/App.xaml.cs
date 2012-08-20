@@ -35,6 +35,24 @@ namespace VK_Metro
             }
         }
 
+        private static VK_Metro.Models.MainPageModel mainpagedata = null;
+
+        /// <summary>
+        /// MainPageModel
+        /// </summary>
+        /// <returns>Объект MainPageModel</returns>
+        public static VK_Metro.Models.MainPageModel MainPageData
+        {
+            get
+            {
+                // Отложить создание модели представления до необходимости
+                if (mainpagedata == null)
+                    mainpagedata = new VK_Metro.Models.MainPageModel();
+
+                return mainpagedata;
+            }
+        }
+
         /// <summary>
         /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
         /// </summary>
