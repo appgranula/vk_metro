@@ -75,6 +75,7 @@ namespace VK_Metro.Views
 
         private void email_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) { this.TextChanged(); }
         private void pass_PasswordChanged(object sender, RoutedEventArgs e) { this.TextChanged(); }
+
         private void TextChanged()
         {
             if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
@@ -85,6 +86,7 @@ namespace VK_Metro.Views
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void NotifyPropertyChanged(String propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

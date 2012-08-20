@@ -22,6 +22,9 @@ using System.IO.IsolatedStorage;
         private CookieContainer cookie;
         private bool _connect;
         private Dictionary<string, string> lastRequest;
+        //private CallBack lastOnSuccess;
+        //private CallBack lastOnError;
+        private string lastSid;
 
         public string captchaImageAddress;
 
@@ -112,7 +115,6 @@ using System.IO.IsolatedStorage;
 
         public void SignUp(string nummberPhone, string firstName, string lastName, CallBack onSuccess, CallBack onError)
         {
-            var url = "https://api.vk.com/method/auth.signup";
             var sendData = new Dictionary<string, string>
                                {
                                    {"phone", nummberPhone},
@@ -121,7 +123,33 @@ using System.IO.IsolatedStorage;
                                    {"client_id", "3070837"},
                                    {"client_secret", "VykBAOy47loHDoOq9L54"}
                                };
+            this.SignUpQuerry(sendData, onSuccess, onError);
+        }
 
+        public void RepeatLastRequestWithCaptcha(string captcha, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.lastRequest.ContainsKey("captcha_key"))
+                this.lastRequest.Add("captcha_key", captcha);
+            else
+                this.lastRequest["captcha_key"] = captcha;
+
+            //this.SignUpQuerry(this.lastRequest, this.lastOnSuccess, this.lastOnError);
+            this.SignUpQuerry(this.lastRequest, onSuccess, onError);
+        }
+
+        public void iDidntReceiveSMS(CallBack onSuccess, CallBack onError)
+        {
+            if (!this.lastRequest.ContainsKey("sid"))
+                this.lastRequest.Add("sid", this.lastSid);
+            else
+                this.lastRequest["sid"] = this.lastSid;
+
+            this.SignUpQuerry(this.lastRequest, onSuccess, onError);
+        }
+
+        public void SignUpQuerry(Dictionary<string, string> sendData, CallBack onSuccess, CallBack onError)
+        {
+            var url = "https://api.vk.com/method/auth.signup";
             this.GetQuery(url, sendData, res =>
             {
                 var responseString = (string)res;
@@ -130,6 +158,8 @@ using System.IO.IsolatedStorage;
                 if (obj["response"] != null)
                 {
                     response = obj["response"]["sid"].ToString();
+                    this.lastSid = response;
+                    onSuccess(response);
                 }
                 else if (obj["error"] != null)
                 {
@@ -139,15 +169,19 @@ using System.IO.IsolatedStorage;
                         var captchaSid = obj["error"]["captcha_sid"].ToString();
                         this.captchaImageAddress = obj["error"]["captcha_img"].ToString();
                         
-                        sendData.Add("captcha_sid", captchaSid);
+                        if (!sendData.ContainsKey("captcha_sid"))
+                            sendData.Add("captcha_sid", captchaSid);
+                        else
+                            sendData["captcha_sid"] = captchaSid;
                         
                         this.lastRequest = sendData;
+                        //this.lastOnSuccess = onSuccess;
+                        //this.lastOnError = onError;
                         onSuccess("captcha");
                         return;
                     }
                 }
-                //var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
-                //var sid = decodedResponse["sid"].ToString();
+                
             }, res =>
             {
                 // DO_SOMETHING

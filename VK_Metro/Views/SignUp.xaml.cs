@@ -98,6 +98,10 @@ namespace VK_Metro.Views
                     {
                         this.GoToCaptchaPage();
                     }
+                    else
+                    {
+                        this.GoToCodePage();
+                    }
                 },
                 error =>
                 {
@@ -107,6 +111,11 @@ namespace VK_Metro.Views
         private void GoToCaptchaPage()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Captcha.xaml",
+                                                                                               UriKind.Relative)));
+        }
+        private void GoToCodePage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",
                                                                                                UriKind.Relative)));
         }
     }
