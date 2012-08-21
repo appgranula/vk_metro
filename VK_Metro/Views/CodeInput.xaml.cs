@@ -1,37 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Media;
+    using Microsoft.Phone.Controls;
+
     public partial class CodeInput : PhoneApplicationPage, INotifyPropertyChanged
     {
+        public CodeInput()
+        {
+            this.InitializeComponent();
+            this.DataContext = this;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public bool EnterButtonEnabled { get; private set; }
 
         public Brush ColorTextEnterButton { get; private set; }
-
-        public CodeInput()
-        {
-            InitializeComponent();
-            DataContext = this;
-        }
 
         private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this.TextCheck();
         }
 
-        private void pass_PasswordChanged(object sender, RoutedEventArgs e)
+        private void PasswordChanged(object sender, RoutedEventArgs e)
         {
             this.TextCheck();
         }
@@ -39,79 +33,93 @@ namespace VK_Metro.Views
         private void TextCheck()
         {
             // DO_CHECK
-            //if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
+            // if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
             if (true)
+            {
                 this.EnterButtonEnabled = true;
+            }
             else
+            {
                 this.EnterButtonEnabled = false;
-            NotifyPropertyChanged("EnterButtonEnabled");
+            }
+
+            this.NotifyPropertyChanged("EnterButtonEnabled");
         }
 
         private void EnterButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (EnterButton.IsEnabled)
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneForegroundBrush"] as Brush);
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneForegroundBrush"] as Brush;
+            }
             else
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneDisabledBrush"] as Brush);
-            NotifyPropertyChanged("ColorTextEnterButton");
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneDisabledBrush"] as Brush;
+            }
+
+            this.NotifyPropertyChanged("ColorTextEnterButton");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged(String propertyName)
+        private void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (null != handler)
+            {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-            App.VK.ConfirmSignUp(this.CodeText.Text, "galort6713", result =>
+            App.VK.ConfirmSignUp(
+                this.CodeText.Text, 
+                "galort6713", 
+                result =>
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(
                         () =>
                         MessageBox.Show(
                             "Вы зарегистрированы. Авторизуйтесь, используя свой логин и пароль"));
                     this.GoToAuthPage();
-                }, result => { });
+                }, 
+                result => { });
         }
 
         private void ResendSmsButton_Click(object sender, RoutedEventArgs e)
         {
-            App.VK.IDidntReceiveSMS(result =>
-                                        {
-                                            if ((string)result == "captcha")
-                                            {
-                                                this.GoToCaptchaPage();
-                                            }
-                                            else
-                                            {
-                                                this.GoToCodePage();
-                                            }
-                                        },
-                                        result =>
-                                            {
-                                                
-                                            });
+            App.VK.IDidntReceiveSMS(
+                result =>
+                {
+                    if ((string)result == "captcha")
+                    {
+                        this.GoToCaptchaPage();
+                    }
+                    else
+                    {
+                        this.GoToCodePage();
+                    }
+                },
+                result =>
+                {
+                });
         }
 
         private void GoToCaptchaPage()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Captcha.xaml",
-                                                                                               UriKind.Relative)));
+            Deployment.Current.Dispatcher.BeginInvoke(
+                () => NavigationService.Navigate(new Uri("/Views/Captcha.xaml", UriKind.Relative)));
         }
 
         private void GoToCodePage()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",
-                                                                                               UriKind.Relative)));
+            Deployment.Current.Dispatcher.BeginInvoke(
+                () => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml", UriKind.Relative)));
         }
 
         private void GoToAuthPage()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Authorization.xaml",
-                                                                                               UriKind.Relative)));
+            Deployment.Current.Dispatcher.BeginInvoke(
+                () => NavigationService.Navigate(new Uri("/Views/Authorization.xaml", UriKind.Relative)));
         }
     }
 }

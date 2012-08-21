@@ -45,14 +45,14 @@
             <PasswordBox Canvas.Left="12" Canvas.Top="212"
                          x:Name="Password"
                          Height="72" Width="456"
-                         PasswordChanged="pass_PasswordChanged"/>
+                         PasswordChanged="PasswordChanged"/>
             <TextBlock Canvas.Left="24" Canvas.Top="304"
                        Text="Повторите пароль:"
                        FontSize="19"/>
             <PasswordBox Canvas.Left="12" Canvas.Top="324"
                          x:Name="PasswordRepeat"
                          Height="72" Width="456"
-                         PasswordChanged="pass_PasswordChanged"/>
+                         PasswordChanged="PasswordChanged"/>
             <Button Canvas.Left="12" Canvas.Top="412" x:Name="EnterButton"
                     Height="72" Width="305"
                     IsEnabled="{Binding EnterButtonEnabled}"

@@ -1,37 +1,40 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using Microsoft.Phone.Controls;
-using System.ComponentModel;
-using System.Windows.Media;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using Microsoft.Phone.Controls;
+
     public partial class Captcha : PhoneApplicationPage, INotifyPropertyChanged
     {
-        public bool EnterButtonEnabled { get; private set; }
-        public Brush ColorTextEnterButton { get; private set; }
-        public ImageSource captchaSource { get; private set; }
-
         public Captcha()
         {
-            InitializeComponent();
-            DataContext = this;
-            this.setCaptchaImage();
-            EnterButtonEnabled = true;
-        }
-
-        private void setCaptchaImage()
-        {
-            var uri = new Uri(App.VK.captchaImageAddress, UriKind.Absolute);
-            this.captchaSource = new BitmapImage(uri);
-            NotifyPropertyChanged("captchaSource");
+            this.InitializeComponent();
+            this.DataContext = this;
+            this.SetCaptchaImage();
+            this.EnterButtonEnabled = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
+
+        public bool EnterButtonEnabled { get; private set; }
+
+        public Brush ColorTextEnterButton { get; private set; }
+
+        public ImageSource CaptchaSource { get; private set; }
+
+        private void SetCaptchaImage()
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var uri = new Uri(App.VK.captchaImageAddress, UriKind.Absolute);
+            this.CaptchaSource = new BitmapImage(uri);
+            this.NotifyPropertyChanged("captchaSource");
+        }
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            var handler = this.PropertyChanged;
             if (null != handler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
@@ -40,14 +43,15 @@ namespace VK_Metro.Views
 
         private void NumberPhone_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this.EnterButtonEnabled = this.TextCaptcha.Text != "";
-            NotifyPropertyChanged("EnterButtonEnabled");
+            this.EnterButtonEnabled = this.TextCaptcha.Text != string.Empty;
+            this.NotifyPropertyChanged("EnterButtonEnabled");
         }
 
         private void EnterButtonClick(object sender, RoutedEventArgs e)
         {
-
-            App.VK.RepeatLastRequestWithCaptcha(this.TextCaptcha.Text, result =>
+            App.VK.RepeatLastRequestWithCaptcha(
+                this.TextCaptcha.Text, 
+                result =>
                 {
                     if ((string)result == "captcha")
                     {
@@ -58,47 +62,38 @@ namespace VK_Metro.Views
                         this.GoToCodePage();
                     }
                 },
-                res => {});
+                res =>
+                    {
+                    });
         }
 
         private void EnterButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (EnterButton.IsEnabled)
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneForegroundBrush"] as Brush);
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneForegroundBrush"] as Brush;
+            }
             else
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneDisabledBrush"] as Brush);
-            NotifyPropertyChanged("ColorTextEnterButton");
-        }
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneDisabledBrush"] as Brush;
+            }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            //MessageBox.Show("loaded");
-        }
-
-        private void PhoneApplicationPage_LayoutUpdated(object sender, EventArgs e)
-        {
-            //MessageBox.Show("updated");
-        }
-
-        private void PhoneApplicationPage_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //MessageBox.Show("focus");
+            this.NotifyPropertyChanged("ColorTextEnterButton");
         }
 
         private void GoToCaptchaPage()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => {
-                this.setCaptchaImage();
-                                                                NavigationService.Navigate(new Uri(
-                                                                                               "/Views/Captcha.xaml",
-                                                                                               UriKind.Relative));
+            Deployment.Current.Dispatcher.BeginInvoke(() => 
+            {
+                this.SetCaptchaImage();
+                NavigationService.Navigate(new Uri("/Views/Captcha.xaml", UriKind.Relative));
             });
         }
 
         private void GoToCodePage()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",
-                                                                                               UriKind.Relative)));
+            Deployment.Current.Dispatcher.BeginInvoke(
+                () => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml", UriKind.Relative)));
         }
     }
 }

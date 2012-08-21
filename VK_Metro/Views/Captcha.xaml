@@ -13,7 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    LayoutUpdated="PhoneApplicationPage_LayoutUpdated" GotFocus="PhoneApplicationPage_GotFocus">
+    >
 
 
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
