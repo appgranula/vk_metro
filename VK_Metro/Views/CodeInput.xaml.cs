@@ -34,7 +34,9 @@
         {
             // DO_CHECK
             // if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
-            if (true)
+            if (this.CodeText.Text.Length == 4 
+                && this.Password.Password.Length >= 6 
+                && this.Password.Password == this.PasswordRepeat.Password)
             {
                 this.EnterButtonEnabled = true;
             }

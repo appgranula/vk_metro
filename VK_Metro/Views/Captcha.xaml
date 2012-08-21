@@ -37,7 +37,7 @@
             <TextBlock Canvas.Left="24" Canvas.Top="80"
                        Text="Введите слово с картинки:"
                        FontSize="19"/>
-            <Image x:Name="CaptchaImage"  Canvas.Left = "24" Canvas.Top="115" Source="{Binding captchaSource}"></Image>
+            <Image x:Name="CaptchaImage"  Canvas.Left = "24" Canvas.Top="115" Source="{Binding CaptchaSource}"></Image>
             <TextBox Canvas.Left="12" Canvas.Top="170"
                      x:Name="TextCaptcha"
                      Height="72" Width="456" 

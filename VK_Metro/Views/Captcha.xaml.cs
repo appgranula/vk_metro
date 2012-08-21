@@ -29,7 +29,7 @@
         {
             var uri = new Uri(App.VK.captchaImageAddress, UriKind.Absolute);
             this.CaptchaSource = new BitmapImage(uri);
-            this.NotifyPropertyChanged("captchaSource");
+            this.NotifyPropertyChanged("CaptchaSource");
         }
 
         private void NotifyPropertyChanged(string propertyName)
@@ -86,6 +86,7 @@
             Deployment.Current.Dispatcher.BeginInvoke(() => 
             {
                 this.SetCaptchaImage();
+                this.TextCaptcha.Text = string.Empty;
                 NavigationService.Navigate(new Uri("/Views/Captcha.xaml", UriKind.Relative));
             });
         }
