@@ -93,6 +93,7 @@ namespace VK_Metro.Views
                                                                                                UriKind.Relative));
             });
         }
+
         private void GoToCodePage()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",

@@ -113,6 +113,7 @@ namespace VK_Metro.Views
             Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Captcha.xaml",
                                                                                                UriKind.Relative)));
         }
+
         private void GoToCodePage()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",

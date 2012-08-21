@@ -137,7 +137,7 @@ using System.IO.IsolatedStorage;
             this.SignUpQuerry(this.lastRequest, onSuccess, onError);
         }
 
-        public void iDidntReceiveSMS(CallBack onSuccess, CallBack onError)
+        public void IDidntReceiveSMS(CallBack onSuccess, CallBack onError)
         {
             if (!this.lastRequest.ContainsKey("sid"))
                 this.lastRequest.Add("sid", this.lastSid);
@@ -154,11 +154,12 @@ using System.IO.IsolatedStorage;
             {
                 var responseString = (string)res;
                 var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
-                string response ="";
+                this.lastRequest = sendData;
                 if (obj["response"] != null)
                 {
-                    response = obj["response"]["sid"].ToString();
+                    var response = obj["response"]["sid"].ToString();
                     this.lastSid = response;
+                    //this.lastRequest = sendData;
                     onSuccess(response);
                 }
                 else if (obj["error"] != null)
@@ -174,9 +175,7 @@ using System.IO.IsolatedStorage;
                         else
                             sendData["captcha_sid"] = captchaSid;
                         
-                        this.lastRequest = sendData;
-                        //this.lastOnSuccess = onSuccess;
-                        //this.lastOnError = onError;
+                        //this.lastRequest = sendData;
                         onSuccess("captcha");
                         return;
                     }

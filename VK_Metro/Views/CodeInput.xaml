@@ -60,7 +60,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="зарегистрироваться" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
+                            <TextBlock Text="отправить код" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
                                        Canvas.Left="-117" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>
@@ -72,7 +72,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="я не получил SMS!" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
+                            <TextBlock Text="я не получил SMS!" FontSize="25"
                                        Canvas.Left="-117" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>

@@ -26,11 +26,19 @@ namespace VK_Metro.Views
             DataContext = this;
         }
 
-        private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) { this.TextCheck(); }
-        private void pass_PasswordChanged(object sender, RoutedEventArgs e) { this.TextCheck(); }
+        private void TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            this.TextCheck();
+        }
+
+        private void pass_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            this.TextCheck();
+        }
 
         private void TextCheck()
         {
+            // DO_CHECK
             //if (this.email.Text.Length >= 6 && this.pass.Password.Length >= 6)
             if (true)
                 this.EnterButtonEnabled = true;
@@ -64,11 +72,34 @@ namespace VK_Metro.Views
 
         private void ResendSmsButton_Click(object sender, RoutedEventArgs e)
         {
-            //App.VK.iDidntReceiveSMS(result => Deployment.Current.Dispatcher.BeginInvoke(() => this.textBlock1.Text = "Была выслана повторная СМС"),
-            //    result =>
-            //        {
-                        
-            //        });
+            App.VK.IDidntReceiveSMS(result =>
+                                        {
+                                            if ((string)result == "captcha")
+                                            {
+                                                this.GoToCaptchaPage();
+                                            }
+                                            else
+                                            {
+                                                this.GoToCodePage();
+                                            }
+                                        },
+                                        result =>
+                                            {
+                                                
+                                            });
         }
+
+        private void GoToCaptchaPage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Captcha.xaml",
+                                                                                               UriKind.Relative)));
+        }
+
+        private void GoToCodePage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/CodeInput.xaml",
+                                                                                               UriKind.Relative)));
+        }
+
     }
 }
