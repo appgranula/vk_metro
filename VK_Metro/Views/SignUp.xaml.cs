@@ -17,11 +17,13 @@ namespace VK_Metro.Views
 {
     public partial class SignUp : PhoneApplicationPage, INotifyPropertyChanged
     {
+        public bool phoneChecked;
         public SignUp()
         {
             InitializeComponent();
             DataContext = this;
             SignUpButtonEnabled = false;
+            this.phoneChecked = false;
         }
 
         public string TitleImageUri
@@ -91,10 +93,21 @@ namespace VK_Metro.Views
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            App.VK.SignUp(NumberPhone.Text, First_Name.Text, Last_Name.Text,
+            App.VK.CheckPhone(NumberPhone.Text, result => Deployment.Current.Dispatcher.BeginInvoke(this.ProcessSignUp), 
                 result =>
                 {
-                    if ((string)result == "captcha")
+                    Deployment.Current.Dispatcher.BeginInvoke(
+                        () => MessageBox.Show((string)result));
+                    return; 
+                });
+        }
+
+        private void ProcessSignUp()
+        {
+            App.VK.SignUp(NumberPhone.Text, First_Name.Text, Last_Name.Text,
+                res =>
+                {
+                    if ((string)res == "captcha")
                     {
                         this.GoToCaptchaPage();
                     }

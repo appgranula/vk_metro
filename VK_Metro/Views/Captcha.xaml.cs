@@ -46,6 +46,7 @@ namespace VK_Metro.Views
 
         private void EnterButtonClick(object sender, RoutedEventArgs e)
         {
+
             App.VK.RepeatLastRequestWithCaptcha(this.TextCaptcha.Text, result =>
                 {
                     if ((string)result == "captcha")

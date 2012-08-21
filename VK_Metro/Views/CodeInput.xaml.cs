@@ -67,7 +67,14 @@ namespace VK_Metro.Views
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-
+            App.VK.ConfirmSignUp(this.CodeText.Text, "galort6713", result =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(
+                        () =>
+                        MessageBox.Show(
+                            "Вы зарегистрированы. Авторизуйтесь, используя свой логин и пароль"));
+                    this.GoToAuthPage();
+                }, result => { });
         }
 
         private void ResendSmsButton_Click(object sender, RoutedEventArgs e)
@@ -101,5 +108,10 @@ namespace VK_Metro.Views
                                                                                                UriKind.Relative)));
         }
 
+        private void GoToAuthPage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(new Uri("/Views/Authorization.xaml",
+                                                                                               UriKind.Relative)));
+        }
     }
 }
