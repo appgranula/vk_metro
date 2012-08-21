@@ -77,9 +77,7 @@
                 result =>
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(
-                        () =>
-                        MessageBox.Show(
-                            "Вы зарегистрированы. Авторизуйтесь, используя свой логин и пароль"));
+                        () => MessageBox.Show("Вы зарегистрированы. Авторизуйтесь, используя свой логин и пароль"));
                     this.GoToAuthPage();
                 }, 
                 result => { });

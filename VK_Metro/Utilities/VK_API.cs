@@ -1,17 +1,13 @@
-﻿using System.Windows;
-
-namespace VK_Metro
+﻿namespace VK_Metro
 {
     using System;
-    using System.Net;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using Newtonsoft.Json;
-    using System.Text.RegularExpressions;
     using System.Collections.ObjectModel;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Text;
     using VK_Metro.Models;
-using System.IO.IsolatedStorage;
 
     public delegate void EventHandler(Newtonsoft.Json.Linq.JToken updates);
 
@@ -119,11 +115,11 @@ using System.IO.IsolatedStorage;
         {
             var sendData = new Dictionary<string, string>
                                {
-                                   {"phone", nummberPhone},
-                                   {"first_name", firstName},
-                                   {"last_name", lastName},
-                                   {"client_id", "3070837"},
-                                   {"client_secret", "VykBAOy47loHDoOq9L54"}
+                                   { "phone", nummberPhone },
+                                   { "first_name", firstName },
+                                   { "last_name", lastName },
+                                   { "client_id", "3070837" },
+                                   { "client_secret", "VykBAOy47loHDoOq9L54" }
                                };
             this.SignUpQuerry(sendData, onSuccess, onError);
         }
@@ -131,20 +127,27 @@ using System.IO.IsolatedStorage;
         public void RepeatLastRequestWithCaptcha(string captcha, CallBack onSuccess, CallBack onError)
         {
             if (!this.lastRequest.ContainsKey("captcha_key"))
+            {
                 this.lastRequest.Add("captcha_key", captcha);
+            }
             else
+            {
                 this.lastRequest["captcha_key"] = captcha;
+            }
 
-            //this.SignUpQuerry(this.lastRequest, this.lastOnSuccess, this.lastOnError);
             this.SignUpQuerry(this.lastRequest, onSuccess, onError);
         }
 
         public void IDidntReceiveSMS(CallBack onSuccess, CallBack onError)
         {
             if (!this.lastRequest.ContainsKey("sid"))
+            {
                 this.lastRequest.Add("sid", this.lastSid);
+            }
             else
+            {
                 this.lastRequest["sid"] = this.lastSid;
+            }
 
             this.SignUpQuerry(this.lastRequest, onSuccess, onError);
         }
@@ -152,47 +155,53 @@ using System.IO.IsolatedStorage;
         private void SignUpQuerry(Dictionary<string, string> sendData, CallBack onSuccess, CallBack onError)
         {
             var url = "https://api.vk.com/method/auth.signup";
-            this.GetQuery(url, sendData, res =>
-            {
-                var responseString = (string)res;
-                var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
-                this.lastRequest = sendData;
-                if (obj["response"] != null)
+            this.GetQuery(
+                url, 
+                sendData, 
+                res =>
                 {
-                    var response = obj["response"]["sid"].ToString();
-                    this.lastSid = response;
-                    //this.lastRequest = sendData;
-                    onSuccess(response);
-                }
-                else if (obj["error"] != null)
+                    var responseString = (string)res;
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                    this.lastRequest = sendData;
+                    if (obj["response"] != null)
+                    {
+                        var response = obj["response"]["sid"].ToString();
+                        this.lastSid = response;
+                        onSuccess(response);
+                    }
+                    else if (obj["error"] != null)
+                    {
+                        var code = obj["error"]["error_code"].ToString();
+                        if (code == "14")
+                        {
+                            var captchaSid = obj["error"]["captcha_sid"].ToString();
+                            this.captchaImageAddress = obj["error"]["captcha_img"].ToString();
+
+                            if (!sendData.ContainsKey("captcha_sid"))
+                            {
+                                sendData.Add("captcha_sid", captchaSid);
+                            }
+                            else
+                            {
+                                sendData["captcha_sid"] = captchaSid;
+                            }
+
+                            onSuccess("captcha");
+                            return;
+                        }
+
+                        if (code == "100")
+                        {
+                            var errorMessage = "Ошибка в веденных данных";
+                            onError(errorMessage);
+                            return;
+                        }
+                    }
+                }, 
+                res =>
                 {
-                    var code = obj["error"]["error_code"].ToString();
-                    if (code == "14")
-                    {
-                        var captchaSid = obj["error"]["captcha_sid"].ToString();
-                        this.captchaImageAddress = obj["error"]["captcha_img"].ToString();
-                        
-                        if (!sendData.ContainsKey("captcha_sid"))
-                            sendData.Add("captcha_sid", captchaSid);
-                        else
-                            sendData["captcha_sid"] = captchaSid;
-                        
-                        //this.lastRequest = sendData;
-                        onSuccess("captcha");
-                        return;
-                    }
-                    if (code == "100")
-                    {
-                        var errorMessage = "Ошибка в веденных данных";
-                        onError(errorMessage);
-                        return;
-                    }
-                }
-                
-            }, res =>
-            {
-                // DO_SOMETHING
-            });
+                    // DO_SOMETHING
+                });
         }
 
         public void ConfirmSignUp(string code, string password, CallBack onSuccess, CallBack onError)
@@ -200,36 +209,37 @@ using System.IO.IsolatedStorage;
             var url = "https://api.vk.com/method/auth.confirm";
             var sendData = new Dictionary<string, string>
                                {
-                                   {"phone", this.lastRequest["phone"]},
-                                   {"code", code},
-                                   {"password", password},
-                                   {"client_id", "3070837"},
-                                   {"client_secret", "VykBAOy47loHDoOq9L54"},
-                                   {"test_mode", "1"}
+                                   { "phone", this.lastRequest["phone"] },
+                                   { "code", code },
+                                   { "password", password },
+                                   { "client_id", "3070837" },
+                                   { "client_secret", "VykBAOy47loHDoOq9L54" },
+                                   { "test_mode", "1" }
                                };
-            this.GetQuery(url, sendData, result =>
-                                             {
-                                                 var responseString = (string)result;
-                                                 //Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(responseString));
-                                                 var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
-                                                 if (obj["response"] != null)
-                                                 {
-                                                     var response = obj["response"]["success"].ToString();
-                                                     var uid = obj["response"]["uid"].ToString();
-                                                     
-                                                     onSuccess(response);
-                                                 }
-                                                 else if (obj["error"] != null)
-                                                 {
-                                                     // DO_SOMETHING
-                                                 }
-                                                 onSuccess(responseString);
-                                             },
-                          result =>
-                              {
-                                  onError(result);
-                              }
-                );
+            this.GetQuery(
+                url, 
+                sendData, 
+                result =>
+                    {
+                        var responseString = (string)result;
+                        var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                        if (obj["response"] != null)
+                        {
+                            var response = obj["response"]["success"].ToString();
+                            var uid = obj["response"]["uid"].ToString();
+                            onSuccess(response);
+                        }
+                        else if (obj["error"] != null)
+                        {
+                            // DO_SOMETHING
+                        }
+
+                        onSuccess(responseString);
+                    },
+                result =>
+                    {
+                        onError(result);
+                    });
         }
 
         public void CheckPhone(string phone, CallBack onSuccess, CallBack onError)
@@ -237,14 +247,16 @@ using System.IO.IsolatedStorage;
             var url = "https://api.vk.com/method/auth.checkPhone";
             var sendData = new Dictionary<string, string>
                                {
-                                   {"phone", phone},
-                                   {"client_id", "3070837"},
-                                   {"client_secret", "VykBAOy47loHDoOq9L54"},
+                                   { "phone", phone },
+                                   { "client_id", "3070837" },
+                                   { "client_secret", "VykBAOy47loHDoOq9L54" },
                                };
-            this.GetQuery(url, sendData, result =>
+            this.GetQuery(
+                url, 
+                sendData, 
+                result =>
                 {
-                    var responseString = (string) result;
-                    //Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(responseString));
+                    var responseString = (string)result;
                     var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
 
                     if (obj["response"] != null)
@@ -252,38 +264,40 @@ using System.IO.IsolatedStorage;
                         onSuccess(obj["response"]);
                         return;
                     }
-
-                    else if (obj["error"]!=null)
+                    else if (obj["error"] != null)
                     {
-                        var errorMessage ="";
-                        switch (Int16.Parse(obj["error"]["error_code"].ToString()))
+                        var errorMessage = string.Empty;
+                        switch (short.Parse(obj["error"]["error_code"].ToString()))
                         {
                             case 100:
                                 {
                                     errorMessage = "Введенный вами номер неверен";
                                     break;
                                 }
+
                             case 1003:
                                 {
                                     errorMessage = "User already invited: message already sended, you can resend message in 300 seconds";
                                     break;
                                 }
+
                             case 1004:
                                 {
                                     errorMessage = "This phone used by another user";
                                     break;
                                 }
+
                             case 1112:
                                 {
                                     errorMessage = "Processing.. Try later";
                                     break;
                                 }
                         }
+
                         onError(errorMessage);
                         return;
                     }
                 },
-
                 result =>
                     {
                         onError(result);
@@ -418,28 +432,34 @@ using System.IO.IsolatedStorage;
         public void GetAccessToLongPoll()
         {
             if (!this.connected)
+            {
                 return;
+            }
 
             var url = "https://api.vk.com/method/messages.getLongPollServer";
             var sendData = new Dictionary<string, string>
-                               {
-                                   {"access_token", this.access_token}
-                               };
+                                {
+                                    { "access_token", this.access_token }
+                                };
 
-            this.GetQuery(url, sendData, res =>
-                                                {
-                                                    var responseString = (string)res;
-                                                    var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
-                                                    var response = obj["response"].ToString();
-                                                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
-                                                    var key = decodedResponse["key"].ToString();
-                                                    var ts = decodedResponse["ts"].ToString();
-                                                    var server = decodedResponse["server"].ToString();
-                                                    this.BeginReceiving(server, key, ts);
-                                                }, res =>
-                                                       {
-                                                           // DO_SOMETHING
-                                                       });
+            this.GetQuery(
+                url, 
+                sendData, 
+                res =>
+                {
+                    var responseString = (string)res;
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                    var response = obj["response"].ToString();
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(response);
+                    var key = decodedResponse["key"].ToString();
+                    var ts = decodedResponse["ts"].ToString();
+                    var server = decodedResponse["server"].ToString();
+                    this.BeginReceiving(server, key, ts);
+                }, 
+                res =>
+                {
+                    // DO_SOMETHING
+                });
         }
 
         private void BeginReceiving(string server, string key, string ts)
