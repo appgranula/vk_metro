@@ -92,6 +92,10 @@
 
             <!--Третий элемент Pivot-->
             <controls:PivotItem Header="контакты">
+                <Canvas>
+                    <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24">Вы можете синхронизировать список друзей VK с записной книжкой Вашего телефона.</TextBlock>
+                    <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="синхронизировать контакты" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
+                </Canvas>
             </controls:PivotItem>
         </controls:Pivot>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">

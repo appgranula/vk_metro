@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using Microsoft.Phone.Controls;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
+using Microsoft.Phone.UserData;
 using VK_Metro.Models;
 using System.Collections;
 using System;
@@ -54,6 +56,25 @@ namespace VK_Metro.Views
             if (NavigationService.CanGoBack)
                 while (NavigationService.RemoveBackEntry() != null)
                     NavigationService.RemoveBackEntry();
+        }
+
+        private void synchronizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Contacts cons = new Contacts();
+
+            //Identify the method that runs after the asynchronous search completes.
+            cons.SearchCompleted += new EventHandler<ContactsSearchEventArgs>(Contacts_SearchCompleted);
+
+            //Start the asynchronous search.
+            cons.SearchAsync(String.Empty, FilterKind.None, "Contacts Test #1");
+        }
+
+        void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
+        {
+            MessageBox.Show(e.Results.Count().ToString());
+            var c = e.Results.AsEnumerable();
+            //var myObservableCollection = new ObservableCollection<Contact>(c);
+            var i = new ObservableCollection<Contact>(c);
         }
     }
 }
