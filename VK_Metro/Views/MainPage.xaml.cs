@@ -35,6 +35,13 @@ namespace VK_Metro.Views
                             {
                                 this.dataContext.AddFriend((VKFriendModel[])result);
                                 this.dataContext.IsDataLoaded = true;
+                                App.VK.GetDialogs(result2 =>
+                                {
+                                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                    {
+                                        this.dataContext.AddMessage((VKMessageModel[])result2);
+                                    });
+                                }, error2 => { });
                             });
                     },
                     error =>
@@ -55,5 +62,6 @@ namespace VK_Metro.Views
                 while (NavigationService.RemoveBackEntry() != null)
                     NavigationService.RemoveBackEntry();
         }
+
     }
 }

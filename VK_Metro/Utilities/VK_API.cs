@@ -97,7 +97,7 @@ namespace VK_Metro
                     }
                     else
                     {
-                        onError(new ObservableCollection<VKFriendModel>());
+                        onError(new object());
                     }
                 }, error =>
                 {
@@ -106,10 +106,62 @@ namespace VK_Metro
             }
         }
 
+        public void GetUser(string uid, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/users.get";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("uids", uid);
+            sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,online");
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    VKFriendModel[] friends = obj["response"].ToObject<VKFriendModel[]>();
+                    onSuccess(friends[0]);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, error =>
+            {
+                onError(error);
+            });
+        }
+
         public void SignUp(string NummberPhone, string FirstName, string LastName, CallBack onSuccess, CallBack onError)
         {
         }
 
+        public void GetDialogs(CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.getDialogs";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            this.GetQuery(URL, sendData, result =>
+            {
+                    var responseString = (string)result;
+                    Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                    if (obj["response"] != null)
+                    {
+                        obj["response"].First.Remove();
+                        VKMessageModel[] messages = obj["response"].ToObject<VKMessageModel[]>();
+                        onSuccess(messages);
+                    }
+                    else
+                    {
+                        onError(new object());
+                    }
+            }, onError);
+        }
+        
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(URL));//создаем запрос

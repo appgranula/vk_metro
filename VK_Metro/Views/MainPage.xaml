@@ -32,6 +32,24 @@
             </controls:Pivot.TitleTemplate>
             <!--Первый элемент Pivot-->
             <controls:PivotItem Header="сообщения">
+                <Grid>
+                    <ListBox ItemsSource="{Binding VKMessage}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="12,12,0,24" Orientation="Horizontal">
+                                    <Image Width="60" Height="60" Source="{Binding photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
+                                    <Canvas VerticalAlignment="Top" HorizontalAlignment="Left">
+                                        <TextBlock Canvas.Left="-2" Canvas.Top="-14" Text="{Binding name}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                        <TextBlock Canvas.Left="-2" Canvas.Top="36" Text="{Binding body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="21"/>
+                                    </Canvas>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>                        
+                    </ListBox>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Создать" IconUri="/VK_Metro;component/icons/appbar.add.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
+                </Grid>
             </controls:PivotItem>
 
             <!--Второй элемент Pivot-->
