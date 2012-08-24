@@ -72,33 +72,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\GroupDialogs.cs" />
     <Compile Include="Models\GroupFriends.cs" />
     <Compile Include="Models\MainPageModel.cs" />
-    <Compile Include="Models\VKAttachmentModel.cs" />
-    <Compile Include="Models\VKAudioModel.cs" />
-    <Compile Include="Models\VKDocModel.cs" />
     <Compile Include="Models\VKFriendModel.cs" />
-    <Compile Include="Models\VKMessageModel.cs" />
-    <Compile Include="Models\VKPhotoModel.cs" />
-    <Compile Include="Models\VKVideoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\VK_API.cs" />
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CodeInput.xaml.cs">
-      <DependentUpon>CodeInput.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Views\Captcha.xaml.cs">
       <DependentUpon>Captcha.xaml</DependentUpon>
-    </Compile>
+=======
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
+>>>>>>> 60b8e4617f2b655b56e85c3323214cc57b73d5a8
     </Compile>
     <Compile Include="Views\SignUp.xaml.cs">
       <DependentUpon>SignUp.xaml</DependentUpon>
@@ -113,19 +105,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CodeInput.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+<<<<<<< HEAD
     <Page Include="Views\Captcha.xaml">
+=======
+    <Page Include="Views\Settings.xaml">
+>>>>>>> 60b8e4617f2b655b56e85c3323214cc57b73d5a8
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,7 +160,6 @@
     </Content>
     <Resource Include="Images\dark\VK_logotype.png" />
     <Resource Include="Images\light\VK_logotype_Light.png" />
-    <Resource Include="Images\deactivated_c.png" />
     <Resource Include="Images\captcha.jpeg" />
     <Content Include="SplashScreenImage.jpg" />
     <Resource Include="icons\appbar.feature.search.rest.png" />

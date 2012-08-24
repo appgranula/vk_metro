@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System.ComponentModel;
-using System.Text.RegularExpressions;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using Microsoft.Phone.Controls;
+
     public partial class SignUp : PhoneApplicationPage, INotifyPropertyChanged
     {
         public SignUp()
         {
-            InitializeComponent();
-            DataContext = this;
-            SignUpButtonEnabled = false;
+            this.InitializeComponent();
+            this.DataContext = this;
+            this.SignUpButtonEnabled = false;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool SignUpButtonEnabled { get; private set; }
+
+        public Brush ColorTextEnterButton { get; private set; }
 
         public string TitleImageUri
         {
@@ -40,49 +39,69 @@ namespace VK_Metro.Views
             }
         }
 
-        public bool SignUpButtonEnabled { get; private set; }
-        public Brush ColorTextEnterButton { get; private set; }
-
         private void SignUpButton_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (SignUpButton.IsEnabled)
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneForegroundBrush"] as Brush);
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneForegroundBrush"] as Brush;
+            }
             else
-                this.ColorTextEnterButton = (App.Current.Resources["PhoneDisabledBrush"] as Brush);
-            NotifyPropertyChanged("ColorTextEnterButton");
+            {
+                this.ColorTextEnterButton = App.Current.Resources["PhoneDisabledBrush"] as Brush;
+            }
+
+            this.NotifyPropertyChanged("ColorTextEnterButton");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
+        private void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (null != handler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        private void NumberPhone_TextChanged(object sender, TextChangedEventArgs e) { this.TextChanged(); }
-        private void First_Name_TextChanged(object sender, TextChangedEventArgs e) { this.TextChanged(); }
-        private void Last_Name_TextChanged(object sender, TextChangedEventArgs e) { this.TextChanged(); }
+        private void NumberPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.TextChanged();
+        }
+
+        private void First_Name_TextChanged(object sender, TextChangedEventArgs e) 
+        { 
+            this.TextChanged(); 
+        }
+
+        private void Last_Name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.TextChanged();
+        }
+
         private void TextChanged()
         {
-            if (CheckNumberPhone(NumberPhone.Text) && CheckFirstName(First_Name.Text) && CheckLastName(Last_Name.Text))
+            if (this.CheckNumberPhone(NumberPhone.Text) && this.CheckFirstName(First_Name.Text) && this.CheckLastName(Last_Name.Text))
+            {
                 this.SignUpButtonEnabled = true;
+            }
             else
+            {
                 this.SignUpButtonEnabled = false;
-            NotifyPropertyChanged("SignUpButtonEnabled");
+            }
+
+            this.NotifyPropertyChanged("SignUpButtonEnabled");
         }
 
         private bool CheckNumberPhone(string numbler)
         {
             return Regex.IsMatch(numbler, "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$");
         }
+
         private bool CheckFirstName(string firstName)
         {
             var b = Regex.IsMatch(firstName, "^[а-я][\\-а-я]*[а-я]$", RegexOptions.IgnoreCase);
             return b;
         }
+
         private bool CheckLastName(string lastName)
         {
             var b = Regex.IsMatch(lastName, "^[а-я][\\-а-я]*[а-я]$", RegexOptions.IgnoreCase);
@@ -91,14 +110,49 @@ namespace VK_Metro.Views
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            App.VK.SignUp(NumberPhone.Text, First_Name.Text, Last_Name.Text,
+            App.VK.CheckPhone(
+                NumberPhone.Text, 
+                result => Deployment.Current.Dispatcher.BeginInvoke(this.ProcessSignUp), 
                 result =>
                 {
+                    Deployment.Current.Dispatcher.BeginInvoke(
+                        () => MessageBox.Show((string)result));
+                    return; 
+                });
+        }
+
+        private void ProcessSignUp()
+        {
+            App.VK.SignUp(
+                NumberPhone.Text, 
+                First_Name.Text, 
+                Last_Name.Text, 
+                res =>
+                {
+                    if ((string)res == "captcha")
+                    {
+                        this.GoToCaptchaPage();
+                    }
+                    else
+                    {
+                        this.GoToCodePage();
+                    }
                 },
                 error =>
                 {
                 });
         }
 
+        private void GoToCaptchaPage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(
+                new Uri("/Views/Captcha.xaml", UriKind.Relative)));
+        }
+
+        private void GoToCodePage()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => NavigationService.Navigate(
+                new Uri("/Views/CodeInput.xaml", UriKind.Relative)));
+        }
     }
 }
