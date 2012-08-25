@@ -18,13 +18,16 @@ namespace VK_Metro.Models
         public void Init()
         {
             this.vkFriend = new ObservableCollection<VKFriendModel>();
+            this.vkUsers = new ObservableCollection<VKFriendModel>();
             this.phoneContacts = new ObservableCollection<PhoneContactModel>();
+            this.vkMessage = new ObservableCollection<VKMessageModel>();
             this.IsDataLoaded = false;
         }
 
         private ObservableCollection<VKFriendModel> vkFriend;
-
         private ObservableCollection<PhoneContactModel> phoneContacts;
+        private ObservableCollection<VKFriendModel> vkUsers;
+        private ObservableCollection<VKMessageModel> vkMessage;
 
         public bool IsDataLoaded { get; set; }
 
@@ -66,6 +69,77 @@ namespace VK_Metro.Models
             }
         }
 
+
+
+        public IEnumerable VKMessage
+        {
+            get
+            {
+                return from item in this.vkMessage
+                       group item by item.uid into n
+                       orderby n.Key
+                       select new GroupDialogs<string, VKMessageModel>(n);
+            }
+        }
+
+
+        public string GetPhoto(string uid)
+        {
+
+            foreach (var friend in vkFriend)
+            {
+                if (friend.uid == uid)
+                    return friend.photo;
+            }
+            foreach (var user in vkUsers)
+            {
+                if (user.uid == uid)
+                    return user.photo;
+            }
+            App.VK.GetUser(uid, result =>
+            {
+                VKFriendModel user = (VKFriendModel)result;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    if (user.photo == "http://vk.com/images/deactivated_c.gif")
+                        user.photo = "/VK_Metro;component/Images/deactivated_c.png";
+                    this.vkUsers.Add(user);
+                    this.NotifyPropertyChanged("VKMessage");
+                });
+            }, error =>
+            {
+            });
+            return "";
+        }
+        public string GetName(string uid)
+        {
+
+            foreach (var friend in vkFriend)
+            {
+                if (friend.uid == uid)
+                    return friend.name;
+            }
+            foreach (var user in vkUsers)
+            {
+                if (user.uid == uid)
+                    return user.name;
+            }
+            App.VK.GetUser(uid, result =>
+            {
+                VKFriendModel user = (VKFriendModel)result;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    if (user.photo == "http://vk.com/images/deactivated_c.gif")
+                        user.photo = "/VK_Metro;component/Images/deactivated_c.png";
+                    this.vkUsers.Add(user);
+                    this.NotifyPropertyChanged("VKMessage");
+                });
+            }, error =>
+            {
+            });
+            return "";
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
         {
@@ -86,11 +160,12 @@ namespace VK_Metro.Models
                 this.vkFriend.Add(friend);
             this.NotifyPropertyChanged("VKFriend");
         }
-
+        
         /// <summary>
         /// Добавить контакты из телефона
         /// </summary>
         /// <param name="contacts"></param>
+
         public void AddContact(Contact[] contacts)
         {
             foreach (var friend in contacts)
@@ -126,6 +201,13 @@ namespace VK_Metro.Models
                 }
             }
             this.NotifyPropertyChanged("PhoneContacts");
+        }
+        
+        public void AddMessage(VKMessageModel[] VKMessage)
+        {
+            foreach (var message in VKMessage)
+                this.vkMessage.Add(message);
+            this.NotifyPropertyChanged("VKMessage");
         }
     }
 }
