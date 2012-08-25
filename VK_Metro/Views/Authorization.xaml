@@ -39,7 +39,8 @@
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="100" x:Name="email"
                      Height="72" Width="456" TextChanged="email_TextChanged" 
-                     Text="79823334882"/>
+                     Text="79823334882"
+                     />
             <TextBlock Canvas.Left="24" Canvas.Top="192"
                        Text="Пароль"
                        FontSize="19"/>

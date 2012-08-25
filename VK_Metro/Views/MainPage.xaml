@@ -93,8 +93,73 @@
             <!--Третий элемент Pivot-->
             <controls:PivotItem Header="контакты">
                 <Canvas>
-                    <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24">Вы можете синхронизировать список друзей VK с записной книжкой Вашего телефона.</TextBlock>
-                    <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="синхронизировать контакты" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
+                    <Canvas x:Name="SynchronizeDialogCanvas">
+                        <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24">Вы можете синхронизировать список друзей VK с записной книжкой Вашего телефона.</TextBlock>
+                        <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="синхронизировать контакты" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
+                    </Canvas>
+
+                    <Grid x:Name="SynchronizeContactsGrid" Grid.Row="1">
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.Resources>
+                            <DataTemplate x:Key="contactsData">
+                                <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                                    <Image Width="60" Height="60" Source="{Binding photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="34" />
+                                        <TextBlock Text="{Binding vkName}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextGroupHeaderStyle}" FontSize="30" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="groupHeaderTemplate">
+                                <Border Background="{Binding GroupBackgroundBrush}" Visibility="{Binding Visible}" Width="60" Height="60" Margin="0,12,0,0" IsHitTestVisible="{Binding HasItems}" HorizontalAlignment="Left">
+                                    <TextBlock Text="{Binding Key}"
+                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                           FontSize="36"
+                                           Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                           Foreground="{StaticResource PhoneForegroundBrush}"
+                                           VerticalAlignment="Bottom"/>
+                                </Border>
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="groupItemTemplate">
+                                <Border Background="{Binding GroupBackgroundBrush}" Visibility="{Binding Visible}" Width="99" Height="99" Margin="6" IsHitTestVisible="{Binding HasItems}">
+                                    <TextBlock Text="{Binding Key}"
+                                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                           FontSize="36"
+                                           Margin="{StaticResource PhoneTouchTargetOverhang}"
+                                           Foreground="{StaticResource PhoneForegroundBrush}"
+                                           VerticalAlignment="Bottom"/>
+                                </Border>
+                            </DataTemplate>
+                        </Grid.Resources>
+                        
+                        <TextBlock FontSize="48" Height="72" VerticalAlignment="Top">пригласить друга</TextBlock>
+                        
+                        <toolkit:LongListSelector x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"
+                                              ItemTemplate="{StaticResource contactsData}"
+                                              GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
+                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False"
+                                              Height="525"
+                                              Width="452"
+                                              Margin="0,100,0,0">
+                            <toolkit:LongListSelector.GroupItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <toolkit:WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </toolkit:LongListSelector.GroupItemsPanel>
+                        </toolkit:LongListSelector>
+                        
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
+                    </Grid>
                 </Canvas>
             </controls:PivotItem>
         </controls:Pivot>

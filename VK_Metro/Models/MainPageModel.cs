@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Collections;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using Microsoft.Phone.UserData;
 
 namespace VK_Metro.Models
 {
@@ -16,10 +18,14 @@ namespace VK_Metro.Models
         public void Init()
         {
             this.vkFriend = new ObservableCollection<VKFriendModel>();
+            this.phoneContacts = new ObservableCollection<PhoneContactModel>();
             this.IsDataLoaded = false;
         }
 
         private ObservableCollection<VKFriendModel> vkFriend;
+
+        private ObservableCollection<PhoneContactModel> phoneContacts;
+
         public bool IsDataLoaded { get; set; }
 
         public string TitleImageUri
@@ -49,6 +55,17 @@ namespace VK_Metro.Models
             }
         }
 
+        public IEnumerable PhoneContacts
+        {
+            get
+            {
+                return from item in this.phoneContacts
+                       group item by item.groupIndex into n
+                       orderby n.Key
+                       select new GroupFriends<string, PhoneContactModel>(n);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
         {
@@ -60,14 +77,55 @@ namespace VK_Metro.Models
         }
 
         /// <summary>
-        /// Добавить
+        /// Добавить друзей из vk.com
         /// </summary>
-        /// <param name="VKFriends"></param>
-        public void AddFriend(VKFriendModel[] VKFriends)
+        /// <param name="vkFriends"></param>
+        public void AddFriend(VKFriendModel[] vkFriends)
         {
-            foreach (var friend in VKFriends)
+            foreach (var friend in vkFriends)
                 this.vkFriend.Add(friend);
             this.NotifyPropertyChanged("VKFriend");
+        }
+
+        /// <summary>
+        /// Добавить контакты из телефона
+        /// </summary>
+        /// <param name="contacts"></param>
+        public void AddContact(Contact[] contacts)
+        {
+            foreach (var friend in contacts)
+            {
+                var img = new BitmapImage();
+                var pic = friend.GetPicture();
+                if (pic != null)
+                {
+                    img.SetSource(pic);
+                }
+
+                var phone = friend.PhoneNumbers.First().PhoneNumber;
+                phone = phone.Replace("+", string.Empty);
+
+                this.phoneContacts.Add(new PhoneContactModel
+                                           {first_name = friend.DisplayName, photo = img, phone = phone});
+            }
+
+            this.NotifyPropertyChanged("PhoneContacts");
+        }
+
+        public void AddVkNameToContacts(Newtonsoft.Json.Linq.JArray vkContacts)
+        {
+            foreach (var contact in vkContacts)
+            {
+                var vkPhone = contact.SelectToken("phone").ToString();
+                foreach (var phoneContact in phoneContacts)
+                {
+                    if (phoneContact.phone == vkPhone)
+                    {
+                        phoneContact.vkName = contact.SelectToken("first_name") + " " + contact.SelectToken("last_name");
+                    }
+                }
+            }
+            this.NotifyPropertyChanged("PhoneContacts");
         }
     }
 }
