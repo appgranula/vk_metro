@@ -338,7 +338,7 @@
                                {
                                    { "access_token", this.access_token },
                                    { "phones", phones },
-                                   { "fields", "uid" }
+                                   { "fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,online" }
                                };
 
             var url = "https://api.vk.com/method/friends.getByPhones";
@@ -354,7 +354,8 @@
                         onError(obj);
                         return;
                     }
-                    var contacts = obj["response"];
+                    //var contacts = obj["response"];
+                    VKFriendModel[] contacts = obj["response"].ToObject<VKFriendModel[]>();
                     //var contactsArray = contacts.ToObject<Array>();
                     onSuccess(contacts);
                 }, 
@@ -387,7 +388,6 @@
                     }
             }, onError);
         }
-
 
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {

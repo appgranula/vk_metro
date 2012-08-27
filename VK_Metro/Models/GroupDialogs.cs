@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System;
+using Microsoft.Phone.Controls;
 
 namespace VK_Metro.Models
 {
@@ -65,6 +67,39 @@ namespace VK_Metro.Models
             {
                 return App.MainPageData.GetName(grouping.First().uid);
             }
+        }
+        public string date
+        {
+            get
+            {
+                var dateStr = grouping.Last().date;
+                var dateInt = Convert.ToInt64(dateStr);
+                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                var d = origin.AddSeconds(dateInt).ToLocalTime();
+                var cur = DateTime.Today.ToLocalTime();
+                var razn = d.Date - cur;
+                var result = "";
+                if (razn.Days == 0)
+                    result = AddZero(d.Hour) + ":" + AddZero(d.Minute);
+                else if (razn.Days == -1)
+                    result = "вчера";
+                else
+                    result = AddZero(d.Day) + "." + AddZero(d.Month);
+                return result;
+            }
+        }
+        public string unixDate
+        {
+            get
+            {
+                return grouping.Last().date;
+            }
+        }
+        private string AddZero(int num)
+        {
+            if (num >= 0 && num <= 9)
+                return "0" + num.ToString();
+            return num.ToString();
         }
     }
 }
