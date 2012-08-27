@@ -110,8 +110,28 @@ namespace VK_Metro.Views
                         }),
                 result =>
                     {
-                        
+                        var error = (Newtonsoft.Json.Linq.JObject) result;
+                        this.ShowError(error["error"]["error_code"].ToString() == "9"
+                                           ? "Flood Control Error"
+                                           : "Unknown Error");
                     });
+        }
+
+        private void PhoneContactsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var selectedItem = (PhoneContactModel) this.PhoneContactsList.SelectedItem;
+            this.dataContext.CurrentContact = selectedItem;
+            this.GoToContactInfoPage();
+        }
+
+        private void GoToContactInfoPage()
+        {
+            NavigationService.Navigate(new Uri("/Views/ContactInfo.xaml", UriKind.Relative));
+        }
+
+        private void ShowError(string errorText)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Flood Control Error"));
         }
     }
 }

@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.UserData;
 
@@ -15,6 +17,7 @@ namespace VK_Metro.Models
         {
             this.Init();
         }
+
         public void Init()
         {
             this.vkFriend = new ObservableCollection<VKFriendModel>();
@@ -29,7 +32,11 @@ namespace VK_Metro.Models
         private ObservableCollection<VKFriendModel> vkUsers;
         private ObservableCollection<VKMessageModel> vkMessage;
 
+        private PhoneContactModel currentContact;
+
         public bool IsDataLoaded { get; set; }
+
+        public PhoneContactModel CurrentContact { get; set; }
 
         public string TitleImageUri
         {
@@ -69,8 +76,6 @@ namespace VK_Metro.Models
             }
         }
 
-
-
         public IEnumerable VKMessage
         {
             get
@@ -81,7 +86,6 @@ namespace VK_Metro.Models
                        select new GroupDialogs<string, VKMessageModel>(n);
             }
         }
-
 
         public string GetPhoto(string uid)
         {
@@ -170,7 +174,7 @@ namespace VK_Metro.Models
         {
             foreach (var friend in contacts)
             {
-                var img = new BitmapImage();
+                var img = new BitmapImage(new Uri("/VK_Metro;component/Images/Photo_Placeholder.png", UriKind.RelativeOrAbsolute));
                 var pic = friend.GetPicture();
                 if (pic != null)
                 {
@@ -197,6 +201,10 @@ namespace VK_Metro.Models
                     if (phoneContact.phone == vkPhone)
                     {
                         phoneContact.vkName = contact.SelectToken("first_name") + " " + contact.SelectToken("last_name");
+                    }
+                    else
+                    {
+                        phoneContact.vkName = String.Empty;
                     }
                 }
             }

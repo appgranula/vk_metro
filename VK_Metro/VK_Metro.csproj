@@ -92,6 +92,9 @@
     <Compile Include="Views\CodeInput.xaml.cs">
       <DependentUpon>CodeInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ContactInfo.xaml.cs">
+      <DependentUpon>ContactInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CodeInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ContactInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +182,7 @@
     <Resource Include="Images\light\VK_logotype_Light.png" />
     <Resource Include="Images\deactivated_c.png" />
     <Resource Include="Images\captcha.jpeg" />
+    <Resource Include="Images\Photo_Placeholder.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Resource Include="icons\appbar.feature.search.rest.png" />
     <Resource Include="icons\appbar.refresh.rest.png" />

@@ -185,8 +185,7 @@
                             x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"
                             ItemTemplate="{StaticResource contactsData}"
                             GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
-                            GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Margin="0,50,0,0"
-                            >
+                            GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Margin="0,50,0,0" Tap="PhoneContactsList_Tap">
                             <toolkit:LongListSelector.GroupItemsPanel>
                                 <ItemsPanelTemplate>
                                     <toolkit:WrapPanel Orientation="Horizontal"/>
