@@ -80,16 +80,17 @@ namespace VK_Metro.Models
         {
             get
             {
-                return from item in this.vkMessage
-                       group item by item.uid into n
-                       orderby n.Key
-                       select new GroupDialogs<string, VKMessageModel>(n);
+                var tmp = from item in this.vkMessage
+                          group item by item.uid into n
+                          select new GroupDialogs<string, VKMessageModel>(n);
+                return from item in tmp
+                       orderby item.unixDate descending
+                       select item;
             }
         }
 
         public string GetPhoto(string uid)
         {
-
             foreach (var friend in vkFriend)
             {
                 if (friend.uid == uid)
@@ -100,19 +101,7 @@ namespace VK_Metro.Models
                 if (user.uid == uid)
                     return user.photo;
             }
-            App.VK.GetUser(uid, result =>
-            {
-                VKFriendModel user = (VKFriendModel)result;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    if (user.photo == "http://vk.com/images/deactivated_c.gif")
-                        user.photo = "/VK_Metro;component/Images/deactivated_c.png";
-                    this.vkUsers.Add(user);
-                    this.NotifyPropertyChanged("VKMessage");
-                });
-            }, error =>
-            {
-            });
+            this.GetUser(uid);
             return "";
         }
         public string GetName(string uid)
@@ -128,19 +117,7 @@ namespace VK_Metro.Models
                 if (user.uid == uid)
                     return user.name;
             }
-            App.VK.GetUser(uid, result =>
-            {
-                VKFriendModel user = (VKFriendModel)result;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    if (user.photo == "http://vk.com/images/deactivated_c.gif")
-                        user.photo = "/VK_Metro;component/Images/deactivated_c.png";
-                    this.vkUsers.Add(user);
-                    this.NotifyPropertyChanged("VKMessage");
-                });
-            }, error =>
-            {
-            });
+            this.GetUser(uid);
             return "";
         }
 
@@ -154,6 +131,29 @@ namespace VK_Metro.Models
             }
         }
 
+        private void GetUser(string uid)
+        {
+            App.VK.GetUser(uid, result =>
+            {
+                VKFriendModel user = (VKFriendModel)result;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    this.CheckUser(user);
+                    this.vkUsers.Add(user);
+                    this.NotifyPropertyChanged("VKMessage");
+                });
+            }, error =>
+            {
+            });
+        }
+        private void CheckUser(VKFriendModel user)
+        {
+            if (user.photo == "http://vk.com/images/deactivated_c.gif")
+                user.photo = "/VK_Metro;component/Images/deactivated_c.png";
+            if (user.photo == "http://vk.com/images/camera_c.gif")
+                user.photo = "/VK_Metro;component/Images/camera_c.png";
+        }
+
         /// <summary>
         /// Добавить друзей из vk.com
         /// </summary>
@@ -161,7 +161,10 @@ namespace VK_Metro.Models
         public void AddFriend(VKFriendModel[] vkFriends)
         {
             foreach (var friend in vkFriends)
+            {
+                this.CheckUser(friend);
                 this.vkFriend.Add(friend);
+            }
             this.NotifyPropertyChanged("VKFriend");
         }
         

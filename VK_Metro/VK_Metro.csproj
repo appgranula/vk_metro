@@ -183,6 +183,7 @@
     <Resource Include="Images\deactivated_c.png" />
     <Resource Include="Images\captcha.jpeg" />
     <Resource Include="Images\Photo_Placeholder.png" />
+    <Resource Include="Images\camera_c.png" />
     <Content Include="SplashScreenImage.jpg" />
     <Resource Include="icons\appbar.feature.search.rest.png" />
     <Resource Include="icons\appbar.refresh.rest.png" />

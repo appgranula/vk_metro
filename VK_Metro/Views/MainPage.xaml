@@ -44,21 +44,35 @@
                                     </Grid.ColumnDefinitions>
                                     <Grid Grid.Column="0" Grid.Row="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="12"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <Image Grid.Column="0" Grid.Row="1"  Width="60" Height="60" Source="{Binding photo}" Stretch="Uniform"/>
+                                        <Image Grid.Column="0" Grid.Row="1"  Width="60" Height="60" Source="{Binding photo}" Stretch="Uniform" VerticalAlignment="Top"/>
                                     </Grid>
                                     <Grid  Grid.Column="1" Grid.Row="0">
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="0"/>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <Grid Grid.Column="0" Grid.Row="0">
-                                            <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
-                                        </Grid>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0" TextWrapping="NoWrap"/>
                                         <Grid Grid.Column="0" Grid.Row="1">
-                                            <TextBlock Text="{Binding body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="21"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Column="0" Grid.Row="2">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock  Grid.Column="0" Grid.Row="0" Text="{Binding body}" FontSize="20" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock  Grid.Column="1" Grid.Row="0" Text="{Binding date}" FontSize="20" HorizontalAlignment="Right"/>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
