@@ -332,6 +332,38 @@
                     });
         }
 
+        public void CheckContacts(string phones, CallBack onSuccess, CallBack onError)
+        {
+            var sendData = new Dictionary<string, string>
+                               {
+                                   { "access_token", this.access_token },
+                                   { "phones", phones },
+                                   { "fields", "uid" }
+                               };
+
+            var url = "https://api.vk.com/method/friends.getByPhones";
+            this.GetQuery(
+                url, 
+                sendData, 
+                result =>
+                {
+                    var responseString = (string)result;
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                    if (obj["error"] != null)
+                    {
+                        onError(obj);
+                        return;
+                    }
+                    var contacts = obj["response"];
+                    //var contactsArray = contacts.ToObject<Array>();
+                    onSuccess(contacts);
+                }, 
+                result =>
+                {
+                    onError(result);
+                });
+        }
+
         public void GetDialogs(CallBack onSuccess, CallBack onError)
         {
             if (!this.connected) return;
@@ -355,7 +387,8 @@
                     }
             }, onError);
         }
-        
+
+
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(URL));//создаем запрос
