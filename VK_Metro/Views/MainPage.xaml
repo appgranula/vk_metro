@@ -37,13 +37,31 @@
                     <ListBox ItemsSource="{Binding VKMessage}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="12,12,0,24" Orientation="Horizontal">
-                                    <Image Width="60" Height="60" Source="{Binding photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
-                                    <Canvas VerticalAlignment="Top" HorizontalAlignment="Left">
-                                        <TextBlock Canvas.Left="-2" Canvas.Top="-14" Text="{Binding name}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
-                                        <TextBlock Canvas.Left="-2" Canvas.Top="36" Text="{Binding body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="21"/>
-                                    </Canvas>
-                                </StackPanel>
+                                <Grid Margin="12,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="1"  Width="60" Height="60" Source="{Binding photo}" Stretch="Uniform"/>
+                                    </Grid>
+                                    <Grid  Grid.Column="1" Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Column="0" Grid.Row="0">
+                                            <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                        </Grid>
+                                        <Grid Grid.Column="0" Grid.Row="1">
+                                            <TextBlock Text="{Binding body}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="21"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>                        
                     </ListBox>
@@ -55,7 +73,7 @@
 
             <!--Второй элемент Pivot-->
             <controls:PivotItem Header="друзья">
-                <Grid x:Name="ContactsPanel" Grid.Row="1">
+                <Grid x:Name="ContactsPanel">
                     <Grid.Resources>
                         <DataTemplate x:Key="contactsData">
                             <StackPanel Margin="12,12,0,0" Orientation="Horizontal">
