@@ -92,7 +92,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <toolkit:LongListSelector Grid.Column="0" Grid.Row="0" 
+                    <toolkit:LongListSelector Grid.Column="1" Grid.Row="1" 
                                               x:Name="Contacts" IsFlatList="False" ItemsSource="{Binding Path=VKFriend}"
                                               ItemTemplate="{StaticResource contactsData}"
                                               GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
@@ -110,20 +110,13 @@
 
             <!--Третий элемент Pivot-->
             <controls:PivotItem Header="контакты">
-                <Canvas>
+                <Grid>
                     <Canvas x:Name="SynchronizeDialogCanvas">
                         <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24">Вы можете синхронизировать список друзей VK с записной книжкой Вашего телефона.</TextBlock>
                         <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="синхронизировать контакты" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
                     </Canvas>
 
                     <Grid x:Name="SynchronizeContactsGrid" Grid.Row="1">
-                        
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
                         
                         <Grid.Resources>
                             <DataTemplate x:Key="contactsData">
@@ -158,16 +151,24 @@
                                 </Border>
                             </DataTemplate>
                         </Grid.Resources>
-                        
-                        <TextBlock FontSize="48" Height="72" VerticalAlignment="Top">пригласить друга</TextBlock>
-                        
-                        <toolkit:LongListSelector x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"
-                                              ItemTemplate="{StaticResource contactsData}"
-                                              GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
-                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False"
-                                              Height="525"
-                                              Width="452"
-                                              Margin="0,100,0,0">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                            FontSize="48" VerticalAlignment="Top" >пригласить друга</TextBlock>
+
+                        <toolkit:LongListSelector Grid.Row="1" Grid.Column="0"
+                            x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"
+                            ItemTemplate="{StaticResource contactsData}"
+                            GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
+                            GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Margin="0,50,0,0"
+                            >
                             <toolkit:LongListSelector.GroupItemsPanel>
                                 <ItemsPanelTemplate>
                                     <toolkit:WrapPanel Orientation="Horizontal"/>
@@ -178,7 +179,7 @@
                         <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
                         <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
                     </Grid>
-                </Canvas>
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
