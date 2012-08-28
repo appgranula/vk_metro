@@ -2,29 +2,34 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.IO.IsolatedStorage;
     using System.Net;
     using System.Text;
     using VK_Metro.Models;
 
-    public delegate void EventHandler(Newtonsoft.Json.Linq.JToken updates);
+    public delegate void UpdatesArrivedEventHandler(Newtonsoft.Json.Linq.JToken updates);
 
     public delegate void CallBack(object param);
 
     public class VK_API
     {
+        public string captchaImageAddress;
+
         private string access_token;
         private string user_id;
         private CookieContainer cookie;
         private bool _connect;
         private Dictionary<string, string> lastRequest;
-        //private CallBack lastOnSuccess;
-        //private CallBack lastOnError;
         private string lastSid;
 
-        public string captchaImageAddress;
+        public VK_API()
+        {
+            this.cookie = new CookieContainer();
+            this._connect = false;
+        }
+
+        public event UpdatesArrivedEventHandler UpdatesArrived;
 
         public bool connected
         {
@@ -32,12 +37,6 @@
             {
                 return _connect;
             }
-        }
-
-        public VK_API()
-        {
-            this.cookie = new CookieContainer();
-            this._connect = false;
         }
 
         public void Connect(string email, string password, CallBack onSuccess, CallBack onError)
@@ -512,9 +511,7 @@
                 settings.Remove("user_id");
         }
 
-        public event EventHandler NewsArrived;
-
-        public void GetAccessToLongPoll()
+        public void ConnectToLongPoll()
         {
             if (!this.connected)
             {
@@ -539,7 +536,7 @@
                     var key = decodedResponse["key"].ToString();
                     var ts = decodedResponse["ts"].ToString();
                     var server = decodedResponse["server"].ToString();
-                    this.BeginReceiving(server, key, ts);
+                    this.BeginReceivingFromLongPoll(server, key, ts);
                 }, 
                 res =>
                 {
@@ -547,30 +544,32 @@
                 });
         }
 
-        private void BeginReceiving(string server, string key, string ts)
+        private void BeginReceivingFromLongPoll(string server, string key, string ts)
         {
             var url = "http://" + server;
             var sendData = new Dictionary<string, string>
                                {
-                                   {"act", "a_check"},
-                                   {"key", key},
-                                   {"ts", ts},
-                                   {"wait", "25"},
-                                   {"mode", "2"}
+                                   { "act", "a_check" },
+                                   { "key", key },
+                                   { "ts", ts },
+                                   { "wait", "25" },
+                                   { "mode", "2" }
                                };
 
-            this.GetQuery(url, sendData, res =>
-                                                   {
-                                                       var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
-                                                       var j = decodedResponse["updates"];
-                                                       NewsArrived.Invoke(j);
-                                                       this.BeginReceiving(server, key, decodedResponse["ts"].ToString());
-                                                   },
-                                                    res =>
-                                                    {
-                                                        // DO_SOMETHING
-                                                    });
+            this.GetQuery(
+                url, 
+                sendData, 
+                res =>
+                {
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                    var j = decodedResponse["updates"];
+                    UpdatesArrived.Invoke(j);
+                    this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
+                },
+                res =>
+                {
+                    // DO_SOMETHING
+                });
         }
-
     }
 }
