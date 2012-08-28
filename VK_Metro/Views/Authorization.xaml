@@ -39,14 +39,14 @@
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="100" x:Name="email"
                      Height="72" Width="456" TextChanged="email_TextChanged" 
-                     Text="mitis74@yandex.ru"
+                     Text="79823334882"
                      />
             <TextBlock Canvas.Left="24" Canvas.Top="192"
                        Text="Пароль"
                        FontSize="19"/>
             <PasswordBox Canvas.Left="12" Canvas.Top="212" x:Name="pass"
                          Height="72" Width="456" PasswordChanged="pass_PasswordChanged" 
-                         Password="lafolie09"/>
+                         Password="63uholum"/>
             <Button Canvas.Left="12" Canvas.Top="300" x:Name="EnterButton"
                     Height="72" Width="225"
                     IsEnabled="{Binding EnterButtonEnabled}"
