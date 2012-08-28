@@ -354,8 +354,8 @@
                         onError(obj);
                         return;
                     }
-                    //var contacts = obj["response"];
-                    VKFriendModel[] contacts = obj["response"].ToObject<VKFriendModel[]>();
+                    var contacts = obj["response"];
+                    //VKFriendModel[] contacts = obj["response"].ToObject<VKFriendModel[]>();
                     //var contactsArray = contacts.ToObject<Array>();
                     onSuccess(contacts);
                 }, 

@@ -22,13 +22,22 @@
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="{Binding DataContext.CurrentContact.name, ElementName=LayoutRoot}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding DataContext.CurrentContact.name, ElementName=LayoutRoot}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" />
         </StackPanel>
 
         <StackPanel x:Name="RegistredUserInfo" Orientation="Vertical" Visibility="Visible" Margin="12,130,0,28">
             <Image Source="{Binding DataContext.CurrentContact.photo, ElementName=LayoutRoot}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
-            <Button Content="отправить сообщение" BorderThickness="0" HorizontalAlignment="Left" FontSize="40"></Button>
-            <Button Content="позвонить" BorderThickness="0" HorizontalAlignment="Left" FontSize="40"></Button>
+            <Button Content="отправить сообщение" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5"></Button>
+            <Button BorderThickness="0" HorizontalAlignment="Left" FontFamily="Segoe WP" Margin="-10,0,0,0" Padding="0,3,10,5">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="позвонить" FontSize="40" FontWeight="Normal"></TextBlock>
+                            <TextBlock Text="{Binding DataContext.CurrentContact.phone, ElementName=LayoutRoot}" FontWeight="Normal" Foreground="#FF085A9F"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
         </StackPanel>
         
         <StackPanel x:Name="NonRegistredUserInfo" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
