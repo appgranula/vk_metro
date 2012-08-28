@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Windows;
 using Microsoft.Phone.Controls;
 using System.Xml.Linq;
@@ -120,13 +121,19 @@ namespace VK_Metro.Views
         private void PhoneContactsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var selectedItem = (PhoneContactModel) this.PhoneContactsList.SelectedItem;
-            this.dataContext.CurrentContact = selectedItem;
-            this.GoToContactInfoPage();
+            //this.dataContext.CurrentContact = selectedItem;
+            var querry = String.Format(
+                "?ContactName={0}&Name={1}&Phone={2}", 
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(selectedItem.vkName),
+                HttpUtility.UrlEncode(selectedItem.phone)
+                );
+            this.GoToContactInfoPage(querry);
         }
 
-        private void GoToContactInfoPage()
+        private void GoToContactInfoPage(string querry)
         {
-            NavigationService.Navigate(new Uri("/Views/ContactInfo.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/ContactInfo.xaml" + querry, UriKind.Relative));
         }
 
         private void ShowError(string errorText)

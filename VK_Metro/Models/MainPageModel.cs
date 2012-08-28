@@ -188,7 +188,7 @@ namespace VK_Metro.Models
                 phone = phone.Replace("+", string.Empty);
 
                 this.phoneContacts.Add(new PhoneContactModel
-                                           {first_name = friend.DisplayName, photo = img, phone = phone});
+                                           {first_name = friend.DisplayName, photo = img, phone = phone, vkName = string.Empty});
             }
 
             this.NotifyPropertyChanged("PhoneContacts");
@@ -204,10 +204,6 @@ namespace VK_Metro.Models
                     if (phoneContact.phone == vkPhone)
                     {
                         phoneContact.vkName = contact.SelectToken("first_name") + " " + contact.SelectToken("last_name");
-                    }
-                    else
-                    {
-                        phoneContact.vkName = String.Empty;
                     }
                 }
             }
