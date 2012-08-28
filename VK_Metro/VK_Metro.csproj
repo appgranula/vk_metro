@@ -148,30 +148,32 @@
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icons\appbar.add.rest.png" />
-    <Resource Include="icons\appbar.attachments-1.rest.png" />
-    <Resource Include="icons\appbar.attachments-10.rest.png" />
-    <Resource Include="icons\appbar.attachments-2.rest.png" />
-    <Resource Include="icons\appbar.attachments-3.rest.png" />
-    <Resource Include="icons\appbar.attachments-4.rest.png" />
-    <Resource Include="icons\appbar.attachments-5.rest.png" />
-    <Resource Include="icons\appbar.attachments-6.rest.png" />
-    <Resource Include="icons\appbar.attachments-7.rest.png" />
-    <Resource Include="icons\appbar.attachments-8.rest.png" />
-    <Resource Include="icons\appbar.attachments-9.rest.png" />
-    <Resource Include="icons\appbar.basecircle.rest.png" />
-    <Resource Include="icons\appbar.cancel.rest.png" />
-    <Resource Include="icons\appbar.checkin.rest.png" />
-    <Resource Include="icons\appbar.delete.rest.png" />
-    <Resource Include="icons\appbar.feature.camera.rest.png" />
-    <Resource Include="icons\appbar.forward.rest.png" />
-    <Resource Include="icons\appbar.manage.rest.png" />
-    <Resource Include="icons\appbar.minus.rest.png" />
-    <Resource Include="icons\appbar.overflowdots.png" />
-    <Resource Include="icons\appbar.save.rest.png" />
-    <Resource Include="icons\appbar.send.text.rest.png" />
-    <Resource Include="icons\appbar.transport.pause.rest.png" />
-    <Resource Include="icons\appbar.transport.play.rest.png" />
+    <Content Include="icons\appbar.add.rest.png" />
+    <Content Include="icons\appbar.attachments-1.rest.png" />
+    <Content Include="icons\appbar.attachments-10.rest.png" />
+    <Content Include="icons\appbar.attachments-2.rest.png" />
+    <Content Include="icons\appbar.attachments-3.rest.png" />
+    <Content Include="icons\appbar.attachments-4.rest.png" />
+    <Content Include="icons\appbar.attachments-5.rest.png" />
+    <Content Include="icons\appbar.attachments-6.rest.png" />
+    <Content Include="icons\appbar.attachments-7.rest.png" />
+    <Content Include="icons\appbar.attachments-8.rest.png" />
+    <Content Include="icons\appbar.attachments-9.rest.png" />
+    <Content Include="icons\appbar.basecircle.rest.png" />
+    <Content Include="icons\appbar.cancel.rest.png" />
+    <Content Include="icons\appbar.checkin.rest.png" />
+    <Content Include="icons\appbar.delete.rest.png" />
+    <Content Include="icons\appbar.feature.camera.rest.png" />
+    <Content Include="icons\appbar.feature.search.rest.png" />
+    <Content Include="icons\appbar.forward.rest.png" />
+    <Content Include="icons\appbar.manage.rest.png" />
+    <Content Include="icons\appbar.minus.rest.png" />
+    <Content Include="icons\appbar.overflowdots.png" />
+    <Content Include="icons\appbar.refresh.rest.png" />
+    <Content Include="icons\appbar.save.rest.png" />
+    <Content Include="icons\appbar.send.text.rest.png" />
+    <Content Include="icons\appbar.transport.pause.rest.png" />
+    <Content Include="icons\appbar.transport.play.rest.png" />
     <Content Include="Images\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -185,8 +187,6 @@
     <Resource Include="Images\Photo_Placeholder.png" />
     <Resource Include="Images\camera_c.png" />
     <Content Include="SplashScreenImage.jpg" />
-    <Resource Include="icons\appbar.feature.search.rest.png" />
-    <Resource Include="icons\appbar.refresh.rest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

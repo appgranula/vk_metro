@@ -79,9 +79,9 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>                        
                     </ListBox>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Создать" IconUri="/VK_Metro;component/icons/appbar.add.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Создать" IconUri="/icons/appbar.add.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png"/>
                 </Grid>
             </controls:PivotItem>
 
@@ -135,8 +135,8 @@
                             </ItemsPanelTemplate>
                         </toolkit:LongListSelector.GroupItemsPanel>
                     </toolkit:LongListSelector>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
                 </Grid>
             </controls:PivotItem>
 
@@ -207,8 +207,8 @@
                             </toolkit:LongListSelector.GroupItemsPanel>
                         </toolkit:LongListSelector>
                         
-                        <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/VK_Metro;component/icons/appbar.feature.search.rest.png"/>
-                        <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/VK_Metro;component/icons/appbar.refresh.rest.png"/>
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png"/>
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
                     </Grid>
                 </Grid>
             </controls:PivotItem>
