@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Windows.Media.Imaging;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Net;
     using System.Windows;
+    using System.Windows.Media.Imaging;
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Tasks;
     using Microsoft.Phone.UserData;
@@ -27,15 +26,14 @@ namespace VK_Metro.Views
             DataContext = this;
             InitializeComponent();
             this.Picture = new BitmapImage(new Uri("/VK_Metro;component/Images/Photo_Placeholder.png", UriKind.RelativeOrAbsolute));
-            //DataContext = App.MainPageData;
         }
 
         private void CallButtonTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var phoneCallTask = new PhoneCallTask
                                     {
-                                        PhoneNumber = App.MainPageData.CurrentContact.phone,
-                                        DisplayName = App.MainPageData.CurrentContact.vkName
+                                        PhoneNumber = this.Phone,
+                                        DisplayName = this.VkName
                                     };
             phoneCallTask.Show();
         }
@@ -48,9 +46,6 @@ namespace VK_Metro.Views
                 this.VkName = HttpUtility.UrlDecode(parameters["Name"]);
                 this.Phone = HttpUtility.UrlDecode(parameters["Phone"]);
                 this.ContactName = HttpUtility.UrlDecode(parameters["ContactName"]);
-                //NotifyPropertyChanged("ContactName");
-                //NotifyPropertyChanged("Phone");
-                //NotifyPropertyChanged("Picture");
 
                 if (this.VkName != string.Empty)
                 {
