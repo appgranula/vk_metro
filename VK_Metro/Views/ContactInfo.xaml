@@ -28,7 +28,7 @@
         <StackPanel x:Name="RegistredUserInfo" Orientation="Vertical" Visibility="Visible" Margin="12,130,0,28">
             <Image Source="{Binding DataContext.CurrentContact.photo, ElementName=LayoutRoot}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
             <Button Content="отправить сообщение" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5"></Button>
-            <Button BorderThickness="0" HorizontalAlignment="Left" FontFamily="Segoe WP" Margin="-10,0,0,0" Padding="0,3,10,5">
+            <Button BorderThickness="0" HorizontalAlignment="Left" FontFamily="Segoe WP" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="CallButtonTap">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
