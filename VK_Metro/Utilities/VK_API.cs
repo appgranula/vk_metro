@@ -1,4 +1,6 @@
-﻿namespace VK_Metro
+﻿using Newtonsoft.Json;
+
+namespace VK_Metro
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
     using System.Text;
     using VK_Metro.Models;
 
-    public delegate void UpdatesArrivedEventHandler(Newtonsoft.Json.Linq.JToken updates);
+    public delegate void UpdatesArrivedEventHandler(Utilities.Update updates);
 
     public delegate void CallBack(object param);
 
@@ -561,9 +563,28 @@
                 sendData, 
                 res =>
                 {
+                    // Uncomment for test
+                    //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}]]}";
+
                     var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                     var j = decodedResponse["updates"];
-                    UpdatesArrived.Invoke(j);
+
+                    if (j.HasValues)
+                    {
+                        var convertedResponse = decodedResponse.ToObject<Utilities.Update>();
+                        foreach (var i in convertedResponse.updates)
+                        {
+                            for (int count = 0; count < i.Length; count ++)
+                            {
+                                if (i[count] as Newtonsoft.Json.Linq.JObject == null) continue;
+                                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(i[count].ToString());
+                                i[count] = values;
+                            }
+                        }
+
+                        UpdatesArrived.Invoke(convertedResponse);
+                    }
+
                     this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
                 },
                 res =>

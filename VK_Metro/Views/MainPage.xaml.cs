@@ -8,6 +8,7 @@ using Microsoft.Phone.UserData;
 using VK_Metro.Models;
 using System.Collections;
 using System;
+using VK_Metro.Utilities;
 
 namespace VK_Metro.Views
 {
@@ -27,6 +28,8 @@ namespace VK_Metro.Views
         }
 
         private MainPageModel dataContext;
+
+        private Utilities.LongPollListener lpListener;
 
         // Загрузка данных для элементов ViewModel
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +54,8 @@ namespace VK_Metro.Views
                     error =>
                     {
                     });
+                this.lpListener = new LongPollListener(App.VK);
+                this.lpListener.Start();
             }
             //this.synchronizeButton_Click(new object(), new RoutedEventArgs());
         }
