@@ -10,7 +10,7 @@ namespace VK_Metro
     using System.Text;
     using VK_Metro.Models;
 
-    public delegate void UpdatesArrivedEventHandler(Update updates);
+    public delegate void UpdatesArrivedEventHandler(UpdateModel updates);
 
     public delegate void CallBack(object param);
 
@@ -571,7 +571,7 @@ namespace VK_Metro
 
                     if (j.HasValues)
                     {
-                        var convertedResponse = decodedResponse.ToObject<Update>();
+                        var convertedResponse = decodedResponse.ToObject<UpdateModel>();
                         foreach (var i in convertedResponse.updates)
                         {
                             for (int count = 0; count < i.Length; count ++)

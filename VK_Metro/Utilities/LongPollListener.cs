@@ -49,7 +49,7 @@
             this.vkApi.ConnectToLongPoll();
         }
 
-        private void OnUpdatesArrived(Update updates)
+        private void OnUpdatesArrived(UpdateModel updates)
         {
             foreach (var u in updates.updates)
             {

@@ -4,7 +4,7 @@
     using Newtonsoft.Json;
 
     [JsonObject(MemberSerialization.OptIn)]
-    public class Update
+    public class UpdateModel
     {
         [JsonProperty("ts")]
         public string ts { get; set; }
