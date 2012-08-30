@@ -5,11 +5,11 @@
 
     public delegate void VkEventDelegate(int userId);
 
-    public delegate void UserTypingInConvensionDelegate(int userId, int chatId);
+    public delegate void VkEventWithFlagsDelegate(int userId, int chatId);
 
-    public delegate void VkEventWithFlagsDelegate(int userId, string flags);
+    public delegate void ConvensionParamsChangedEventDelegate(int userId, string self);
 
-    public delegate void NewMessageEventDelegate(int id, int toId, DateTime ts, string theme, string body, Dictionary<string, string> attaches);
+    public delegate void NewMessageEventDelegate(int id, int flags, int fromId, DateTime ts, string theme, string body, Dictionary<string, string> attaches);
 
     public class LongPollListener
     {
@@ -18,6 +18,7 @@
         public LongPollListener(VK_API vkApi)
         {
             this.vkApi = vkApi;
+            
             // test
             this.NewMessageEvent += this.MyFunc;
             this.UserTypingEvent += this.MyFunc2;
@@ -25,17 +26,15 @@
             this.UserTypingInConvensionEvent += this.MyFunc4;
         }
 
-        public event NewMessageEventDelegate NewMessageEvent;
+        public event VkEventDelegate UserTypingEvent;
 
         public event VkEventDelegate MessageDeleted;
 
         public event VkEventDelegate UserOnlineEvent;
 
-        public event VkEventDelegate UserOfflineEvent;
+        public event VkEventWithFlagsDelegate UserOfflineEvent;
 
-        public event VkEventDelegate UserTypingEvent;
-
-        public event UserTypingInConvensionDelegate UserTypingInConvensionEvent;
+        public event VkEventWithFlagsDelegate UserTypingInConvensionEvent;
 
         public event VkEventWithFlagsDelegate FlagsChangedEvent;
 
@@ -43,9 +42,11 @@
 
         public event VkEventWithFlagsDelegate ResetFlagsEvent;
 
-        public event VkEventDelegate ConvensionParamsChangedEvent;
+        public event VkEventWithFlagsDelegate UserMakeCallEvent;
 
-        public event UserTypingInConvensionDelegate UserMakeCallEvent;
+        public event ConvensionParamsChangedEventDelegate ConvensionParamsChangedEvent;
+
+        public event NewMessageEventDelegate NewMessageEvent;
 
         public void Start()
         {
@@ -63,7 +64,7 @@
 
         private void ParseUpdate(object[] update)
         {
-            switch (Int16.Parse(update[0].ToString()))
+            switch (short.Parse(update[0].ToString()))
             {
                 case 0:
                     {
@@ -75,21 +76,21 @@
                 case 1:
                     {
                         // message flags changed
-                        this.FlagsChangedEvent.Invoke(int.Parse(update[1].ToString()), update[2].ToString());
+                        this.FlagsChangedEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
                         break;
                     }
 
                 case 2:
                     {
                         // new message flags
-                        this.NewFlagsEvent.Invoke(int.Parse(update[1].ToString()), update[2].ToString());
+                        this.NewFlagsEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
                         break;
                     }
 
                 case 3:
                     {
                         // reset message flags
-                        this.ResetFlagsEvent.Invoke(int.Parse(update[1].ToString()), update[2].ToString());
+                        this.ResetFlagsEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
                         break;
                     }
 
@@ -98,6 +99,7 @@
                         // new message
                         this.NewMessageEvent.Invoke(
                             int.Parse(update[1].ToString()),
+                            int.Parse(update[2].ToString()),
                             int.Parse(update[3].ToString()),
                             new DateTime(long.Parse(update[4].ToString())),
                             update[5].ToString(),
@@ -116,14 +118,14 @@
                 case 9:
                     {
                         // user offline
-                        this.UserOfflineEvent.Invoke(int.Parse(update[1].ToString()));
+                        this.UserOfflineEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
                         break;
                     }
 
                 case 51:
                     {
                         // convension params changed
-                        this.ConvensionParamsChangedEvent.Invoke(int.Parse(update[1].ToString()));
+                        this.ConvensionParamsChangedEvent.Invoke(int.Parse(update[1].ToString()), update[2].ToString());
                         break;
                     }
 
@@ -150,7 +152,7 @@
             }
         }
 
-        public NewMessageEventDelegate MyFunc = (id, toId, ts, theme, body, attaches) =>
+        public NewMessageEventDelegate MyFunc = (id, flags, fromId, ts, theme, body, attaches) =>
                                                     {
                                                         int i = 6;
                                                     };
@@ -160,12 +162,12 @@
                                                  int i = 7;
                                              };
 
-        public VkEventDelegate MyFunc3 = id =>
+        public VkEventWithFlagsDelegate MyFunc3 = (id, flags) =>
                                              {
                                                  int i = 8;
                                              };
 
-        public UserTypingInConvensionDelegate MyFunc4 = (id, chatId) => 
+        public VkEventWithFlagsDelegate MyFunc4 = (id, chatId) => 
         {
             int i = 8;
         };
