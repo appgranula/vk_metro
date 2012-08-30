@@ -22,11 +22,13 @@
         private bool _connect;
         private Dictionary<string, string> lastRequest;
         private string lastSid;
+        private Dictionary<string, bool> receivedMessageHistory;
 
         public VK_API()
         {
             this.cookie = new CookieContainer();
             this._connect = false;
+            this.receivedMessageHistory = new Dictionary<string, bool>();
         }
 
         public event UpdatesArrivedEventHandler UpdatesArrived;

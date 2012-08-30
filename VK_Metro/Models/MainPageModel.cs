@@ -24,6 +24,7 @@ namespace VK_Metro.Models
             this.vkUsers = new ObservableCollection<VKFriendModel>();
             this.phoneContacts = new ObservableCollection<PhoneContactModel>();
             this.vkMessage = new ObservableCollection<VKMessageModel>();
+            this.vkDialogs = new ObservableCollection<VKDialogModel>();
             this.IsDataLoaded = false;
         }
 
@@ -31,8 +32,7 @@ namespace VK_Metro.Models
         private ObservableCollection<PhoneContactModel> phoneContacts;
         private ObservableCollection<VKFriendModel> vkUsers;
         private ObservableCollection<VKMessageModel> vkMessage;
-
-        private PhoneContactModel currentContact;
+        private ObservableCollection<VKDialogModel> vkDialogs;
 
         public bool IsDataLoaded { get; set; }
 
@@ -76,14 +76,11 @@ namespace VK_Metro.Models
             }
         }
 
-        public IEnumerable VKMessage
+        public IEnumerable VKDialogs
         {
             get
             {
-                var tmp = from item in this.vkMessage
-                          group item by item.uid into n
-                          select new GroupDialogs<string, VKMessageModel>(n);
-                return from item in tmp
+                return from item in this.vkDialogs
                        orderby item.unixDate descending
                        select item;
             }
@@ -106,7 +103,6 @@ namespace VK_Metro.Models
         }
         public string GetName(string uid)
         {
-
             foreach (var friend in vkFriend)
             {
                 if (friend.uid == uid)
@@ -119,6 +115,21 @@ namespace VK_Metro.Models
             }
             this.GetUser(uid);
             return "";
+        }
+        public bool GetOnline(string uid)
+        {
+            foreach (var friend in vkFriend)
+            {
+                if (friend.uid == uid)
+                    return friend.online != "0";
+            }
+            foreach (var user in vkUsers)
+            {
+                if (user.uid == uid)
+                    return user.online != "0";
+            }
+            this.GetUser(uid);
+            return false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -141,6 +152,7 @@ namespace VK_Metro.Models
                     this.CheckUser(user);
                     this.vkUsers.Add(user);
                     this.NotifyPropertyChanged("VKMessage");
+                    this.NotifyPropertyChanged("VKDialogs");
                 });
             }, error =>
             {
@@ -219,6 +231,19 @@ namespace VK_Metro.Models
             foreach (var message in VKMessage)
                 this.vkMessage.Add(message);
             this.NotifyPropertyChanged("VKMessage");
+        }
+        public IEnumerable GetMessage(string uid)
+        {
+            return from item in this.vkMessage
+                   where item.uid == uid
+                   orderby item.date descending
+                   select item;
+        } 
+        public void AddDialog(VKMessageModel[] VKMessage)
+        {
+            foreach (var message in VKMessage)
+                this.vkDialogs.Add(new VKDialogModel(message));
+            this.NotifyPropertyChanged("VKDialogs");
         }
     }
 }
