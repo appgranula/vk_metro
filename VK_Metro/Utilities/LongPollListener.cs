@@ -19,12 +19,6 @@
         public LongPollListener(VK_API vkApi)
         {
             this.vkApi = vkApi;
-            
-            // test
-            //this.NewMessageEvent += this.MyFunc;
-            //this.UserTypingEvent += this.MyFunc2;
-            //this.UserOfflineEvent += this.MyFunc3;
-            //this.UserTypingInConvensionEvent += this.MyFunc4;
         }
 
         public event VkEventDelegate UserTypingEvent;
@@ -152,25 +146,5 @@
                     }
             }
         }
-
-        public NewMessageEventDelegate MyFunc = (id, flags, fromId, ts, theme, body, attaches) =>
-                                                    {
-                                                        int i = 6;
-                                                    };
-
-        public VkEventDelegate MyFunc2 = id =>
-                                             {
-                                                 int i = 7;
-                                             };
-
-        public VkEventWithFlagsDelegate MyFunc3 = (id, flags) =>
-                                             {
-                                                 int i = 8;
-                                             };
-
-        public VkEventWithFlagsDelegate MyFunc4 = (id, chatId) => 
-        {
-            int i = 8;
-        };
     }
 }
