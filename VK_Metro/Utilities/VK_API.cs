@@ -352,13 +352,23 @@ namespace VK_Metro
                     var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
                     if (obj["error"] != null)
                     {
-                        onError(obj);
+                        var errorArray = new Dictionary<string, string>
+                        {
+                            {"error_code", obj["error"]["error_code"].ToString()},
+                            {"error_msg", obj["error"]["error_msg"].ToString()}
+                        };
+                        onError(errorArray);
                         return;
                     }
+
                     var contacts = obj["response"];
-                    //VKFriendModel[] contacts = obj["response"].ToObject<VKFriendModel[]>();
-                    //var contactsArray = contacts.ToObject<Array>();
-                    onSuccess(contacts);
+                    var userList = new List<Dictionary<string, string>>();
+                    foreach (var i in contacts)
+                    {
+                        userList.Add(JsonConvert.DeserializeObject<Dictionary<string, string>>(i.ToString()));
+                    }
+
+                    onSuccess(userList);
                 }, 
                 result =>
                 {
@@ -572,6 +582,9 @@ namespace VK_Metro
                     if (j.HasValues)
                     {
                         var convertedResponse = decodedResponse.ToObject<UpdateModel>();
+
+                        // If json response contains dictionary (i.e. attaches), 
+                        // find it and convert in Dictionary<string, string> type
                         foreach (var i in convertedResponse.updates)
                         {
                             for (int count = 0; count < i.Length; count ++)

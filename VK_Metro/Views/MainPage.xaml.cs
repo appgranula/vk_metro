@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using Microsoft.Phone.Controls;
@@ -83,6 +85,12 @@ namespace VK_Metro.Views
         private void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
         {
             // Geting  contacts from phone
+            if (!e.Results.Any())
+            {
+                this.ShowError("No contacts found.");
+                return;
+            }
+
             var c = e.Results.AsEnumerable();
             var contacts = new ObservableCollection<Contact>(c);
             var phones = String.Empty;
@@ -112,12 +120,12 @@ namespace VK_Metro.Views
                             this.SynchronizeDialogCanvas.Visibility = Visibility.Collapsed;
                             this.SynchronizeContactsGrid.Visibility = Visibility.Visible;
 
-                            this.dataContext.AddVkNameToContacts((Newtonsoft.Json.Linq.JArray)result);
+                            this.dataContext.AddVkNameToContacts((List<Dictionary<string, string>>)result);
                         }),
                 result =>
                     {
-                        var error = (Newtonsoft.Json.Linq.JObject) result;
-                        this.ShowError(error["error"]["error_code"].ToString() == "9"
+                        var error = (Dictionary<string, string>) result;
+                        this.ShowError(error["error_code"].ToString(CultureInfo.InvariantCulture) == "9"
                                            ? "Flood Control Error"
                                            : "Unknown Error");
                     });
@@ -143,7 +151,7 @@ namespace VK_Metro.Views
 
         private void ShowError(string errorText)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show("Flood Control Error"));
+            Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(errorText));
         }
     }
 }
