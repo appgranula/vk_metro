@@ -1,4 +1,4 @@
-﻿namespace VK_Metro.Utilities
+﻿namespace VK_Metro.Models
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

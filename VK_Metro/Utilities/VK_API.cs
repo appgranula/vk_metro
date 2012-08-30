@@ -10,7 +10,7 @@ namespace VK_Metro
     using System.Text;
     using VK_Metro.Models;
 
-    public delegate void UpdatesArrivedEventHandler(Utilities.Update updates);
+    public delegate void UpdatesArrivedEventHandler(Update updates);
 
     public delegate void CallBack(object param);
 
@@ -564,14 +564,14 @@ namespace VK_Metro
                 res =>
                 {
                     // Uncomment for test
-                    //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}]]}";
+                    //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
 
                     var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                     var j = decodedResponse["updates"];
 
                     if (j.HasValues)
                     {
-                        var convertedResponse = decodedResponse.ToObject<Utilities.Update>();
+                        var convertedResponse = decodedResponse.ToObject<Update>();
                         foreach (var i in convertedResponse.updates)
                         {
                             for (int count = 0; count < i.Length; count ++)

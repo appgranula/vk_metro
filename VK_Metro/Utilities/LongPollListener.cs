@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using VK_Metro.Models;
 
     public delegate void VkEventDelegate(int userId);
 
@@ -20,10 +21,10 @@
             this.vkApi = vkApi;
             
             // test
-            this.NewMessageEvent += this.MyFunc;
-            this.UserTypingEvent += this.MyFunc2;
-            this.UserOfflineEvent += this.MyFunc3;
-            this.UserTypingInConvensionEvent += this.MyFunc4;
+            //this.NewMessageEvent += this.MyFunc;
+            //this.UserTypingEvent += this.MyFunc2;
+            //this.UserOfflineEvent += this.MyFunc3;
+            //this.UserTypingInConvensionEvent += this.MyFunc4;
         }
 
         public event VkEventDelegate UserTypingEvent;
