@@ -6,11 +6,13 @@
 
     public delegate void VkEventDelegate(int userId);
 
-    public delegate void VkEventWithFlagsDelegate(int userId, int chatId);
+    public delegate void VkExtendedEventDelegate(int userId, int chatId);
+
+    public delegate void VkEventWithFlagsDelegate(int userId, MessageStatus chatId);
 
     public delegate void ConvensionParamsChangedEventDelegate(int userId, string self);
 
-    public delegate void NewMessageEventDelegate(int id, int flags, int fromId, DateTime ts, string theme, string body, Dictionary<string, string> attaches);
+    public delegate void NewMessageEventDelegate(int id, MessageStatus flags, int fromId, DateTime ts, string theme, string body, Dictionary<string, string> attaches);
 
     public class LongPollListener
     {
@@ -27,17 +29,17 @@
 
         public event VkEventDelegate UserOnlineEvent;
 
-        public event VkEventWithFlagsDelegate UserOfflineEvent;
-
-        public event VkEventWithFlagsDelegate UserTypingInConvensionEvent;
-
         public event VkEventWithFlagsDelegate FlagsChangedEvent;
 
         public event VkEventWithFlagsDelegate NewFlagsEvent;
 
         public event VkEventWithFlagsDelegate ResetFlagsEvent;
 
-        public event VkEventWithFlagsDelegate UserMakeCallEvent;
+        public event VkExtendedEventDelegate UserTypingInConvensionEvent;
+
+        public event VkExtendedEventDelegate UserMakeCallEvent;
+        
+        public event VkExtendedEventDelegate UserOfflineEvent;
 
         public event ConvensionParamsChangedEventDelegate ConvensionParamsChangedEvent;
 
@@ -47,6 +49,7 @@
         {
             this.vkApi.UpdatesArrived += this.OnUpdatesArrived;
             this.vkApi.ConnectToLongPoll();
+            this.FlagsChangedEvent += this.MyFunc;
         }
 
         private void OnUpdatesArrived(UpdateModel updates)
@@ -71,30 +74,35 @@
                 case 1:
                     {
                         // message flags changed
-                        this.FlagsChangedEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
+                        var messageStatus = new MessageStatus();
+                        messageStatus.ParseStatus(int.Parse(update[2].ToString()));
+                        this.FlagsChangedEvent.Invoke(int.Parse(update[1].ToString()), messageStatus);
                         break;
                     }
 
                 case 2:
                     {
-                        // new message flags
-                        this.NewFlagsEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
+                        // set up message flags
+                        var messageStatus = new MessageStatus(int.Parse(update[2].ToString()));
+                        this.NewFlagsEvent.Invoke(int.Parse(update[1].ToString()), messageStatus);
                         break;
                     }
 
                 case 3:
                     {
                         // reset message flags
-                        this.ResetFlagsEvent.Invoke(int.Parse(update[1].ToString()), int.Parse(update[2].ToString()));
+                        var messageStatus = new MessageStatus(int.Parse(update[2].ToString()));
+                        this.ResetFlagsEvent.Invoke(int.Parse(update[1].ToString()), messageStatus);
                         break;
                     }
 
                 case 4:
                     {
                         // new message
+                        var messageStatus = new MessageStatus(int.Parse(update[2].ToString()));
                         this.NewMessageEvent.Invoke(
                             int.Parse(update[1].ToString()),
-                            int.Parse(update[2].ToString()),
+                            messageStatus,
                             int.Parse(update[3].ToString()),
                             new DateTime(long.Parse(update[4].ToString())),
                             update[5].ToString(),
@@ -146,5 +154,10 @@
                     }
             }
         }
+
+        public VkEventWithFlagsDelegate MyFunc = (id, chatId) =>
+                                                             {
+                                                                 int i = 7;
+                                                             };
     }
 }

@@ -575,6 +575,7 @@ namespace VK_Metro
                 {
                     // Uncomment for test
                     //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
+                    //res = "{\"ts\":1753641594,\"updates\":[[1,1111222,768]]}";
 
                     var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                     var j = decodedResponse["updates"];

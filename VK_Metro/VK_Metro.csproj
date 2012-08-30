@@ -87,6 +87,7 @@
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\LongPollListener.cs" />
     <Compile Include="Models\UpdateModel.cs" />
+    <Compile Include="Utilities\MessageStatus.cs" />
     <Compile Include="Utilities\VK_API.cs" />
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
