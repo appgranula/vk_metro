@@ -1,16 +1,15 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Collections;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using Microsoft.Phone.UserData;
-
-namespace VK_Metro.Models
+﻿namespace VK_Metro.Models
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Media.Imaging;
+    using Microsoft.Phone.UserData;
+
     public class MainPageModel : INotifyPropertyChanged
     {
         public MainPageModel()
@@ -196,30 +195,30 @@ namespace VK_Metro.Models
                     img.SetSource(pic);
                 }
 
-                var phone = friend.PhoneNumbers.First().PhoneNumber;
-                phone = phone.Replace("+", string.Empty);
+                var phone = string.Empty;
+                if (friend.PhoneNumbers.Count() != 0)
+                {
+                    phone = friend.PhoneNumbers.First().PhoneNumber;
+                    phone = phone.Replace("+", string.Empty);
+                }
 
                 this.phoneContacts.Add(new PhoneContactModel
-                                           {first_name = friend.DisplayName, photo = img, phone = phone});
+                                           {first_name = friend.DisplayName, photo = img, phone = phone, vkName = string.Empty});
             }
 
             this.NotifyPropertyChanged("PhoneContacts");
         }
 
-        public void AddVkNameToContacts(Newtonsoft.Json.Linq.JArray vkContacts)
+        public void AddVkNameToContacts(List<Dictionary<string, string>> vkContacts)
         {
             foreach (var contact in vkContacts)
             {
-                var vkPhone = contact.SelectToken("phone").ToString();
+                var vkPhone = contact["phone"];
                 foreach (var phoneContact in phoneContacts)
                 {
                     if (phoneContact.phone == vkPhone)
                     {
-                        phoneContact.vkName = contact.SelectToken("first_name") + " " + contact.SelectToken("last_name");
-                    }
-                    else
-                    {
-                        phoneContact.vkName = String.Empty;
+                        phoneContact.vkName = contact["first_name"] + " " + contact["last_name"];
                     }
                 }
             }

@@ -1,4 +1,6 @@
-﻿namespace VK_Metro
+﻿using Newtonsoft.Json;
+
+namespace VK_Metro
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
     using System.Text;
     using VK_Metro.Models;
 
-    public delegate void UpdatesArrivedEventHandler(Newtonsoft.Json.Linq.JToken updates);
+    public delegate void UpdatesArrivedEventHandler(UpdateModel updates);
 
     public delegate void CallBack(object param);
 
@@ -352,13 +354,23 @@
                     var obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
                     if (obj["error"] != null)
                     {
-                        onError(obj);
+                        var errorArray = new Dictionary<string, string>
+                        {
+                            {"error_code", obj["error"]["error_code"].ToString()},
+                            {"error_msg", obj["error"]["error_msg"].ToString()}
+                        };
+                        onError(errorArray);
                         return;
                     }
+
                     var contacts = obj["response"];
-                    //VKFriendModel[] contacts = obj["response"].ToObject<VKFriendModel[]>();
-                    //var contactsArray = contacts.ToObject<Array>();
-                    onSuccess(contacts);
+                    var userList = new List<Dictionary<string, string>>();
+                    foreach (var i in contacts)
+                    {
+                        userList.Add(JsonConvert.DeserializeObject<Dictionary<string, string>>(i.ToString()));
+                    }
+
+                    onSuccess(userList);
                 }, 
                 result =>
                 {
@@ -563,9 +575,32 @@
                 sendData, 
                 res =>
                 {
+                    // Uncomment for test
+                    //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
+                    //res = "{\"ts\":1753641594,\"updates\":[[1,1111222,768]]}";
+
                     var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                     var j = decodedResponse["updates"];
-                    UpdatesArrived.Invoke(j);
+
+                    if (j.HasValues)
+                    {
+                        var convertedResponse = decodedResponse.ToObject<UpdateModel>();
+
+                        // If json response contains dictionary (i.e. attaches), 
+                        // find it and convert in Dictionary<string, string> type
+                        foreach (var i in convertedResponse.updates)
+                        {
+                            for (int count = 0; count < i.Length; count ++)
+                            {
+                                if (i[count] as Newtonsoft.Json.Linq.JObject == null) continue;
+                                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(i[count].ToString());
+                                i[count] = values;
+                            }
+                        }
+
+                        UpdatesArrived.Invoke(convertedResponse);
+                    }
+
                     this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
                 },
                 res =>
