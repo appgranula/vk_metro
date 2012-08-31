@@ -88,6 +88,13 @@
     <Compile Include="Utilities\LongPollListener.cs" />
     <Compile Include="Models\UpdateModel.cs" />
     <Compile Include="Utilities\MessageStatus.cs" />
+    <Compile Include="Utilities\VkCallEventArgs.cs" />
+    <Compile Include="Utilities\VkChatEventArgs.cs" />
+    <Compile Include="Utilities\VkConvensionParamsChangedEventArgs.cs" />
+    <Compile Include="Utilities\VkEventArgs.cs" />
+    <Compile Include="Utilities\VkFlagsEventArgs.cs" />
+    <Compile Include="Utilities\VkMessageEventArgs.cs" />
+    <Compile Include="Utilities\VkUserOfflineEventArgs.cs" />
     <Compile Include="Utilities\VK_API.cs" />
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>

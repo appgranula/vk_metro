@@ -48,6 +48,7 @@
 
             //if (this.Media = (flags - 512) >= 0) flags -= 512;
 
+            // ReSharper disable CSharpWarnings::CS0665
             flags = (this.Media = ((flags - 512) >= 0)) ? flags - 512 : flags;
             
             flags = (this.Fixed = ((flags - 256) >= 0)) ? flags - 256 : flags;
@@ -67,6 +68,7 @@
             flags = (this.Outbox = ((flags - 2) >= 0)) ? flags - 2 : flags;
 
             this.Unread = ((flags - 1) >= 0);
+            // ReSharper restore CSharpWarnings::CS0665
 
             //this.Media =        (flags -= 512) >= 0;
             //this.Fixed =        (flags -= 256) >= 0;
