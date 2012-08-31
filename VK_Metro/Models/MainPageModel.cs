@@ -25,6 +25,8 @@
             this.vkMessage = new ObservableCollection<VKMessageModel>();
             this.vkDialogs = new ObservableCollection<VKDialogModel>();
             this.IsDataLoaded = false;
+            this.FriendsRequests = 5;
+            this.UnreadMessages = 9;
         }
 
         private ObservableCollection<VKFriendModel> vkFriend;
@@ -52,6 +54,36 @@
                 }
             }
         }
+
+        public string UnreadMessagesImageUri
+        {
+            get
+            {
+                var darkVisibility = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"];
+                if (darkVisibility == Visibility.Visible)
+                {
+                    return "/VK_Metro;component/Images/dark/UnreadMessages_Icon.png";
+                }
+                return "/VK_Metro;component/Images/light/UnreadMessages_Icon_Light.png";
+            }
+        }
+
+        public string RequestsImageUri
+        {
+            get
+            {
+                var darkVisibility = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"];
+                if (darkVisibility == Visibility.Visible)
+                {
+                    return "/VK_Metro;component/Images/dark/Requests_Icon.png";
+                }
+                return "/VK_Metro;component/Images/light/Requests_Icon_Light.png";
+            }
+        }
+
+        public int UnreadMessages { get; set; }
+
+        public int FriendsRequests { get; set; }
 
         public IEnumerable VKFriend
         { 
