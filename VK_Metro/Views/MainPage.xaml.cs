@@ -10,6 +10,7 @@ using Microsoft.Phone.UserData;
 using VK_Metro.Models;
 using System.Collections;
 using System;
+using System.Windows.Controls;
 using VK_Metro.Utilities;
 
 namespace VK_Metro.Views
@@ -48,6 +49,7 @@ namespace VK_Metro.Views
                                 {
                                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                                     {
+                                        this.dataContext.AddDialog((VKMessageModel[])result2);
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
                                     });
                                 }, error2 => { });
@@ -152,6 +154,14 @@ namespace VK_Metro.Views
         private void ShowError(string errorText)
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(errorText));
+        }
+
+        private void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var item = (VKDialogModel)((Grid)sender).DataContext;
+            string destination = "/Views/Dialog.xaml";
+            destination += String.Format("?UID={0}", item.UID);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
     }
 }
