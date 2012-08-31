@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace VK_Metro.Utilities
+﻿namespace VK_Metro.Utilities
 {
     using System;
+    using System.Collections.Generic;
 
     public class VkMessageEventArgs : EventArgs
     {
