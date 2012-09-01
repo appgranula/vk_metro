@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace VK_Metro.Models
 {
@@ -21,7 +22,7 @@ namespace VK_Metro.Models
         public string UID { get { return vkMessage.uid; } }
         public string Name { get { return App.MainPageData.GetName(vkMessage.uid); } }
         public string Photo { get { return App.MainPageData.GetPhoto(vkMessage.uid); } }
-        public string Message { get { return vkMessage.body; } }
+        public string Message { get { return Regex.Replace(vkMessage.body.Replace("<br>", "\n"), "\\<[^\\>]+\\>", ""); } }
         public string Date { get {
             var dateStr = vkMessage.date;
             var dateInt = Convert.ToInt64(dateStr);

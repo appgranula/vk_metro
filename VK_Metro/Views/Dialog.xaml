@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:WPExtensions="clr-namespace:WPExtensions;assembly=WPExtensions"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:VK_Metro.Views"
     xmlns:contribControls="clr-namespace:WP7Contrib.View.Controls;assembly=WP7Contrib.View.Controls"
@@ -32,21 +33,27 @@
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox ItemsSource="{Binding Items}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <ListBox ItemsSource="{Binding Items}" Grid.Row="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <local:MessageContentPresenter Content="{Binding}">
                             <local:MessageContentPresenter.MeTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="30, 10, 5, 0"
+                                    <Grid Margin="115, 10, 5, 0"
                                           contribControls:GridUtils.RowDefinitions=",,"
-                                          Width="420">
+                                          Width="335">
                                         <Rectangle Fill="{StaticResource PhoneAccentBrush}"
                                                    Grid.RowSpan="2"/>
-                                        <TextBlock Text="{Binding Path=body}"/>
-                                        <TextBlock Text="{Binding Path=date}"
-                                                   Grid.Row="1"/>
-                                        <Path Data="m 0,0 l 16,0 l 0,16 l -16,-16"
+                                        <TextBlock Text="{Binding Path=Message}"
+                                                   HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,5,10,0" />
+                                        <TextBlock Text="{Binding Path=Date}"
+                                                   HorizontalAlignment="Right"
+                                                   Grid.Row="1" Margin="10,0,10,5" />
+                                        <Path Data="m 0,0 l 12,0 l 0,12 l -12,-12"
                                               Fill="{StaticResource PhoneAccentBrush}"
                                               Margin="0,0,5,0"
                                               HorizontalAlignment="Right"
@@ -56,19 +63,21 @@
                             </local:MessageContentPresenter.MeTemplate>
                             <local:MessageContentPresenter.YouTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="5, 10, 30, 0"
+                                    <Grid Margin="5, 10, 115, 0"
                                           contribControls:GridUtils.RowDefinitions=",,"
-                                          Width="420">
-                                        <Path Data="m 0,0 l 0,16 l 16,0 l -16,-16"
+                                          Width="335">
+                                        <Path Data="m 0,0 l 0,12 l 12,0 l -12,-12"
                                               Fill="{StaticResource PhoneAccentBrush}"
                                               Margin="5,0,0,0"
                                               HorizontalAlignment="Left"/>
                                         <Rectangle Fill="{StaticResource PhoneAccentBrush}"
                                                    Grid.Row="1" Grid.RowSpan="2"/>
-                                        <TextBlock Text="{Binding Path=body}"
+                                        <TextBlock Text="{Binding Path=Message}"
+                                                   HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,5,10,0"
                                                    Grid.Row="1"/>
-                                        <TextBlock Text="{Binding Path=date}"
-                                                   Grid.Row="2"/>
+                                        <TextBlock Text="{Binding Path=Date}"
+                                                   HorizontalAlignment="Right"
+                                                   Grid.Row="2" Margin="10,0,10,5" />
                                     </Grid>
                                 </DataTemplate>
                             </local:MessageContentPresenter.YouTemplate>
@@ -76,7 +85,56 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <TextBox TextWrapping="Wrap" Margin="0,0,0,12" Grid.Row="1">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Grid Background="Transparent">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="FocusStates">
+                                                <VisualState x:Name="Focused">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="EnabledBorder1">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxEditBackgroundBrush}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="EnabledBorder2">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxEditBackgroundBrush}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Unfocused"/>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <Border x:Name="EnabledBorder">
+                                            <Grid Margin="115, 10, 5, 0" contribControls:GridUtils.RowDefinitions=",," Width="335">
+                                                <Border BorderBrush="{StaticResource PhoneTextBoxBrush}" BorderThickness="0" Background="{StaticResource PhoneTextBoxBrush}"
+                                                        Grid.Row="1" x:Name="EnabledBorder1">
+                                                    <ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" Padding="2" VerticalContentAlignment="Stretch"/>
+                                                </Border>
+                                                <Path Data="m 0,0 l 12,0 l 0,12 l -12,-12" x:Name="EnabledBorder2"
+                                                      Fill="{StaticResource PhoneTextBoxBrush}"
+                                                      Margin="0,0,5,0"
+                                                      HorizontalAlignment="Right"
+                                                      Grid.Row="2"/>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </Grid>
+        <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
+            <WPExtensions:AdvancedApplicationBarIconButton Text="отправить" IconUri="/icons/appbar.send.text.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить карту" IconUri="/icons/appbar.checkin.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="выбрать" IconUri="/icons/appbar.manage.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="удалить диалог"/>
+        </WPExtensions:AdvancedApplicationBar>
     </Grid>
 
     <toolkit:TransitionService.NavigationInTransition>
