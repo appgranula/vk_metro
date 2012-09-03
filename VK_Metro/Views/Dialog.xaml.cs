@@ -44,6 +44,32 @@ namespace VK_Metro.Views
             } 
             base.OnNavigatedTo(args);
         }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var item = (TextBox)sender;
+            if (item.Text.Length == 0)
+            {
+                Watermark.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Watermark.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void Border_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MessageText.Focus();
+        }
+
+        private void MessageText_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter && ((TextBox)sender).Text.Length != 0)
+            {
+            }
+        }
     }
 
     public class MessageContentPresenter : ContentControl
@@ -56,9 +82,9 @@ namespace VK_Metro.Views
             base.OnContentChanged(oldContent, newContent);
             VKMessageModel message = newContent as VKMessageModel;
             if (message.type == "0")
-                ContentTemplate = MeTemplate;
-            else
                 ContentTemplate = YouTemplate;
+            else
+                ContentTemplate = MeTemplate;
         }
     }
 }
