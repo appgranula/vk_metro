@@ -36,19 +36,19 @@
                                Source="{Binding DataContext.TitleImageUri, ElementName=LayoutRoot}" 
                                Grid.Column="0"/>
 
-                        <StackPanel Orientation="Horizontal" Grid.Column="1">
-                            <Image Width="50" Height="48"  
-                                       Source="/VK_Metro;component/Images/dark/UnreadMessages_Icon.png"/>
-                            <Border x:Name="testCanvas" Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0">
-                                <TextBlock x:Name="UnreadMessagesCountTextBlock" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="6,1,6,1"
-                                           Text="{Binding DataContext.UnreadMessages, ElementName=LayoutRoot}"/>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" 
+                                    Visibility="{Binding DataContext.MessageCounterVisibility, ElementName=LayoutRoot}">
+                            <Image Width="50" Height="48" Source="/VK_Metro;component/Images/dark/UnreadMessages_Icon.png"/>
+                            <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0">
+                                <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="6,1,6,1"
+                                    Text="{Binding DataContext.UnreadMessages, ElementName=LayoutRoot}"/>
                             </Border>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="500" Margin="0,0,20,0">
-                            <Image Width="50" Height="48"  
-                                       Source="/VK_Metro;component/Images/dark/Requests_Icon.png"/>
-                            <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0">
+                        <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="0,0,20,0">
+                            <Image Width="50" Height="48" Source="/VK_Metro;component/Images/dark/Requests_Icon.png"/>
+                            <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0"
+                                    Visibility="{Binding DataContext.RequestCountVisibility, ElementName=LayoutRoot}">
                                 <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="6,1,6,1"
                                     Text="{Binding DataContext.FriendsRequests, ElementName=LayoutRoot}"/>
                             </Border>

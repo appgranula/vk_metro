@@ -25,8 +25,8 @@
             this.vkMessage = new ObservableCollection<VKMessageModel>();
             this.vkDialogs = new ObservableCollection<VKDialogModel>();
             this.IsDataLoaded = false;
-            this.FriendsRequests = 5;
-            this.UnreadMessages = 9;
+            this.FriendsRequests = 0;
+            this.UnreadMessages = 0;
         }
 
         private ObservableCollection<VKFriendModel> vkFriend;
@@ -34,6 +34,8 @@
         private ObservableCollection<VKFriendModel> vkUsers;
         private ObservableCollection<VKMessageModel> vkMessage;
         private ObservableCollection<VKDialogModel> vkDialogs;
+        private int unreadMessages;
+        private int friendsRequests;
 
         public bool IsDataLoaded { get; set; }
 
@@ -81,9 +83,42 @@
             }
         }
 
-        public int UnreadMessages { get; set; }
+        public int UnreadMessages { 
+            get { return this.unreadMessages; }
+            set 
+            { 
+                this.unreadMessages = value;
+                this.NotifyPropertyChanged("UnreadMessages");
+                this.NotifyPropertyChanged("MessageCounterVisibility");
+            } 
+        }
 
-        public int FriendsRequests { get; set; }
+        public int FriendsRequests
+        {
+            get { return this.friendsRequests; }
+            set
+            {
+                this.friendsRequests = value;
+                this.NotifyPropertyChanged("FriendsRequests");
+                //this.NotifyPropertyChanged("RequestCountVisibility");
+            }
+        }
+
+        public Visibility MessageCounterVisibility
+        {
+            get
+            {
+                return this.unreadMessages > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public Visibility RequestCountVisibility
+        {
+            get
+            {
+                return this.friendsRequests > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
 
         public IEnumerable VKFriend
         { 

@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using Microsoft.Phone.Controls;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
-using Microsoft.Phone.UserData;
-using VK_Metro.Models;
-using System.Collections;
-using System;
-using System.Windows.Controls;
-using VK_Metro.Utilities;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Windows;
+    using System.Windows.Controls;
+    using Microsoft.Phone.Controls;
+    using Microsoft.Phone.UserData;
+    using VK_Metro.Models;
+    using VK_Metro.Utilities;
 
     public partial class MainPage : PhoneApplicationPage
     {
@@ -32,8 +29,6 @@ namespace VK_Metro.Views
 
         private MainPageModel dataContext;
 
-        private Utilities.LongPollListener lpListener;
-
         // Загрузка данных для элементов ViewModel
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -49,6 +44,7 @@ namespace VK_Metro.Views
                                 {
                                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                                     {
+                                        App.LpListener.NewMessageEvent += this.onMessageReceive;
                                         this.dataContext.AddDialog((VKMessageModel[])result2);
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
                                     });
@@ -58,8 +54,8 @@ namespace VK_Metro.Views
                     error =>
                     {
                     });
-                this.lpListener = new LongPollListener(App.VK);
-                this.lpListener.Start();
+                //this.lpListener = new LongPollListener(App.VK);
+                //this.lpListener.Start();
             }
             //this.synchronizeButton_Click(new object(), new RoutedEventArgs());
         }
@@ -162,6 +158,15 @@ namespace VK_Metro.Views
             string destination = "/Views/Dialog.xaml";
             destination += String.Format("?UID={0}", item.UID);
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+        }
+
+        private void onMessageReceive(object sender, VkMessageEventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(
+                () =>
+                    {
+                        this.dataContext.UnreadMessages += 1;
+                    });
         }
     }
 }

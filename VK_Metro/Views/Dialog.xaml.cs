@@ -1,16 +1,14 @@
-﻿using Microsoft.Phone.Controls;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Windows.Navigation;
-using VK_Metro.Models;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Collections;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Navigation;
+    using Microsoft.Phone.Controls;
+    using VK_Metro.Models;
+
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
         public Dialog()
