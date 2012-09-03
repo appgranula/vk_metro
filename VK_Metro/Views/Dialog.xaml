@@ -37,7 +37,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ListBox ItemsSource="{Binding Items}" Grid.Row="0">
+            <ListBox ItemsSource="{Binding Items}" x:Name="ListMessages" Grid.Row="0" SelectionChanged="ListMessages_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <local:MessageContentPresenter Content="{Binding}">

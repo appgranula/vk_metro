@@ -302,7 +302,7 @@
         {
             return from item in this.vkMessage
                    where item.uid == uid
-                   orderby item.date descending
+                   orderby item.date
                    select item;
         } 
         public void AddDialog(VKMessageModel[] VKMessage)

@@ -8,6 +8,7 @@
     using System.Windows.Navigation;
     using Microsoft.Phone.Controls;
     using VK_Metro.Models;
+    using System.Linq;
 
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
@@ -15,6 +16,7 @@
         {
             InitializeComponent();
             this.DataContext = this;
+            App.MainPageData.PropertyChanged += new PropertyChangedEventHandler(MainPageData_PropertyChanged);
         }
 
         public string UID { get; private set; }
@@ -43,6 +45,20 @@
             base.OnNavigatedTo(args);
         }
 
+        void MainPageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "VKMessage" && this.UID != null)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    this.Items = App.MainPageData.GetMessage(this.UID);
+                    this.NotifyPropertyChanged("Items");
+                    UpdateLayout();
+                    ListMessages.ScrollIntoView(ListMessages.Items.Last());
+                });
+            }
+        }
+
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             var item = (TextBox)sender;
@@ -64,10 +80,27 @@
 
         private void MessageText_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter && ((TextBox)sender).Text.Length != 0)
+            var textBox = (TextBox)sender;
+            if (e.Key == System.Windows.Input.Key.Enter && textBox.Text.Length != 0)
             {
+                App.VK.SendMessage(this.UID, textBox.Text, result =>
+                {
+                    var messages = (VKMessageModel[])result;
+                    App.MainPageData.AddMessage(messages);
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        textBox.Text = "";
+                    });
+                }, error => {
+                });
             }
         }
+
+        private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((ListBox)sender).SelectedIndex = -1;
+        }
+
     }
 
     public class MessageContentPresenter : ContentControl

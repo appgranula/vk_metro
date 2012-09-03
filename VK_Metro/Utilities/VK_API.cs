@@ -402,6 +402,59 @@ namespace VK_Metro
             }, onError);
         }
 
+        public void GetMessage(string mid, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.getById";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("mid", mid);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    obj["response"].First.Remove();
+                    VKMessageModel[] messages = obj["response"].ToObject<VKMessageModel[]>();
+                    onSuccess(messages);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+
+        public void SendMessage(string uid, string message, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.send";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("uid", uid);
+            sendData.Add("message", message);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    string mid = obj["response"].ToObject<string>();
+                    this.GetMessage(mid, result2 => {
+                        var messages = (VKMessageModel[])result2;
+                        onSuccess(messages);
+                    }, onError);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+        
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(URL));//создаем запрос
