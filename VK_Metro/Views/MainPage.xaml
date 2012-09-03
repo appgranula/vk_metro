@@ -24,45 +24,36 @@
         <controls:Pivot x:Name="PivotApp">
             <controls:Pivot.TitleTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        
                         <Image Width="60" Height="36"
                                HorizontalAlignment="Left"
-                               Source="{Binding DataContext.TitleImageUri, ElementName=LayoutRoot}" />
+                               Source="{Binding DataContext.TitleImageUri, ElementName=LayoutRoot}" 
+                               Grid.Column="0"/>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                            
-                            
-
-                            <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
-                                
-                                <Image Width="50" Height="48" HorizontalAlignment="Left" 
-                                       Source="/VK_Metro;component/Images/dark/UnreadMessages_Icon.png"/>
-                                
-                                <Canvas  Margin="-10,0,0,0">
-
-                                    <Rectangle Height="22" Width="{Binding ElementName=testCanvas, Path=ActualWidth}" Fill="#FF1BA1E3" />
-                                    
-                                    <StackPanel x:Name="testCanvas" Margin="0,0,0,0">
-                                        
-                                        <TextBlock Padding="6,0,6,0" x:Name="UnreadMessagesCountTextBlock" Margin="0,0,0,0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" >1</TextBlock>
-                                        
-                                    </StackPanel>
-
-                                </Canvas>
-                                
-                            </StackPanel>
-                            
-                            
-                            
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="50" Height="48" HorizontalAlignment="Left"
-                                   Source="/VK_Metro;component/Images/dark/Requests_Icon.png" />
-                                <Canvas Height="22" Width="20" Margin="-10,-20,0,0">
-                                    <Rectangle Height="22" Width="20" Fill="#FF1BA1E3" />
-                                    <TextBlock Margin="7,0,0,0" FontWeight="Bold" FontSize="16" Text="{Binding DataContext.FriendsRequests, ElementName=LayoutRoot}"></TextBlock>
-                                </Canvas>
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" 
+                                    Visibility="{Binding DataContext.MessageCounterVisibility, ElementName=LayoutRoot}">
+                            <Image Width="50" Height="48" Source="/VK_Metro;component/Images/dark/UnreadMessages_Icon.png"/>
+                            <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0">
+                                <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="6,1,6,1"
+                                    Text="{Binding DataContext.UnreadMessages, ElementName=LayoutRoot}"/>
+                            </Border>
                         </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="0,0,20,0">
+                            <Image Width="50" Height="48" Source="/VK_Metro;component/Images/dark/Requests_Icon.png"/>
+                            <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0"
+                                    Visibility="{Binding DataContext.RequestCountVisibility, ElementName=LayoutRoot}">
+                                <TextBlock FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="6,1,6,1"
+                                    Text="{Binding DataContext.FriendsRequests, ElementName=LayoutRoot}"/>
+                            </Border>
+                        </StackPanel>
+                        
                     </Grid>
                 </DataTemplate>
             </controls:Pivot.TitleTemplate>

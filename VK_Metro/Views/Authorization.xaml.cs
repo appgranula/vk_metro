@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Phone.Controls;
-using System.ComponentModel;
-using System.Windows.Media;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Media;
+    using Microsoft.Phone.Controls;
+
     public partial class Authorization : PhoneApplicationPage, INotifyPropertyChanged
     {
         public Authorization()
@@ -24,6 +24,7 @@ namespace VK_Metro.Views
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
+                        App.LpListener.Start();
                         NavigationService.Navigate(new Uri("/Views/MainPage.xaml", UriKind.Relative));
                         IsEnabled = true;
                     });
@@ -64,6 +65,7 @@ namespace VK_Metro.Views
                     {
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
+                            App.LpListener.Start();
                             NavigationService.Navigate(new Uri("/Views/MainPage.xaml", UriKind.Relative));
                         });
                     },
