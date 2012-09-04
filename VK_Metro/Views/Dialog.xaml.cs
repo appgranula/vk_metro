@@ -81,7 +81,7 @@
         private void MessageText_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             var textBox = (TextBox)sender;
-            if (e.Key == System.Windows.Input.Key.Enter && textBox.Text.Length != 0)
+            if ((e.Key == System.Windows.Input.Key.Enter || e.PlatformKeyCode == 10) && textBox.Text.Length != 0)
             {
                 App.VK.SendMessage(this.UID, textBox.Text, result =>
                 {
