@@ -443,10 +443,7 @@ namespace VK_Metro
                 if (obj["response"] != null)
                 {
                     string mid = obj["response"].ToObject<string>();
-                    this.GetMessage(mid, result2 => {
-                        var messages = (VKMessageModel[])result2;
-                        onSuccess(messages);
-                    }, onError);
+                    onSuccess(mid);
                 }
                 else
                 {

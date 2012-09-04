@@ -85,8 +85,6 @@
             {
                 App.VK.SendMessage(this.UID, textBox.Text, result =>
                 {
-                    var messages = (VKMessageModel[])result;
-                    App.MainPageData.AddMessage(messages);
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         textBox.Text = "";

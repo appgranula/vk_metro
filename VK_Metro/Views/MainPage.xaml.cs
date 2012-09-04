@@ -165,6 +165,10 @@
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
                     {
+                        App.VK.GetMessage(e.Id.ToString(), result => {
+                            App.MainPageData.AddMessage((VKMessageModel[])result);
+                            App.MainPageData.AddDialog((VKMessageModel[])result);
+                        }, error => { });
                         this.dataContext.UnreadMessages += 1;
                     });
         }

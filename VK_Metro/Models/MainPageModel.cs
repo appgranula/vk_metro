@@ -204,7 +204,10 @@
             PropertyChangedEventHandler handler = PropertyChanged;
             if (null != handler)
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    handler(this, new PropertyChangedEventArgs(propertyName));
+                });
             }
         }
 
@@ -308,7 +311,15 @@
         public void AddDialog(VKMessageModel[] VKMessage)
         {
             foreach (var message in VKMessage)
+            {
+                foreach (var dialog in this.vkDialogs)
+                    if (dialog.UID == message.uid)
+                    {
+                        this.vkDialogs.Remove(dialog);
+                        break;
+                    }
                 this.vkDialogs.Add(new VKDialogModel(message));
+            }
             this.NotifyPropertyChanged("VKDialogs");
         }
     }
