@@ -41,46 +41,6 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <local:MessageContentPresenter Content="{Binding}">
-                            <local:MessageContentPresenter.MeTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="115, 10, 5, 0"
-                                          contribControls:GridUtils.RowDefinitions=",,"
-                                          Width="335">
-                                        <Rectangle Fill="{StaticResource PhoneAccentBrush}"
-                                                   Grid.RowSpan="2"/>
-                                        <TextBlock Text="{Binding Path=Message}"
-                                                   HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,5,10,0" />
-                                        <TextBlock Text="{Binding Path=Date}"
-                                                   HorizontalAlignment="Right"
-                                                   Grid.Row="1" Margin="10,0,10,5" />
-                                        <Path Data="m 0,0 l 12,0 l 0,12 l -12,-12"
-                                              Fill="{StaticResource PhoneAccentBrush}"
-                                              Margin="0,0,5,0"
-                                              HorizontalAlignment="Right"
-                                              Grid.Row="2"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </local:MessageContentPresenter.MeTemplate>
-                            <local:MessageContentPresenter.YouTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="5, 0, 115, 10"
-                                          contribControls:GridUtils.RowDefinitions=",,"
-                                          Width="335">
-                                        <Path Data="m 0,0 l 0,12 l 12,0 l -12,-12"
-                                              Fill="{StaticResource PhoneAccentBrush}"
-                                              Margin="5,0,0,0"
-                                              HorizontalAlignment="Left"/>
-                                        <Rectangle Fill="{StaticResource PhoneAccentBrush}"
-                                                   Grid.Row="1" Grid.RowSpan="2"/>
-                                        <TextBlock Text="{Binding Path=Message}"
-                                                   HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,5,10,0"
-                                                   Grid.Row="1"/>
-                                        <TextBlock Text="{Binding Path=Date}"
-                                                   HorizontalAlignment="Right"
-                                                   Grid.Row="2" Margin="10,0,10,5" />
-                                    </Grid>
-                                </DataTemplate>
-                            </local:MessageContentPresenter.YouTemplate>
                         </local:MessageContentPresenter>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

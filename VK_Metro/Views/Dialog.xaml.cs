@@ -9,6 +9,7 @@
     using Microsoft.Phone.Controls;
     using VK_Metro.Models;
     using System.Linq;
+    using System.Windows.Markup;
 
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
@@ -103,17 +104,46 @@
 
     public class MessageContentPresenter : ContentControl
     {
-        public DataTemplate MeTemplate { get; set; }
-        public DataTemplate YouTemplate { get; set; }
-
         protected override void OnContentChanged(object oldContent, object newContent)
         {
             base.OnContentChanged(oldContent, newContent);
             VKMessageModel message = newContent as VKMessageModel;
+            string xaml =
+                    "<DataTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' " +
+                                  "xmlns:contribControls='clr-namespace:WP7Contrib.View.Controls;assembly=WP7Contrib.View.Controls'>";
             if (message.type == "0")
-                ContentTemplate = YouTemplate;
-            else
-                ContentTemplate = MeTemplate;
+            {
+                xaml += "<Grid Margin='5, 0, 115, 10' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
+                            "<Path Data='m 0,0 l 0,12 l 12,0 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
+                                  "Margin='5,0,0,0' HorizontalAlignment='Left' Grid.Row='0'/>" +
+                            "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='1' Grid.RowSpan='2'/>" +
+                            "<StackPanel Grid.Row='1' Orientation='Vertical'>" +
+                                "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
+                                           "Margin='10,5,10,0'/>";
+                if (message.attachment != null && message.attachment.type == "photo")
+                    xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
+                xaml +=
+                            "</StackPanel>" +
+                            "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
+                                       "Margin='10,0,10,5' Grid.Row='2'/>" +
+                        "</Grid>";
+            } else {
+                xaml += "<Grid Margin='115, 10, 5, 0' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
+                            "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='0' Grid.RowSpan='2'/>" +
+                            "<StackPanel Grid.Row='0' Orientation='Vertical'>" +
+                                "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
+                                           "Margin='10,5,10,0'/>";
+                if (message.attachment != null && message.attachment.type == "photo")
+                    xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
+                xaml +=     "</StackPanel>" +
+                            "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
+                                       "Margin='10,0,10,5' Grid.Row='1'/>" +
+                            "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
+                                  "Margin='0,0,5,0' HorizontalAlignment='Right' Grid.Row='2'/>" +
+                        "</Grid>";
+            }
+            xaml += "</DataTemplate>";
+            ContentTemplate = (DataTemplate)XamlReader.Load(xaml);
         }
     }
 }
