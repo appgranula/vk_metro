@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Windows;
     using System.Windows.Media.Imaging;
@@ -24,9 +25,11 @@
             this.phoneContacts = new ObservableCollection<PhoneContactModel>();
             this.vkMessage = new ObservableCollection<VKMessageModel>();
             this.vkDialogs = new ObservableCollection<VKDialogModel>();
+            this.vkRequestsFriends = new ObservableCollection<VKFriendModel>();
             this.IsDataLoaded = false;
             this.FriendsRequests = 0;
             this.UnreadMessages = 0;
+    
         }
 
         private ObservableCollection<VKFriendModel> vkFriend;
@@ -36,6 +39,7 @@
         private ObservableCollection<VKDialogModel> vkDialogs;
         private int unreadMessages;
         private int friendsRequests;
+        private ObservableCollection<VKFriendModel> vkRequestsFriends;
 
         public bool IsDataLoaded { get; set; }
 
@@ -95,13 +99,18 @@
 
         public int FriendsRequests
         {
-            get { return this.friendsRequests; }
-            set
-            {
-                this.friendsRequests = value;
-                this.NotifyPropertyChanged("FriendsRequests");
-                //this.NotifyPropertyChanged("RequestCountVisibility");
-            }
+            get { return this.vkRequestsFriends.Count; }
+            private set {}
+            //{
+            //    this.friendsRequests = value;
+            //    this.NotifyPropertyChanged("FriendsRequests");
+            //    this.NotifyPropertyChanged("RequestCountVisibility");
+            //}
+        }
+
+        //public ObservableCollection<VKFriendModel> VkFriendsRequests { get; private set; }
+        public ObservableCollection<VKFriendModel> VkFriendsRequests {
+            get { return this.vkRequestsFriends; }
         }
 
         public Visibility MessageCounterVisibility
@@ -116,7 +125,7 @@
         {
             get
             {
-                return this.friendsRequests > 0 ? Visibility.Visible : Visibility.Collapsed;
+                return this.FriendsRequests > 0 ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -310,6 +319,40 @@
             foreach (var message in VKMessage)
                 this.vkDialogs.Add(new VKDialogModel(message));
             this.NotifyPropertyChanged("VKDialogs");
+        }
+
+        public void AddFriendRequests(List<int> idList)
+        {
+            foreach (var vkFriendsRequest in this.vkRequestsFriends)
+            {
+                if (idList.Contains(int.Parse(vkFriendsRequest.uid)))
+                {
+                    idList.Remove(int.Parse(vkFriendsRequest.uid));
+                }
+            }
+
+            if (idList.Count == 0) return;
+
+            foreach (var i in idList)
+            {
+                var strId = i.ToString(CultureInfo.InvariantCulture);
+                App.VK.GetUser(
+                strId, 
+                result =>
+                {
+                    var user = (VKFriendModel)result;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        //this.CheckUser(user);
+                        this.vkRequestsFriends.Add(user);
+                        this.NotifyPropertyChanged("FriendsRequests");
+                        this.NotifyPropertyChanged("RequestCountVisibility");
+                    });
+                }, 
+                error =>
+                {
+                });
+            }
         }
     }
 }

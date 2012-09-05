@@ -45,6 +45,17 @@
                                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                                     {
                                         App.LpListener.NewMessageEvent += this.onMessageReceive;
+
+                                        App.VK.StartCheckiingFriendsRequests(
+                                        r =>
+                                        {
+                                            this.dataContext.AddFriendRequests((List<int>)r);
+                                        },
+                                        r =>
+                                        {
+                                        });
+
+
                                         this.dataContext.AddDialog((VKMessageModel[])result2);
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
                                     });
@@ -78,6 +89,33 @@
             var cons = new Contacts();
             cons.SearchCompleted += new EventHandler<ContactsSearchEventArgs>(Contacts_SearchCompleted);
             cons.SearchAsync(String.Empty, FilterKind.None, "Contacts Test #1");
+            //App.VK.BeginCheckForFriendsRequests(
+            //               result =>
+            //               {
+            //                   this.dataContext.AddFriendRequests((List<int>)result);
+
+            //                   //foreach (var request in (List<int>) result)
+            //                   //{
+            //                   //    Deployment.Current.Dispatcher.BeginInvoke(
+            //                   //    () =>
+            //                   //    {
+            //                   //        //this.dataContext.FriendsRequests += 1;
+            //                   //    });
+            //                   //}
+            //               },
+            //               result =>
+            //               {
+            //               });
+
+            //App.VK.StartCheckiingFriendsRequests(
+            //    result =>
+            //    {
+            //        this.dataContext.AddFriendRequests((List<int>)result);
+            //    },
+            //    result =>
+            //    {
+            //    });
+            //this.GoToRequestsPage();
         }
 
         private void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
@@ -119,6 +157,8 @@
                             this.SynchronizeContactsGrid.Visibility = Visibility.Visible;
 
                             this.dataContext.AddVkNameToContacts((List<Dictionary<string, string>>)result);
+
+
                         }),
                 result =>
                     {
@@ -167,6 +207,23 @@
                     {
                         this.dataContext.UnreadMessages += 1;
                     });
+        }
+
+        //private void onFriendRequestArrived(int[] requests)
+        //{
+        //    foreach (var request in requests)
+        //    {
+        //        Deployment.Current.Dispatcher.BeginInvoke(
+        //        () =>
+        //        {
+        //            this.dataContext.FriendsRequests += 1;
+        //        });
+        //    }
+        //}
+
+        private void GoToRequestsPage()
+        {
+            NavigationService.Navigate(new Uri("/Views/FriendsRequests.xaml", UriKind.Relative));
         }
     }
 }
