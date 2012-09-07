@@ -125,7 +125,7 @@ namespace VK_Metro
             sendData.Add("access_token", access_token);
             sendData.Add("uids", uid);
             sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,online");
-            this.GetQuery(URL, sendData, result =>
+            this.PostQuery(URL, sendData, result =>
                                              {
                                                  var responseString = (string) result;
                                                  Newtonsoft.Json.Linq.JObject obj =
@@ -134,7 +134,14 @@ namespace VK_Metro
                                                  {
                                                      VKFriendModel[] friends =
                                                          obj["response"].ToObject<VKFriendModel[]>();
-                                                     onSuccess(friends[0]);
+                                                     if (friends.Length == 1)
+                                                     {
+                                                         onSuccess(friends[0]);
+                                                     }
+                                                     else
+                                                     {
+                                                         onSuccess(friends);
+                                                     }
                                                  }
                                                  else
                                                  {
@@ -724,7 +731,7 @@ namespace VK_Metro
                     });
         }
 
-        public void BeginCheckForFriendsRequests(CallBack onSuccess, CallBack onError)
+        private void BeginCheckForFriendsRequests(CallBack onSuccess, CallBack onError)
         {
             if (!this.connected)
             {
@@ -741,7 +748,7 @@ namespace VK_Metro
                 sendData,
                 res =>
                     {
-                        res = "{\"response\":[2399082,17347602,775654,2399082,17347602]}";
+                        res = "{\"response\":[2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602]}";
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                         var requests = decodedResponse["response"];
                         var convertedRequests = JsonConvert.DeserializeObject<List<int>>(requests.ToString());
@@ -763,6 +770,48 @@ namespace VK_Metro
             this.BeginCheckForFriendsRequests(onSuccess, onError);
             // and every N seconds
             dt.Start();
+        }
+
+        public void CheckForPossibleFriends(CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/friends.getSuggestions";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   {"access_token", this.access_token},
+                                   {"filter", "mutual"},
+                                   {"count", "50"}
+                               };
+            this.GetQuery(
+            url,
+            sendData,
+            res =>
+            {
+                   
+                var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                var requests = decodedResponse["response"];
+                //var userList = new List<Dictionary<string, string>>();
+                if (requests == null)
+                {
+                    onError(new object());
+                }
+                VKFriendModel[] userList = requests.ToObject<VKFriendModel[]>();
+                /*foreach (var i in requests)
+                {
+                userList.Add(JsonConvert.DeserializeObject<Dictionary<string, string>>(i.ToString()));
+                }*/
+
+                onSuccess(userList);
+            },
+               res =>
+               {
+                   onError(res);
+               }
+               );
         }
     }
 }

@@ -1,78 +1,88 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using VK_Metro.Models;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Windows.Navigation;
+    using Microsoft.Phone.Controls;
+    using VK_Metro.Models;
+
     public partial class FriendsRequests : PhoneApplicationPage, INotifyPropertyChanged
     {
+        private ObservableCollection<VKFriendModel> requests;
+        private ObservableCollection<VKFriendModel> possibleFriends1;
+
         public FriendsRequests()
         {
-            InitializeComponent();
-            DataContext = App.MainPageData;
-            //this.requestsPizda = new ObservableCollection<VKFriendModel>();
-            //this.RequestsPizda = App.MainPageData.VkFriendsRequests;
-            //this.HuiPizda = App.MainPageData.PhoneContacts;
-            this.NotifyPropertyChanged("RequestsPizda");
-            this.NotifyPropertyChanged("HuiPizda");
-            App.MainPageData.PropertyChanged += MainPageDataOnPropertyChanged;
-            UpdateLayout();
-        }
-
-        private IEnumerable requestsPizda;
-
-        public IEnumerable RequestsPizda { get { return this.requestsPizda; } set { this.requestsPizda = value; } }
-
-        public IEnumerable HuiPizda { get; set; }
-
-        private void MainPageDataOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            if (propertyChangedEventArgs.PropertyName == "VkFriendsRequests")
-            {   
-                var model = (MainPageModel) sender;
-                //this.RequestsPizda = model.VkFriendsRequests.AsEnumerable();
-                this.NotifyPropertyChanged("RequestsPizda");
-                UpdateLayout();
-            }
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs args)
-        {
-            //this.RequestsPizda = App.MainPageData.VkFriendsRequests.AsEnumerable();
-            //this.requestsPizda.Add(new VKFriendModel(){uid="qweqwewqe"});
-            //this.requestsPizda.Add(new VKFriendModel() { uid = "q12321451" });
-            //this.requestsPizda.Add(new VKFriendModel() { uid = "qweqwqetfg57489" });
-            //this.HuiPizda = this.requestsPizda.AsEnumerable();
-            this.NotifyPropertyChanged("RequestsPizda");
-            this.NotifyPropertyChanged("HuiPizda");
-            this.NotifyPropertyChanged("VkFriendsRequests");
-            UpdateLayout();
-            base.OnNavigatedTo(args);
+            this.InitializeComponent();
+            this.DataContext = this;
+            App.MainPageData.PropertyChanged += this.MainPageDataOnPropertyChanged;
+            this.RequestCountString = "заявки в друзья (0)";
+            this.possibleFriends1 = App.MainPageData.PossibleFriends;
+            this.requests = App.MainPageData.VkFriendsRequests;
+            if (this.possibleFriends1.Count == 0) this.MakeRequestForPossibleFriends();
+            this.UpdateLayout();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ObservableCollection<VKFriendModel> Requests
+        {
+            get { return this.requests; }
+        }
+
+        public ObservableCollection<VKFriendModel> PossibleFriends1
+        {
+            get { return this.possibleFriends1; }
+        }
+
+        public string RequestCountString { get; set; }
+
+        protected override void OnNavigatedTo(NavigationEventArgs args)
+        {
+            this.UpdateLayout();
+            this.RequestCountString = "заявки в друзья (" + this.Requests.Count.ToString() + ")";
+            this.NotifyPropertyChanged("RequestCountString");
+            base.OnNavigatedTo(args);
+        }
+        
+        private void MainPageDataOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if (propertyChangedEventArgs.PropertyName == "VkFriendsRequests")
+            {
+                this.RequestCountString = "заявки в друзья (" + this.Requests.Count.ToString() + ")";
+                this.NotifyPropertyChanged("RequestCountString");
+                this.NotifyPropertyChanged("Requests");
+            }
+
+            if (propertyChangedEventArgs.PropertyName == "PossibleFriends")
+            {
+                this.NotifyPropertyChanged("PossibleFriends1");
+            }
+
+            this.UpdateLayout();
+        }
+
         private void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (null != handler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void MakeRequestForPossibleFriends()
+        {
+            App.VK.CheckForPossibleFriends(
+                res =>
+                    {
+                        //var result = (List<Dictionary<string, string>>)res;
+                        var result = (VKFriendModel[])res;
+                        App.MainPageData.AddPossibleFriendsRequests(result);
+                    },
+                res =>
+                    {
+                    });
         }
     }
 }

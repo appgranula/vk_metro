@@ -26,6 +26,7 @@
             this.vkMessage = new ObservableCollection<VKMessageModel>();
             this.vkDialogs = new ObservableCollection<VKDialogModel>();
             this.vkRequestsFriends = new ObservableCollection<VKFriendModel>();
+            this.possibleFriends = new ObservableCollection<VKFriendModel>();
             this.IsDataLoaded = false;
             this.FriendsRequests = 0;
             this.UnreadMessages = 0;
@@ -38,8 +39,8 @@
         private ObservableCollection<VKMessageModel> vkMessage;
         private ObservableCollection<VKDialogModel> vkDialogs;
         private int unreadMessages;
-        private int friendsRequests;
         private ObservableCollection<VKFriendModel> vkRequestsFriends;
+        private ObservableCollection<VKFriendModel> possibleFriends;
 
         public bool IsDataLoaded { get; set; }
 
@@ -108,8 +109,13 @@
             //}
         }
 
-        //public ObservableCollection<VKFriendModel> VkFriendsRequests { get; private set; }
-        public ObservableCollection<VKFriendModel> VkFriendsRequests {
+        public ObservableCollection<VKFriendModel> PossibleFriends
+        {
+            get { return this.possibleFriends; }
+        }
+
+        public ObservableCollection<VKFriendModel> VkFriendsRequests 
+        {
             get { return this.vkRequestsFriends; }
         }
 
@@ -236,6 +242,7 @@
             {
             });
         }
+
         private void CheckUser(VKFriendModel user)
         {
             if (user.photo == "http://vk.com/images/deactivated_c.gif")
@@ -358,16 +365,39 @@
                     var user = (VKFriendModel)result;
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        //this.CheckUser(user);
+                        this.CheckUser(user);
                         this.vkRequestsFriends.Add(user);
                         this.NotifyPropertyChanged("FriendsRequests");
                         this.NotifyPropertyChanged("RequestCountVisibility");
+                        this.NotifyPropertyChanged("VkFriendsRequests");
                     });
                 }, 
                 error =>
                 {
                 });
             }
+        }
+
+        public void AddPossibleFriendsRequests(VKFriendModel[] requests)
+        {
+            var ids = requests.Aggregate("", (current, user) => current + user.uid + ',');
+                ids = ids.Remove(ids.Length - 1);
+                App.VK.GetUser(ids, result =>
+                {
+                    var resultUsers = (VKFriendModel[])result;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultUsers.ToList().ForEach(
+                            model =>
+                                {
+                                    this.CheckUser(model);
+                                    this.possibleFriends.Add(model);
+                                });
+                        this.NotifyPropertyChanged("PossibleFriends");
+                    });
+                }, error =>
+                {
+                });
         }
     }
 }

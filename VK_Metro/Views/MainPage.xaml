@@ -45,7 +45,7 @@
                             </Border>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="0,0,20,0">
+                        <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="0,0,20,0" Tap="RequestsStackPanel_Tap">
                             <Image Width="50" Height="48" Source="/VK_Metro;component/Images/dark/Requests_Icon.png"/>
                             <Border Background="{StaticResource PhoneAccentBrush}" VerticalAlignment="Top" Margin="-10,0,0,0"
                                     Visibility="{Binding DataContext.RequestCountVisibility, ElementName=LayoutRoot}">
@@ -117,7 +117,7 @@
                     <Grid.Resources>
                         <DataTemplate x:Key="contactsData">
                             <StackPanel Margin="12,12,0,0" Orientation="Horizontal">
-                                <Image Width="60" Height="60" Source="{Binding photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
+                                <Image Width="60" Height="60" Source="{Binding Path=photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
                                 <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="34" />
                             </StackPanel>
                         </DataTemplate>
