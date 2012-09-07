@@ -89,33 +89,6 @@
             var cons = new Contacts();
             cons.SearchCompleted += new EventHandler<ContactsSearchEventArgs>(Contacts_SearchCompleted);
             cons.SearchAsync(String.Empty, FilterKind.None, "Contacts Test #1");
-            //App.VK.BeginCheckForFriendsRequests(
-            //               result =>
-            //               {
-            //                   this.dataContext.AddFriendRequests((List<int>)result);
-
-            //                   //foreach (var request in (List<int>) result)
-            //                   //{
-            //                   //    Deployment.Current.Dispatcher.BeginInvoke(
-            //                   //    () =>
-            //                   //    {
-            //                   //        //this.dataContext.FriendsRequests += 1;
-            //                   //    });
-            //                   //}
-            //               },
-            //               result =>
-            //               {
-            //               });
-
-            //App.VK.StartCheckiingFriendsRequests(
-            //    result =>
-            //    {
-            //        this.dataContext.AddFriendRequests((List<int>)result);
-            //    },
-            //    result =>
-            //    {
-            //    });
-            //this.GoToRequestsPage();
         }
 
         private void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
@@ -213,21 +186,14 @@
                     });
         }
 
-        //private void onFriendRequestArrived(int[] requests)
-        //{
-        //    foreach (var request in requests)
-        //    {
-        //        Deployment.Current.Dispatcher.BeginInvoke(
-        //        () =>
-        //        {
-        //            this.dataContext.FriendsRequests += 1;
-        //        });
-        //    }
-        //}
-
         private void GoToRequestsPage()
         {
             NavigationService.Navigate(new Uri("/Views/FriendsRequests.xaml", UriKind.Relative));
+        }
+
+        private void RequestsStackPanel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.GoToRequestsPage();
         }
     }
 }
