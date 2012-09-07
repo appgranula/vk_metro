@@ -321,6 +321,10 @@
         {
             foreach (var message in VKMessage)
             {
+                /*if (message.uid == "146877606")
+                {
+                    var t = "";
+                }*/
                 foreach (var dialog in this.vkDialogs)
                     if (dialog.UID == message.uid)
                     {

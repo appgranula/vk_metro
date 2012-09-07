@@ -716,7 +716,7 @@ namespace VK_Metro
                             UpdatesArrived.Invoke(convertedResponse);
                         }
 
-                        //this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
+                        this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
                     },
                 res =>
                     {

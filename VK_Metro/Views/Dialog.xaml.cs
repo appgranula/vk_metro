@@ -110,9 +110,10 @@
             VKMessageModel message = newContent as VKMessageModel;
             string xaml =
                     "<DataTemplate xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' " +
-                                  "xmlns:contribControls='clr-namespace:WP7Contrib.View.Controls;assembly=WP7Contrib.View.Controls'>";
+                                  "xmlns:contribControls='clr-namespace:WP7Contrib.View.Controls;assembly=WP7Contrib.View.Controls' " +
+                                  "xmlns:src='clr-namespace:Templates;assembly=Templates'>";
             if (message.type == "0")
-            {
+            {   //YouTemplate
                 xaml += "<Grid Margin='5, 0, 115, 10' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
                             "<Path Data='m 0,0 l 0,12 l 12,0 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
                                   "Margin='5,0,0,0' HorizontalAlignment='Left' Grid.Row='0'/>" +
@@ -122,12 +123,16 @@
                                            "Margin='10,5,10,0'/>";
                 if (message.attachment != null && message.attachment.type == "photo")
                     xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
+                if (message.attachment != null && message.attachment.type == "audio")
+                    xaml +=     "<src:AudioTemplate Source='" + message.attachment.audio.url + "' Performer='" + message.attachment.audio.performer + "' Title='" + message.attachment.audio.title + "'/>";
                 xaml +=
                             "</StackPanel>" +
                             "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='2'/>" +
                         "</Grid>";
-            } else {
+            }
+            else
+            {   //MeTemplate
                 xaml += "<Grid Margin='115, 10, 5, 0' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
                             "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='0' Grid.RowSpan='2'/>" +
                             "<StackPanel Grid.Row='0' Orientation='Vertical'>" +
@@ -135,7 +140,9 @@
                                            "Margin='10,5,10,0'/>";
                 if (message.attachment != null && message.attachment.type == "photo")
                     xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
-                xaml +=     "</StackPanel>" +
+                if (message.attachment != null && message.attachment.type == "audio")
+                    xaml +=     "<src:AudioTemplate Source='" + message.attachment.audio.url + "' Performer='" + message.attachment.audio.performer + "' Title='" + message.attachment.audio.title + "'/>";
+                xaml += "</StackPanel>" +
                             "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='1'/>" +
                             "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
