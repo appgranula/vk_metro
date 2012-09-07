@@ -124,7 +124,10 @@
                 if (message.attachment != null && message.attachment.type == "photo")
                     xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
                 if (message.attachment != null && message.attachment.type == "audio")
-                    xaml +=     "<src:AudioTemplate Source='" + message.attachment.audio.url + "' Performer='" + message.attachment.audio.performer + "' Title='" + message.attachment.audio.title + "'/>";
+                    foreach (var attachment in message.attachments)
+                    {
+                        xaml += "<src:AudioTemplate Source='" + attachment.audio.url + "' Performer='" + attachment.audio.performer + "' Title='" + attachment.audio.title + "'/>";
+                    }
                 xaml +=
                             "</StackPanel>" +
                             "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
