@@ -1,4 +1,7 @@
-﻿namespace VK_Metro.Views
+﻿using System;
+using System.Net;
+
+namespace VK_Metro.Views
 {
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -83,6 +86,23 @@
                 res =>
                     {
                     });
+        }
+
+        private void GoToContactInfoPage(string querry)
+        {
+            NavigationService.Navigate(new Uri("/Views/ContactInfo.xaml" + querry, UriKind.Relative));
+        }
+        
+        private void RequestsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var selectedItem = (VKFriendModel)this.RequestsList.SelectedItem;
+            //this.dataContext.CurrentContact = selectedItem;
+            var querry = String.Format(
+                "?Request=&Name={0}&Photo={1}",
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(selectedItem.photo_big)
+                );
+            this.GoToContactInfoPage(querry);
         }
     }
 }

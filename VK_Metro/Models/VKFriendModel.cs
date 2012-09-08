@@ -29,6 +29,12 @@ namespace VK_Metro.Models
         [JsonProperty("photo")]
         public string photo { get; set; }
 
+        [JsonProperty("photo_medium")]
+        public string photo_medium { get; set; }
+
+        [JsonProperty("photo_big")]
+        public string photo_big { get; set; }
+
         [JsonProperty("online")]
         public string online { get; set; }
 

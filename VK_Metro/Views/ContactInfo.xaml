@@ -21,11 +21,12 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
+            <TextBlock x:Name="RequestPageTitle" Text="заявка в друзья" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" Visibility="Visible" FontSize="40"/>
             <TextBlock x:Name="PageTitle" Text="{Binding ContactName}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" />
         </StackPanel>
 
-        <StackPanel x:Name="RegistredUserInfo" Orientation="Vertical" Visibility="Visible" Margin="12,130,0,28">
+        <StackPanel x:Name="RegistredUserInfo" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
             <Image Source="{Binding Picture}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
             <Button Content="отправить сообщение" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5"></Button>
             <Button BorderThickness="0" HorizontalAlignment="Left" FontFamily="Segoe WP" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="CallButtonTap">
@@ -46,8 +47,26 @@
             <Button Content="выслать приглашение" Margin="-10,0,0,0" Width="366" HorizontalAlignment="Left"></Button>
         </StackPanel>
 
+
+        <Grid Grid.Row="1" x:Name="RequestInfo" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Vertical" Visibility="Visible" Margin="12,0,0,0" Grid.Row="0">
+                    <Image Source="{Binding Picture}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF1F1F1F" Width="{Binding ElementName=LayoutRoot,Path=ActualWidth}"  VerticalAlignment="Bottom" Grid.Row="1" Height="80">
+                    
+                        <Button Content="добавить" Width="240"></Button>
+                        <Button Content="отклонить" Width="240"></Button>
+                    
+                </StackPanel>
+            </Grid>
+
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <!--<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>-->
     </Grid>
  
     <!--Пример кода, иллюстрирующий использование ApplicationBar-->

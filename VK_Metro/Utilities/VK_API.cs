@@ -124,7 +124,7 @@ namespace VK_Metro
             Dictionary<string, string> sendData = new Dictionary<string, string>();
             sendData.Add("access_token", access_token);
             sendData.Add("uids", uid);
-            sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,online");
+            sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,photo_medium,photo_big,online");
             this.PostQuery(URL, sendData, result =>
                                              {
                                                  var responseString = (string) result;

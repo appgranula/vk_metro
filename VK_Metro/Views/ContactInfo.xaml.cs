@@ -43,6 +43,8 @@
             IDictionary<string, string> parameters = this.NavigationContext.QueryString;
             if (parameters.ContainsKey("Name") & parameters.ContainsKey("Phone") & parameters.ContainsKey("ContactName"))
             {
+                this.RequestPageTitle.Visibility = Visibility.Collapsed;
+                this.RequestInfo.Visibility = Visibility.Collapsed;
                 this.VkName = HttpUtility.UrlDecode(parameters["Name"]);
                 this.Phone = HttpUtility.UrlDecode(parameters["Phone"]);
                 this.ContactName = HttpUtility.UrlDecode(parameters["ContactName"]);
@@ -62,8 +64,15 @@
                 cons.SearchCompleted += this.Contacts_SearchCompleted;
                 cons.SearchAsync(this.Phone, FilterKind.PhoneNumber, "Contacts Test #1");
             }
-
-
+            if (parameters.ContainsKey("Request"))
+            {
+                this.ContactName = HttpUtility.UrlDecode(parameters["Name"]);
+                this.Picture = new BitmapImage(new Uri(HttpUtility.UrlDecode(parameters["Photo"])));
+                this.RequestPageTitle.Visibility = Visibility.Visible;
+                this.RequestInfo.Visibility = Visibility.Visible;
+                this.RegistredUserInfo.Visibility = Visibility.Collapsed;
+                this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
+            }
             base.OnNavigatedTo(e);
         }
 

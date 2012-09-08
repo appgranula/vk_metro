@@ -43,7 +43,7 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     x:Name="RequestsList" ItemsSource="{Binding Path=Requests}"
                                     ItemTemplate="{StaticResource contactsData}"
-                                    Margin="0,0,0,0">
+                                    Margin="0,0,0,0" Tap="RequestsList_Tap">
                     </ListBox>
 
                     <!--TitlePanel содержит имя приложения и заголовок страницы-->
