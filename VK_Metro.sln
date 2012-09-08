@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK_Metro", "VK_Metro\VK_Metro.csproj", "{08DF6C6C-563F-4490-A592-B0069B4ACDF6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{22919096-3C2F-40CB-A280-B1B5E51517A8} = {22919096-3C2F-40CB-A280-B1B5E51517A8}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Templates", "Templates\Templates.csproj", "{22919096-3C2F-40CB-A280-B1B5E51517A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{08DF6C6C-563F-4490-A592-B0069B4ACDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08DF6C6C-563F-4490-A592-B0069B4ACDF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{08DF6C6C-563F-4490-A592-B0069B4ACDF6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{22919096-3C2F-40CB-A280-B1B5E51517A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22919096-3C2F-40CB-A280-B1B5E51517A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22919096-3C2F-40CB-A280-B1B5E51517A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22919096-3C2F-40CB-A280-B1B5E51517A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

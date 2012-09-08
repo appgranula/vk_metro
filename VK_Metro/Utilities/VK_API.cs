@@ -480,85 +480,42 @@ namespace VK_Metro
             request.Headers["Accept-Charset"] = "windows-1251,utf-8;q=0.7,*;q=0.3";
             request.Headers["Accept-Language"] = "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4";
             request.CookieContainer = this.cookie;
-            request.BeginGetRequestStream(new AsyncCallback(asynchronousResultRequest =>
-                                                                {
-                                                                    HttpWebRequest requestStateRequest =
-                                                                        (HttpWebRequest)
-                                                                        asynchronousResultRequest.AsyncState;
-                                                                    Stream postStream =
-                                                                        requestStateRequest.EndGetRequestStream(
-                                                                            asynchronousResultRequest);
-                                                                    byte[] byteArray =
-                                                                        Encoding.UTF8.GetBytes(postData.ToUrlData());
-                                                                    postStream.Write(byteArray, 0, byteArray.Length);
-                                                                    postStream.Close();
-                                                                    requestStateRequest.BeginGetResponse(
-                                                                        new AsyncCallback(asynchronousResultResponse =>
-                                                                                              {
-                                                                                                  HttpWebRequest
-                                                                                                      requestStateResponse
-                                                                                                          =
-                                                                                                          (
-                                                                                                          HttpWebRequest
-                                                                                                          )
-                                                                                                          asynchronousResultResponse
-                                                                                                              .
-                                                                                                              AsyncState;
-                                                                                                  try
-                                                                                                  {
-                                                                                                      HttpWebResponse
-                                                                                                          response =
-                                                                                                              (
-                                                                                                              HttpWebResponse
-                                                                                                              )
-                                                                                                              requestStateResponse
-                                                                                                                  .
-                                                                                                                  EndGetResponse
-                                                                                                                  (asynchronousResultResponse);
-                                                                                                      var Location = "";
-                                                                                                      if (
-                                                                                                          response.
-                                                                                                              Headers[
-                                                                                                                  "Location"
-                                                                                                              ] != null)
-                                                                                                      {
-                                                                                                          Location =
-                                                                                                              response.
-                                                                                                                  Headers
-                                                                                                                  [
-                                                                                                                      "Location"
-                                                                                                                  ];
-                                                                                                      }
-                                                                                                      Stream
-                                                                                                          streamResponse
-                                                                                                              =
-                                                                                                              response.
-                                                                                                                  GetResponseStream
-                                                                                                                  ();
-                                                                                                      StreamReader
-                                                                                                          streamRead =
-                                                                                                              new StreamReader
-                                                                                                                  (streamResponse);
-                                                                                                      string
-                                                                                                          responseString
-                                                                                                              =
-                                                                                                              streamRead
-                                                                                                                  .
-                                                                                                                  ReadToEnd
-                                                                                                                  ();
-                                                                                                      streamResponse.
-                                                                                                          Close();
-                                                                                                      streamRead.Close();
-                                                                                                      response.Close();
-                                                                                                      onSuccess(
-                                                                                                          responseString);
-                                                                                                  }
-                                                                                                  catch (WebException e)
-                                                                                                  {
-                                                                                                      onError(e);
-                                                                                                  }
-                                                                                              }), requestStateRequest);
-                                                                }), request);
+            Thread thead = new Thread(delegate()
+            {
+                request.BeginGetRequestStream(new AsyncCallback(asynchronousResultRequest =>
+                {
+                    HttpWebRequest requestStateRequest = (HttpWebRequest)asynchronousResultRequest.AsyncState;
+                    Stream postStream = requestStateRequest.EndGetRequestStream(asynchronousResultRequest);
+                    byte[] byteArray = Encoding.UTF8.GetBytes(postData.ToUrlData());
+                    postStream.Write(byteArray, 0, byteArray.Length);
+                    postStream.Close();
+                    requestStateRequest.BeginGetResponse(new AsyncCallback(asynchronousResultResponse =>
+                    {
+                        HttpWebRequest requestStateResponse = (HttpWebRequest)asynchronousResultResponse.AsyncState;
+                        try
+                        {
+                            HttpWebResponse response = (HttpWebResponse)requestStateResponse.EndGetResponse(asynchronousResultResponse);
+                            var Location = "";
+                            if (response.Headers["Location"] != null)
+                            {
+                                Location = response.Headers["Location"];
+                            }
+                            Stream streamResponse = response.GetResponseStream();
+                            StreamReader streamRead = new StreamReader(streamResponse);
+                            string responseString = streamRead.ReadToEnd();
+                            streamResponse.Close();
+                            streamRead.Close();
+                            response.Close();
+                            onSuccess(responseString);
+                        }
+                        catch (WebException e)
+                        {
+                            onError(e);
+                        }
+                    }), requestStateRequest);
+                }), request);
+            });
+            thead.Start();
         }
 
         private void GetQuery(string URL, Dictionary<string, string> getData, CallBack onSuccess, CallBack onError)
@@ -570,29 +527,29 @@ namespace VK_Metro
             request.UserAgent =
                 "Mozilla/5.0 (Windows; U; Windows NT 6.0; ru; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729)";
             request.CookieContainer = this.cookie;
-            request.BeginGetResponse(new AsyncCallback(asynchronousResult =>
-                                                           {
-                                                               HttpWebRequest requestState =
-                                                                   (HttpWebRequest) asynchronousResult.AsyncState;
-                                                               try
-                                                               {
-                                                                   HttpWebResponse response =
-                                                                       (HttpWebResponse)
-                                                                       requestState.EndGetResponse(asynchronousResult);
-                                                                   Stream streamResponse = response.GetResponseStream();
-                                                                   StreamReader streamRead =
-                                                                       new StreamReader(streamResponse);
-                                                                   string responseString = streamRead.ReadToEnd();
-                                                                   streamResponse.Close();
-                                                                   streamRead.Close();
-                                                                   response.Close();
-                                                                   onSuccess(responseString);
-                                                               }
-                                                               catch (WebException e)
-                                                               {
-                                                                   onError(e);
-                                                               }
-                                                           }), request);
+            Thread thead = new Thread(delegate()
+            {
+                request.BeginGetResponse(new AsyncCallback(asynchronousResult =>
+                {
+                    HttpWebRequest requestState = (HttpWebRequest)asynchronousResult.AsyncState;
+                    try
+                    {
+                        HttpWebResponse response = (HttpWebResponse)requestState.EndGetResponse(asynchronousResult);
+                        Stream streamResponse = response.GetResponseStream();
+                        StreamReader streamRead = new StreamReader(streamResponse);
+                        string responseString = streamRead.ReadToEnd();
+                        streamResponse.Close();
+                        streamRead.Close();
+                        response.Close();
+                        onSuccess(responseString);
+                    }
+                    catch (WebException e)
+                    {
+                        onError(e);
+                    }
+                }), request);
+            });
+            thead.Start();
         }
 
         public void CheckOldSession(CallBack onSuccess, CallBack onError)
@@ -723,7 +680,7 @@ namespace VK_Metro
                             UpdatesArrived.Invoke(convertedResponse);
                         }
 
-                        //this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
+                        this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
                     },
                 res =>
                     {

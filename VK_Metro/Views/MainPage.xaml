@@ -96,7 +96,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock  Grid.Column="0" Grid.Row="0" Text="{Binding Message}" FontSize="20" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock  Grid.Column="0" Grid.Row="0" Text="{Binding Message}" FontSize="20" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" MaxHeight="55"/>
                                                 <TextBlock  Grid.Column="1" Grid.Row="0" Text="{Binding Date}" FontSize="20" Style="{StaticResource PhoneTextBlockBase}" HorizontalAlignment="Right"/>
                                             </Grid>
                                         </Grid>

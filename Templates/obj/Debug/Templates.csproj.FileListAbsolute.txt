@@ -1,0 +1,6 @@
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\Bin\Debug\Templates.dll
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\Bin\Debug\Templates.pdb
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\AudioTemplate.g.i.cs
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.g.resources
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.dll
+C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.pdb
