@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using Newtonsoft.Json;
-
-namespace VK_Metro
+﻿namespace VK_Metro
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +6,9 @@ namespace VK_Metro
     using System.IO.IsolatedStorage;
     using System.Net;
     using System.Text;
+    using System.Threading;
     using System.Windows.Threading;
+    using Newtonsoft.Json;
     using VK_Metro.Models;
 
     public delegate void UpdatesArrivedEventHandler(UpdateModel updates);
@@ -654,13 +653,13 @@ namespace VK_Metro
                 res =>
                     {
                         // Uncomment for test
-                        //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
+                        res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
                         //res = "{\"ts\":1753641594,\"updates\":[[1,1111222,768]]}";
 
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                         var j = decodedResponse["updates"];
 
-                        if (j.HasValues)
+                        if (j != null)
                         {
                             var convertedResponse = decodedResponse.ToObject<UpdateModel>();
 
@@ -678,9 +677,13 @@ namespace VK_Metro
                             }
 
                             UpdatesArrived.Invoke(convertedResponse);
+                            this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
+                        }
+                        else
+                        {
+                            this.ConnectToLongPoll();
                         }
 
-                        this.BeginReceivingFromLongPoll(server, key, decodedResponse["ts"].ToString());
                     },
                 res =>
                     {
@@ -705,7 +708,7 @@ namespace VK_Metro
                 sendData,
                 res =>
                     {
-                        res = "{\"response\":[2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602]}";
+                        //res = "{\"response\":[2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602]}";
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                         var requests = decodedResponse["response"];
                         var convertedRequests = JsonConvert.DeserializeObject<List<int>>(requests.ToString());
@@ -769,6 +772,72 @@ namespace VK_Metro
                    onError(res);
                }
                );
+        }
+
+        public void AddVkFriend(string uid, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/friends.add";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   { "access_token", this.access_token },
+                                   { "uid", uid }
+                               };
+            this.GetQuery(
+                url,
+                sendData,
+                res =>
+                    {
+                        var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                        var answer = decodedResponse["response"];
+                        if (answer == null)
+                        {
+                            onError(new object());
+                        }
+
+                        onSuccess(answer.ToString());
+                    },
+                res =>
+                    {
+                        onError(new object());
+                    });
+        }
+
+        public void DeleteVkFriend(string uid, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/friends.delete";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   { "access_token", this.access_token },
+                                   { "uid", uid }
+                               };
+            this.GetQuery(
+                url,
+                sendData,
+                res =>
+                {
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                    var answer = decodedResponse["response"];
+                    if (answer == null)
+                    {
+                        onError(new object());
+                    }
+
+                    onSuccess(answer.ToString());
+                },
+                res =>
+                {
+                    onError(new object());
+                });
         }
     }
 }

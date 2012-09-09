@@ -1,10 +1,9 @@
-﻿using System;
-using System.Net;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Net;
     using System.Windows.Navigation;
     using Microsoft.Phone.Controls;
     using VK_Metro.Models;
@@ -98,7 +97,8 @@ namespace VK_Metro.Views
             var selectedItem = (VKFriendModel)this.RequestsList.SelectedItem;
             //this.dataContext.CurrentContact = selectedItem;
             var querry = String.Format(
-                "?Request=&Name={0}&Photo={1}",
+                "?Request={0}&Name={1}&Photo={2}",
+                HttpUtility.UrlEncode(selectedItem.uid),
                 HttpUtility.UrlEncode(selectedItem.name),
                 HttpUtility.UrlEncode(selectedItem.photo_big)
                 );

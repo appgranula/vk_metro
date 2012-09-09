@@ -13,26 +13,6 @@
 
     public class MainPageModel : INotifyPropertyChanged
     {
-        public MainPageModel()
-        {
-            this.Init();
-        }
-
-        public void Init()
-        {
-            this.vkFriend = new ObservableCollection<VKFriendModel>();
-            this.vkUsers = new ObservableCollection<VKFriendModel>();
-            this.phoneContacts = new ObservableCollection<PhoneContactModel>();
-            this.vkMessage = new ObservableCollection<VKMessageModel>();
-            this.vkDialogs = new ObservableCollection<VKDialogModel>();
-            this.vkRequestsFriends = new ObservableCollection<VKFriendModel>();
-            this.possibleFriends = new ObservableCollection<VKFriendModel>();
-            this.IsDataLoaded = false;
-            this.FriendsRequests = 0;
-            this.UnreadMessages = 0;
-    
-        }
-
         private ObservableCollection<VKFriendModel> vkFriend;
         private ObservableCollection<PhoneContactModel> phoneContacts;
         private ObservableCollection<VKFriendModel> vkUsers;
@@ -41,6 +21,13 @@
         private int unreadMessages;
         private ObservableCollection<VKFriendModel> vkRequestsFriends;
         private ObservableCollection<VKFriendModel> possibleFriends;
+
+        public MainPageModel()
+        {
+            this.Init();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsDataLoaded { get; set; }
 
@@ -88,8 +75,13 @@
             }
         }
 
-        public int UnreadMessages { 
-            get { return this.unreadMessages; }
+        public int UnreadMessages 
+        { 
+            get
+            {
+                return this.unreadMessages;
+            }
+
             set 
             { 
                 this.unreadMessages = value;
@@ -167,6 +159,20 @@
             }
         }
 
+        public void Init()
+        {
+            this.vkFriend = new ObservableCollection<VKFriendModel>();
+            this.vkUsers = new ObservableCollection<VKFriendModel>();
+            this.phoneContacts = new ObservableCollection<PhoneContactModel>();
+            this.vkMessage = new ObservableCollection<VKMessageModel>();
+            this.vkDialogs = new ObservableCollection<VKDialogModel>();
+            this.vkRequestsFriends = new ObservableCollection<VKFriendModel>();
+            this.possibleFriends = new ObservableCollection<VKFriendModel>();
+            this.IsDataLoaded = false;
+            this.FriendsRequests = 0;
+            this.UnreadMessages = 0;
+        }
+
         public string GetPhoto(string uid)
         {
             foreach (var friend in vkFriend)
@@ -182,6 +188,7 @@
             this.GetUser(uid);
             return "";
         }
+
         public string GetName(string uid)
         {
             foreach (var friend in vkFriend)
@@ -189,14 +196,17 @@
                 if (friend.uid == uid)
                     return friend.name;
             }
+
             foreach (var user in vkUsers)
             {
                 if (user.uid == uid)
                     return user.name;
             }
+
             this.GetUser(uid);
             return "";
         }
+
         public bool GetOnline(string uid)
         {
             foreach (var friend in vkFriend)
@@ -204,16 +214,17 @@
                 if (friend.uid == uid)
                     return friend.online != "0";
             }
+
             foreach (var user in vkUsers)
             {
                 if (user.uid == uid)
                     return user.online != "0";
             }
+
             this.GetUser(uid);
             return false;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -228,19 +239,22 @@
 
         private void GetUser(string uid)
         {
-            App.VK.GetUser(uid, result =>
-            {
-                VKFriendModel user = (VKFriendModel)result;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+            App.VK.GetUser(
+                uid, 
+                result =>
                 {
-                    this.CheckUser(user);
-                    this.vkUsers.Add(user);
-                    this.NotifyPropertyChanged("VKMessage");
-                    this.NotifyPropertyChanged("VKDialogs");
+                    VKFriendModel user = (VKFriendModel)result;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        this.CheckUser(user);
+                        this.vkUsers.Add(user);
+                        this.NotifyPropertyChanged("VKMessage");
+                        this.NotifyPropertyChanged("VKDialogs");
+                    });
+                }, 
+                error =>
+                {
                 });
-            }, error =>
-            {
-            });
         }
 
         private void CheckUser(VKFriendModel user)
@@ -257,19 +271,62 @@
         /// <param name="vkFriends"></param>
         public void AddFriend(VKFriendModel[] vkFriends)
         {
+            if (this.vkFriend.Any())
+            {
+                this.vkFriend.Clear();
+            }
+
             foreach (var friend in vkFriends)
             {
                 this.CheckUser(friend);
                 this.vkFriend.Add(friend);
             }
+
             this.NotifyPropertyChanged("VKFriend");
+        }
+
+        public void RefreshFriendsList()
+        {
+            if (this.IsDataLoaded)
+            {
+                App.VK.GetUsers(
+                    result => Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        this.AddFriend((VKFriendModel[])result);
+                        foreach (var friend in this.vkFriend)
+                        {
+                            foreach (var vkRequestsFriend in this.vkRequestsFriends)
+                            {
+                                if (vkRequestsFriend.uid == friend.uid)
+                                {
+                                    this.vkRequestsFriends.Remove(vkRequestsFriend);
+                                    break;
+                                }
+                            }
+                        }
+
+                        this.NotifyPropertyChanged("FriendsRequests");
+                        this.NotifyPropertyChanged("RequestCountVisibility");
+                        this.NotifyPropertyChanged("VkFriendsRequests");
+                    }),
+                    error =>
+                    {
+                    });
+            }
+        }
+
+        public void RemoveRequestById(string uid)
+        {
+            this.vkRequestsFriends.Remove(x => x.uid == uid);
+            this.NotifyPropertyChanged("FriendsRequests");
+            this.NotifyPropertyChanged("RequestCountVisibility");
+            this.NotifyPropertyChanged("VkFriendsRequests");
         }
         
         /// <summary>
         /// Добавить контакты из телефона
         /// </summary>
         /// <param name="contacts"></param>
-
         public void AddContact(Contact[] contacts)
         {
             foreach (var friend in contacts)
@@ -317,6 +374,7 @@
                 this.vkMessage.Add(message);
             this.NotifyPropertyChanged("VKMessage");
         }
+
         public IEnumerable GetMessage(string uid)
         {
             return from item in this.vkMessage
@@ -324,6 +382,7 @@
                    orderby item.date
                    select item;
         } 
+
         public void AddDialog(VKMessageModel[] VKMessage)
         {
             foreach (var message in VKMessage)
