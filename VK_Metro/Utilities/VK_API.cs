@@ -709,7 +709,7 @@
                 res =>
                     {
                         //res = "{\"response\":[2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602]}";
-                        res = "{\"response\":[670025]}";
+                        //res = "{\"response\":[670025]}";
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                         var requests = decodedResponse["response"];
                         var convertedRequests = JsonConvert.DeserializeObject<List<int>>(requests.ToString());

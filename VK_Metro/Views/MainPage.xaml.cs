@@ -15,21 +15,18 @@
 
     public partial class MainPage : PhoneApplicationPage
     {
-        // Конструктор
         public MainPage()
         {
             InitializeComponent();
 
             this.dataContext = App.MainPageData;
             DataContext = this.dataContext;
-            // Задайте для контекста данных элемента управления listbox пример данных
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
             this.SynchronizeContactsGrid.Visibility=Visibility.Collapsed;
         }
 
         private MainPageModel dataContext;
 
-        // Загрузка данных для элементов ViewModel
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (!this.dataContext.IsDataLoaded)
@@ -54,7 +51,6 @@
                                         r =>
                                         {
                                         });
-
 
                                         this.dataContext.AddDialog((VKMessageModel[])result2);
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
@@ -182,7 +178,10 @@
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
                         }, error => { });
-                        this.dataContext.UnreadMessages += 1;
+                        if (!e.Flags.Unread)
+                        {
+                            this.dataContext.UnreadMessages += 1;
+                        }
                     });
         }
 
