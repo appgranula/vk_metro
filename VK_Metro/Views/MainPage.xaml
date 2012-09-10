@@ -154,7 +154,7 @@
                                               x:Name="Contacts" IsFlatList="False" ItemsSource="{Binding Path=VKFriend}"
                                               ItemTemplate="{StaticResource contactsData}"
                                               GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
-                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False">
+                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Tap="FriendList_Tap">
                         <toolkit:LongListSelector.GroupItemsPanel>
                             <ItemsPanelTemplate>
                                 <toolkit:WrapPanel Orientation="Horizontal"/>

@@ -195,5 +195,21 @@
         {
             this.GoToRequestsPage();
         }
+
+        private void FriendList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var selectedItem = (VKFriendModel)this.Contacts.SelectedItem;
+
+            var querry = String.Format(
+                "?ContactName={0}&Name={1}&Phone={2}&Photo={3}&Uid={4}", 
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(string.Empty),
+                HttpUtility.UrlEncode(selectedItem.photo_big),
+                HttpUtility.UrlEncode(selectedItem.uid)
+                );
+
+            this.GoToContactInfoPage(querry);
+        }
     }
 }

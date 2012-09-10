@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:WPExtensions="clr-namespace:WPExtensions;assembly=WPExtensions"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -61,7 +62,11 @@
                     <Button x:Name="AddFriendButton" Content="добавить" Width="240" Click="AddFriendButton_Click"></Button>
                     <Button x:Name="DeleteFriendButton" Content="отклонить" Width="240" Click="DeleteFriendButton_Click"></Button>
                 </StackPanel>
-            </Grid>
+        </Grid>
+        <!--<VisibilityToBooleanConverter></VisibilityToBooleanConverter>-->
+        <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="{Binding AppBarVisible}" IsMenuEnabled="True">
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="удалить из друзей" Click="DeleteFriendBar_Tap"/>
+        </WPExtensions:AdvancedApplicationBar>
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <!--<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>-->

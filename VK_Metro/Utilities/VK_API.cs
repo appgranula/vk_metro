@@ -85,7 +85,7 @@
                 string URL = "https://api.vk.com/method/friends.get";
                 Dictionary<string, string> sendData = new Dictionary<string, string>();
                 sendData.Add("access_token", access_token);
-                sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,online");
+                sendData.Add("fields", "uid,first_name,last_name,nickname,screen_name,sex,bdate,timezone,photo,photo_big,online");
                 sendData.Add("order", "hint");
                 this.GetQuery(URL, sendData, result =>
                                                  {
@@ -653,7 +653,7 @@
                 res =>
                     {
                         // Uncomment for test
-                        res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
+                        //res = "{\"ts\":1753641594,\"updates\":[[4,3,561,670025,1346214060,\" ... \",\"kj\",{\"attach1_type\":\"photo\",\"attach1\":\"670025_289067230\"}], [ 9, -23498, 1 ], [ 62, -23498, 123]]}";
                         //res = "{\"ts\":1753641594,\"updates\":[[1,1111222,768]]}";
 
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
@@ -709,6 +709,7 @@
                 res =>
                     {
                         //res = "{\"response\":[2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602,2399082,17347602,775654,670025,17347602]}";
+                        res = "{\"response\":[670025]}";
                         var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
                         var requests = decodedResponse["response"];
                         var convertedRequests = JsonConvert.DeserializeObject<List<int>>(requests.ToString());

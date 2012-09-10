@@ -11,7 +11,7 @@
     using Microsoft.Phone.Tasks;
     using Microsoft.Phone.UserData;
 
-    public partial class ContactInfo : PhoneApplicationPage
+    public partial class ContactInfo : PhoneApplicationPage, INotifyPropertyChanged
     {
         private string uid;
 
@@ -22,6 +22,8 @@
             this.Picture = new BitmapImage(new Uri("/VK_Metro;component/Images/Photo_Placeholder.png", UriKind.RelativeOrAbsolute));
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string VkName { get; set; }
 
         public string ContactName { get; set; }
@@ -30,14 +32,17 @@
 
         public BitmapImage Picture { get; set; }
 
+        public bool AppBarVisible
+        {
+            get { return this.RegistredUserInfo.Visibility == Visibility.Visible; }
+        }
+
         public Visibility CallButtonVisibility
         {
             get
             {
                 return this.Phone == string.Empty ? Visibility.Collapsed : Visibility.Visible;
             }
-
-            private set { }
         }
 
         private void CallButtonTap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -69,9 +74,21 @@
                     this.ShowUnRegistredUserInfo();
                 }
 
-                var cons = new Contacts();
-                cons.SearchCompleted += this.Contacts_SearchCompleted;
-                cons.SearchAsync(this.Phone, FilterKind.PhoneNumber, "Contacts Test #1");
+                if (!parameters.ContainsKey("Photo"))
+                {
+                    var cons = new Contacts();
+                    cons.SearchCompleted += this.Contacts_SearchCompleted;
+                    cons.SearchAsync(this.Phone, FilterKind.PhoneNumber, "Contacts Test #1");
+                }
+                else
+                {
+                    this.Picture = new BitmapImage(new Uri(HttpUtility.UrlDecode(parameters["Photo"])));
+                }
+
+                if (parameters.ContainsKey("Uid"))
+                {
+                    this.uid = HttpUtility.UrlDecode(parameters["Uid"]);
+                }
             }
 
             if (parameters.ContainsKey("Request"))
@@ -92,6 +109,7 @@
             this.RequestInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
             this.RegistredUserInfo.Visibility = Visibility.Visible;
+            this.NotifyPropertyChanged("AppBarVisible");
         }
 
         private void ShowUnRegistredUserInfo()
@@ -100,6 +118,7 @@
             this.RequestInfo.Visibility = Visibility.Collapsed;
             this.RegistredUserInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Visible;
+            this.NotifyPropertyChanged("AppBarVisible");
         }
 
         private void ShowRequestInfo()
@@ -108,6 +127,7 @@
             this.RequestInfo.Visibility = Visibility.Visible;
             this.RegistredUserInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
+            this.NotifyPropertyChanged("AppBarVisible");
         }
 
         private void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
@@ -120,7 +140,6 @@
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -170,6 +189,27 @@
                 res =>
                 {
                 });
+        }
+
+        private void DeleteFriendBar_Tap(object sender, EventArgs e)
+        {
+            App.VK.DeleteVkFriend(
+                this.uid,
+                res =>
+                {
+                    if ((string)res == "1")
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(
+                            () =>
+                            {
+                                App.MainPageData.RefreshFriendsList();
+                                NavigationService.GoBack();
+                            });
+                    }
+                },
+                res =>
+                {
+            });
         }
     }
 }
