@@ -27,7 +27,7 @@
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="МОЕ ПРИЛОЖЕНИЕ" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding UserName}" Style="{StaticResource PhoneTextNormalStyle}" FontWeight="Normal" FontFamily="Segoe WP Semibold" FontSize="30" />
             <TextBlock x:Name="PageTitle" Text="{Binding UIN}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 

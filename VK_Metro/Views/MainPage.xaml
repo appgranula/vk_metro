@@ -116,7 +116,7 @@
                 <Grid x:Name="ContactsPanel">
                     <Grid.Resources>
                         <DataTemplate x:Key="contactsData">
-                            <StackPanel Margin="12,12,0,0" Orientation="Horizontal">
+                            <StackPanel Margin="12,12,0,0" Orientation="Horizontal" Hold="StackPanel_Hold">
                                 <Image Width="60" Height="60" Source="{Binding Path=photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
                                 <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="34" />
                             </StackPanel>
@@ -154,7 +154,7 @@
                                               x:Name="Contacts" IsFlatList="False" ItemsSource="{Binding Path=VKFriend}"
                                               ItemTemplate="{StaticResource contactsData}"
                                               GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
-                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Tap="FriendList_Tap">
+                                              GroupItemTemplate="{StaticResource groupItemTemplate}" DisplayAllGroups="False" Tap="FriendList_Tap" Hold="ContactsPanel_Hold">
                         <toolkit:LongListSelector.GroupItemsPanel>
                             <ItemsPanelTemplate>
                                 <toolkit:WrapPanel Orientation="Horizontal"/>

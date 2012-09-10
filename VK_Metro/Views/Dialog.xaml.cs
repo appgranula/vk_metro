@@ -21,7 +21,10 @@
         }
 
         public string UID { get; private set; }
+
         public IEnumerable Items { get; private set; }
+
+        public string UserName { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,9 +42,11 @@
             if (parameters.ContainsKey("UID"))
             {
                 this.UID = parameters["UID"];
+                this.UserName = parameters["Name"].ToUpper();
                 this.NotifyPropertyChanged("UID");
                 this.Items = App.MainPageData.GetMessage(this.UID);
                 this.NotifyPropertyChanged("Items");
+                this.NotifyPropertyChanged("UserName");
             } 
             base.OnNavigatedTo(args);
         }

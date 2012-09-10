@@ -165,7 +165,7 @@
         {
             var item = (VKDialogModel)((Grid)sender).DataContext;
             string destination = "/Views/Dialog.xaml";
-            destination += String.Format("?UID={0}", item.UID);
+            destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
 
@@ -198,15 +198,39 @@
         private void FriendList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var selectedItem = (VKFriendModel)this.Contacts.SelectedItem;
+            var uid = selectedItem.uid;
+            string destination = "/Views/Dialog.xaml";
+            destination += String.Format("?UID={0}&Name={1}", uid, selectedItem.name);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+        }
 
+        private void ContactsPanel_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //var selectedItem = (VKFriendModel)this.Contacts.SelectedItem;
+            
+            //var querry = String.Format(
+            //    "?ContactName={0}&Name={1}&Phone={2}&Photo={3}&Uid={4}",
+            //    HttpUtility.UrlEncode(selectedItem.name),
+            //    HttpUtility.UrlEncode(selectedItem.name),
+            //    HttpUtility.UrlEncode(string.Empty),
+            //    HttpUtility.UrlEncode(selectedItem.photo_big),
+            //    HttpUtility.UrlEncode(selectedItem.uid)
+            //    );
+
+            //this.GoToContactInfoPage(querry);
+        }
+
+        private void StackPanel_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var selectedItem = (sender as StackPanel).DataContext as VKFriendModel;
             var querry = String.Format(
-                "?ContactName={0}&Name={1}&Phone={2}&Photo={3}&Uid={4}", 
+                "?ContactName={0}&Name={1}&Phone={2}&Photo={3}&Uid={4}",
                 HttpUtility.UrlEncode(selectedItem.name),
                 HttpUtility.UrlEncode(selectedItem.name),
                 HttpUtility.UrlEncode(string.Empty),
                 HttpUtility.UrlEncode(selectedItem.photo_big),
                 HttpUtility.UrlEncode(selectedItem.uid)
-                );
+            );
 
             this.GoToContactInfoPage(querry);
         }

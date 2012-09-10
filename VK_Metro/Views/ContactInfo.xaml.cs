@@ -1,4 +1,7 @@
-﻿namespace VK_Metro.Views
+﻿using System.Windows.Controls;
+using VK_Metro.Models;
+
+namespace VK_Metro.Views
 {
     using System;
     using System.Collections.Generic;
@@ -210,6 +213,15 @@
                 res =>
                 {
             });
+        }
+
+        private void SendMessageButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //var item = (VKDialogModel)((Grid)sender).DataContext;
+            //var dialog = App.MainPageData.VKDialogs
+            //string destination = "/Views/Dialog.xaml";
+            //destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
+            //NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
     }
 }
