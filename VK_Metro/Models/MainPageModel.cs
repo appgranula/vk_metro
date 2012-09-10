@@ -352,6 +352,10 @@
             this.NotifyPropertyChanged("PhoneContacts");
         }
 
+        /// <summary>
+        /// Дополняет список телефонных контактов
+        /// </summary>
+        /// <param name="vkContacts"></param>
         public void AddVkNameToContacts(List<Dictionary<string, string>> vkContacts)
         {
             foreach (var contact in vkContacts)
@@ -362,6 +366,7 @@
                     if (phoneContact.phone == vkPhone)
                     {
                         phoneContact.vkName = contact["first_name"] + " " + contact["last_name"];
+                        phoneContact.uid = contact["uid"];
                     }
                 }
             }

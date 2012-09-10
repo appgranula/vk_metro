@@ -798,6 +798,7 @@
                         if (answer == null)
                         {
                             onError(new object());
+                            return;
                         }
 
                         onSuccess(answer.ToString());
@@ -830,7 +831,8 @@
                     var answer = decodedResponse["response"];
                     if (answer == null)
                     {
-                        onError(new object());
+                            onError(new object());
+                        return;
                     }
 
                     onSuccess(answer.ToString());

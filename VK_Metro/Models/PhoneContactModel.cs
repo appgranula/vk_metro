@@ -6,6 +6,9 @@ namespace VK_Metro.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class PhoneContactModel
     {
+        [JsonProperty("uid")]
+        public string uid { get; set; }
+
         [JsonProperty("first_name")]
         public string first_name { get; set; }
 

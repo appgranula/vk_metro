@@ -145,12 +145,12 @@
         private void PhoneContactsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var selectedItem = (PhoneContactModel) this.PhoneContactsList.SelectedItem;
-            //this.dataContext.CurrentContact = selectedItem;
             var querry = String.Format(
-                "?ContactName={0}&Name={1}&Phone={2}", 
+                "?ContactName={0}&Name={1}&Phone={2}&Uid={3}", 
                 HttpUtility.UrlEncode(selectedItem.name),
                 HttpUtility.UrlEncode(selectedItem.vkName),
-                HttpUtility.UrlEncode(selectedItem.phone)
+                HttpUtility.UrlEncode(selectedItem.phone),
+                HttpUtility.UrlEncode(selectedItem.uid)
                 );
             this.GoToContactInfoPage(querry);
         }

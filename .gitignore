@@ -4,3 +4,5 @@ VK_Metro.suo
 _ReSharper.VK_Metro
 VK_Metro/Settings.StyleCop
 VK_Metro/StyleCop.Cache
+Templates/Bin
+Templates/obj
