@@ -178,7 +178,7 @@
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
                         }, error => { });
-                        if (!e.Flags.Unread)
+                        if (!e.Flags.Outbox)
                         {
                             this.dataContext.UnreadMessages += 1;
                         }
@@ -233,6 +233,11 @@
             );
 
             this.GoToContactInfoPage(querry);
+        }
+
+        private void NewMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.PivotApp.SelectedIndex = 0;
         }
     }
 }
