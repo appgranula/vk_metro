@@ -40,7 +40,19 @@ namespace VK_Metro.Models
             return result;
         } }
         public bool Online { get { return App.MainPageData.GetOnline(vkMessage.uid); } }
-        public bool Read { get { return true; } }
+
+        public bool Read
+        {
+            get
+            {
+                return this.vkMessage.read_state != "0";
+            }
+            set 
+            {
+                this.vkMessage.read_state = !value ? "0" : "1";
+            }
+        }
+
         public string unixDate
         {
             get
@@ -48,6 +60,25 @@ namespace VK_Metro.Models
                 return vkMessage.date;
             }
         }
+
+        public SolidColorBrush MessageTextColor
+        {
+            get
+            {
+                if (!this.Read)
+                {
+                    var darkVisibility = (Visibility) Application.Current.Resources["PhoneDarkThemeVisibility"];
+                    if (darkVisibility == Visibility.Visible)
+                    {
+                        return (SolidColorBrush) Application.Current.Resources["PhoneAccentBrush"];
+                    }
+                    //return new SolidColorBrush(Colors.Transparent);
+                    return new SolidColorBrush((Color) Application.Current.Resources["PhoneAccentBrush"]);
+                }
+                return (SolidColorBrush)Application.Current.Resources["PhoneForegroundBrush"];
+            }
+        }
+
         private string AddZero(int num)
         {
             if (num >= 0 && num <= 9)
