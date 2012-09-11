@@ -842,5 +842,39 @@
                     onError(new object());
                 });
         }
+
+        private void MarkAsRead(string mids, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/messages.markAsRead";
+            var sendData = new Dictionary<string, string>
+                               {
+                                   { "access_token", this.access_token },
+                                   { "mids", mids }
+                               };
+            this.GetQuery(
+                url,
+                sendData,
+                res =>
+                {
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                    var answer = decodedResponse["response"];
+                    if (answer == null)
+                    {
+                        onError(new object());
+                        return;
+                    }
+
+                    onSuccess(answer.ToString());
+                },
+                res =>
+                {
+                    onError(new object());
+                });
+        }
     }
 }
