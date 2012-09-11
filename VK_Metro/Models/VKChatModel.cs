@@ -1,20 +1,10 @@
 ﻿namespace VK_Metro.Models
 {
-    using System;
-    using System.Net;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Ink;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Shapes;
     using Newtonsoft.Json;
+
     [JsonObject(MemberSerialization.OptIn)]
     public class VKChatModel
     {
-
             [JsonProperty("type")]
             public string type { get; set; }
 
@@ -39,22 +29,29 @@
             [JsonProperty("users")]
             public string[] users { get; set; }
 
-            public string Photo { get {
-                if (uid != null) {
-                    return App.MainPageData.GetPhoto(uid); 
-                }
-                return App.MainPageData.GetPhoto(users[0]);
-                
-            } }
-            public string Title {
-                get {
-                    if (last_name != null) {
-                        return first_name + " " + last_name;
+            public string Photo 
+            { 
+                get 
+                {
+                    if (this.uid != null) 
+                    {
+                        return App.MainPageData.GetPhoto(uid); 
                     }
-                    return title;
+                    return App.MainPageData.GetPhoto(users[0]);
                 }
             }
 
+            public string Title 
+            {
+                get 
+                {
+                    if (this.last_name != null) 
+                    {
+                        return this.first_name + " " + this.last_name;
+                    }
+
+                    return this.title;
+                }
+            }
     }
 }
-

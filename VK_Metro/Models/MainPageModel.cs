@@ -1,6 +1,4 @@
-﻿using System.Collections.Specialized;
-
-namespace VK_Metro.Models
+﻿namespace VK_Metro.Models
 {
     using System;
     using System.Collections;
@@ -395,13 +393,20 @@ namespace VK_Metro.Models
                    orderby item.date
                    select item;
         }
-        public VKMessageModel GetMessageByMid(string mid) {
-            foreach (var message in vkMessage) {
+
+        public VKMessageModel GetMessageByMid(string mid) 
+        {
+            foreach (var message in vkMessage) 
+            {
                 if (message.mid == mid)
+                {
                     return message;
+                }
             }
+
             return null;
         }
+
         public void AddDialog(VKMessageModel[] VKMessage)
         {
             foreach (var message in VKMessage)
