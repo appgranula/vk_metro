@@ -164,10 +164,7 @@
         private void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var item = (VKDialogModel)((Grid)sender).DataContext;
-            dataContext.MarkDialogAsRead(item);
-            string destination = "/Views/Dialog.xaml";
-            destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
-            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+            this.GoToDialogPage(item);
         }
 
         private void onMessageReceive(object sender, VkMessageEventArgs e)
@@ -189,6 +186,14 @@
         private void GoToRequestsPage()
         {
             NavigationService.Navigate(new Uri("/Views/FriendsRequests.xaml", UriKind.Relative));
+        }
+
+        private void GoToDialogPage(VKDialogModel item)
+        {
+            //dataContext.MarkDialogAsRead(item);
+            var destination = "/Views/Dialog.xaml";
+            destination += string.Format("?UID={0}&Name={1}&mid={2}", item.UID, item.Name, item.Mid);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
 
         private void RequestsStackPanel_Tap(object sender, System.Windows.Input.GestureEventArgs e)

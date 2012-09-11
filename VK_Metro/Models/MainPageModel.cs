@@ -27,12 +27,6 @@
             this.Init();
         }
 
-        public void MarkDialogAsRead(VKDialogModel dialog)
-        {
-            dialog.Read = true;
-            this.NotifyPropertyChanged("VKDialogs");
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsDataLoaded { get; set; }
@@ -89,8 +83,8 @@
             }
 
             set 
-            { 
-                this.unreadMessages = value;
+            {
+                this.unreadMessages = value > 0 ? value : 0;
                 this.NotifyPropertyChanged("UnreadMessages");
                 this.NotifyPropertyChanged("MessageCounterVisibility");
             } 
@@ -481,6 +475,19 @@
                 }, error =>
                 {
                 });
+        }
+
+        public void MarkDialogAsRead(VKDialogModel dialog)
+        {
+            dialog.Read = true;
+            this.NotifyPropertyChanged("VKDialogs");
+        }
+
+        public void MarkDialogAsReadByMid(string mid)
+        {
+            var dialog = this.vkDialogs.Where(x => x.Mid == mid);
+            dialog.First().Read = true;
+            this.NotifyPropertyChanged("VKDialogs");
         }
     }
 }

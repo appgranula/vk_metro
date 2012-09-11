@@ -28,6 +28,8 @@
 
         public string UID { get; private set; }
 
+        public string Mid { get; set; }
+
         public IEnumerable Items { get; private set; }
 
         public string UserName { get; private set; }
@@ -47,6 +49,7 @@
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs args)
         {
             IDictionary<string, string> parameters = this.NavigationContext.QueryString;
@@ -63,12 +66,11 @@
                 if (parameters.ContainsKey("mid"))
                 {
                     scrollToMessage = App.MainPageData.GetMessageByMid(parameters["mid"]);
+                    this.Mid = parameters["mid"];
                 }
+                this.MarkMessagesAsRead();
             }
- 
-
             base.OnNavigatedTo(args);
-            
         }
 
         void MainPageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -82,6 +84,46 @@
                     UpdateLayout();
                     ListMessages.ScrollIntoView(ListMessages.Items.Last());
                 });
+            }
+        }
+
+        private void MarkMessagesAsRead()
+        {
+            if (this.Items == null)
+            {
+                return;
+            }
+
+            var readedMessagesMids = string.Empty;
+            var count = 0;
+            foreach (var item in this.Items)
+            {
+                var message = item as VKMessageModel;
+                if (message.read_state == "0")
+                {
+                    message.read_state = "1";
+                    readedMessagesMids += message.mid + ",";
+                    count++;
+                }
+            }
+
+            if (count > 0)
+            {
+                readedMessagesMids = readedMessagesMids.Remove(readedMessagesMids.LastIndexOf(","));
+                App.VK.MarkAsRead(
+                    readedMessagesMids,
+                    res =>
+                    {
+                        if (res.ToString() == "1")
+                        {
+                            App.MainPageData.MarkDialogAsReadByMid(this.Mid);
+                            App.MainPageData.UnreadMessages -= count;
+                        }
+                    },
+                    res =>
+                    {
+                    });
+                //App.MainPageData.MarkDialogAsReadByMid(this.Mid);
             }
         }
 
@@ -124,6 +166,7 @@
         {
             ((ListBox)sender).SelectedIndex = -1;
         }
+
         void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(() =>

@@ -890,7 +890,7 @@
                 });
         }
 
-        private void MarkAsRead(string mids, CallBack onSuccess, CallBack onError)
+        public void MarkAsRead(string mids, CallBack onSuccess, CallBack onError)
         {
             if (!this.connected)
             {
