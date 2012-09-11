@@ -386,8 +386,14 @@
                    where item.uid == uid
                    orderby item.date
                    select item;
-        } 
-
+        }
+        public VKMessageModel GetMessageByMid(string mid) {
+            foreach (var message in vkMessage) {
+                if (message.mid == mid)
+                    return message;
+            }
+            return null;
+        }
         public void AddDialog(VKMessageModel[] VKMessage)
         {
             foreach (var message in VKMessage)

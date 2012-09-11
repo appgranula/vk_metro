@@ -234,5 +234,11 @@
 
             this.GoToContactInfoPage(querry);
         }
+
+        private void searchMessageButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SearchMessage.xaml", UriKind.Relative));
+        }
+       
     }
 }

@@ -1,0 +1,108 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="VK_Metro.Views.SearchMessage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot содержит корневую сетку, где размещается все содержимое страницы-->
+    <Grid x:Name="LayoutRoot">
+        <controls:Pivot x:Name="PivotApp">
+            <controls:Pivot.TitleTemplate>
+                <DataTemplate>
+                    <TextBox Height="72" HorizontalAlignment="Center" 
+                           Name="SearchTextBox" Text="" VerticalAlignment="Top" Width="460"
+                           KeyUp="SearchTextBox_KeyUp" />
+                </DataTemplate>
+            </controls:Pivot.TitleTemplate>
+            <controls:PivotItem Header="сообщения">
+                <Grid>
+                    <ListBox ItemsSource="{Binding VKMessages}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                
+                                <Grid Margin="12,0,0,12" Tap="Grid_Tap">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="12"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="1"  Width="60" Height="60" Source="{Binding Photo}" Stretch="Uniform" VerticalAlignment="Top"/>
+                                    </Grid>
+                                    <Grid  Grid.Column="1" Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0" TextWrapping="NoWrap"/>
+                                        <Grid Grid.Column="0" Grid.Row="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Column="0" Grid.Row="2">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock  Grid.Column="0" Grid.Row="0" Text="{Binding Message}" FontSize="20" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" MaxHeight="55"/>
+                                                <TextBlock  Grid.Column="1" Grid.Row="0" Text="{Binding Date}" FontSize="20" Style="{StaticResource PhoneTextBlockBase}" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+            <controls:PivotItem Header="диалоги">
+                <Grid>
+                    <ListBox ItemsSource="{Binding VKChats}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="12,0,0,12" Tap="ChatGrid_Tap">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="12"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="1"  Width="60" Height="60" Source="{Binding Photo}" Stretch="Uniform" VerticalAlignment="Top"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1" Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Title}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+</phone:PhoneApplicationPage>

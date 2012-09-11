@@ -13,11 +13,13 @@
 
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
+        private VKMessageModel scrollToMessage;
         public Dialog()
         {
             InitializeComponent();
             this.DataContext = this;
             App.MainPageData.PropertyChanged += new PropertyChangedEventHandler(MainPageData_PropertyChanged);
+            Loaded += new RoutedEventHandler(OnPageLoaded);
         }
 
         public string UID { get; private set; }
@@ -47,8 +49,13 @@
                 this.Items = App.MainPageData.GetMessage(this.UID);
                 this.NotifyPropertyChanged("Items");
                 this.NotifyPropertyChanged("UserName");
-            } 
+                if (parameters.ContainsKey("mid"))
+                {
+                    scrollToMessage = App.MainPageData.GetMessageByMid(parameters["mid"]);
+                }
+            }
             base.OnNavigatedTo(args);
+            
         }
 
         void MainPageData_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -103,6 +110,15 @@
         private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ((ListBox)sender).SelectedIndex = -1;
+        }
+        void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                this.ListMessages.ScrollIntoView(scrollToMessage);
+                ListBoxItem listBoxItem = (ListBoxItem)this.ListMessages.ItemContainerGenerator.ContainerFromItem(scrollToMessage);
+                scrollToMessage = null;
+            });
         }
 
     }

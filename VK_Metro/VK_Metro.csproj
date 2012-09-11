@@ -103,7 +103,9 @@
     <Compile Include="Models\GroupFriends.cs" />
     <Compile Include="Models\MainPageModel.cs" />
     <Compile Include="Models\PhoneContactModel.cs" />
+    <Compile Include="Models\SearchMessagesModel.cs" />
     <Compile Include="Models\VKAttachmentModel.cs" />
+    <Compile Include="Models\VKChatModel.cs" />
     <Compile Include="Models\VKDialogModel.cs" />
     <Compile Include="Models\VKDocModel.cs" />
     <Compile Include="Models\VKMessageModel.cs" />
@@ -145,6 +147,9 @@
     <Compile Include="Views\Captcha.xaml.cs">
       <DependentUpon>Captcha.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SearchMessage.xaml.cs">
+      <DependentUpon>SearchMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -178,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

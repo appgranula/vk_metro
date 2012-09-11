@@ -107,7 +107,8 @@
                     </ListBox>
                     <WPExtensions:AdvancedApplicationBarIconButton Text="Создать" IconUri="/icons/appbar.add.rest.png"/>
                     <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton x:Name="searchMessageButton" Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png" 
+                                                                   Click="searchMessageButton_Click"/>
                 </Grid>
             </controls:PivotItem>
 

@@ -23,6 +23,8 @@ namespace VK_Metro.Models
         public string Name { get { return App.MainPageData.GetName(vkMessage.uid); } }
         public string Photo { get { return App.MainPageData.GetPhoto(vkMessage.uid); } }
         public string Message { get { return Regex.Replace(vkMessage.body.Replace("<br>", "\n"), "\\<[^\\>]+\\>", ""); } }
+        public VKMessageModel VKMessage { get { return vkMessage; } }
+        public string Mid { get { return vkMessage.mid; } }
         public string Date { get {
             var dateStr = vkMessage.date;
             var dateInt = Convert.ToInt64(dateStr);

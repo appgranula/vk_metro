@@ -4,3 +4,9 @@ C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debu
 C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.g.resources
 C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.dll
 C:\Users\ravil\Documents\Visual Studio 2010\Projects\VK_Metro\Templates\obj\Debug\Templates.pdb
+C:\MyWorkspace\vk_metro\Templates\Bin\Debug\Templates.dll
+C:\MyWorkspace\vk_metro\Templates\Bin\Debug\Templates.pdb
+C:\MyWorkspace\vk_metro\Templates\obj\Debug\AudioTemplate.g.i.cs
+C:\MyWorkspace\vk_metro\Templates\obj\Debug\Templates.g.resources
+C:\MyWorkspace\vk_metro\Templates\obj\Debug\Templates.dll
+C:\MyWorkspace\vk_metro\Templates\obj\Debug\Templates.pdb

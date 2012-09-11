@@ -442,7 +442,54 @@
                 }
             }, onError);
         }
-
+        public void GetMessagesWithFilter(string query, CallBack onSuccess, CallBack onError) 
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.search";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("q",query);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    obj["response"].First.Remove();
+                    VKMessageModel[] messages = obj["response"].ToObject<VKMessageModel[]>();
+                    onSuccess(messages);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+        public void GetChatsWithFilter(string query, CallBack onSuccess, CallBack onError) 
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.searchDialogs";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("q", query);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    //obj["response"].First.Remove();
+                    VKChatModel[] chats = obj["response"].ToObject<VKChatModel[]>();
+                    onSuccess(chats);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
         public void SendMessage(string uid, string message, CallBack onSuccess, CallBack onError)
         {
             if (!this.connected) return;
