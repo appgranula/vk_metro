@@ -111,6 +111,11 @@ namespace VK_Metro.Models
             }
         }
 
+        public bool Online
+        {
+            get { return this.online != "0"; }
+        }
+
         public string name
         {
             get

@@ -9,6 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:WPExtensions="clr-namespace:WPExtensions;assembly=WPExtensions"
+    xmlns:Converters="clr-namespace:WP7Contrib.View.Controls.Converters;assembly=WP7Contrib.View.Controls"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -17,8 +18,12 @@
     shell:SystemTray.IsVisible="True"
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
     >
-
-    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Converters:BooleanToVisibilityConverter x:Key="bvc" />
+    </phone:PhoneApplicationPage.Resources>
+    
+        <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent" >
         <!--Элемент управления Pivot-->
         <controls:Pivot x:Name="PivotApp">
@@ -85,9 +90,11 @@
                                         <Grid Grid.Column="0" Grid.Row="1">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="42"/>
+                                                <Ellipse Grid.Column="1" Grid.Row="0" Fill="#FFB8B8B8" Width="10" Height="10" Visibility="{Binding Online, Converter={StaticResource bvc}}"/>
                                             </Grid>
                                         </Grid>
                                         <Grid Grid.Column="0" Grid.Row="2">
@@ -119,6 +126,7 @@
                             <StackPanel Margin="12,12,0,0" Orientation="Horizontal" Hold="StackPanel_Hold">
                                 <Image Width="60" Height="60" Source="{Binding Path=photo}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform"/>
                                 <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="34" />
+                                <Ellipse Fill="#FFB8B8B8" Width="10" Height="10" Visibility="{Binding Path=Online, Converter={StaticResource bvc}}" HorizontalAlignment="Right"/>
                             </StackPanel>
                         </DataTemplate>
 
