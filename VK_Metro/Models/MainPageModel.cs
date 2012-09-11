@@ -1,4 +1,6 @@
-﻿namespace VK_Metro.Models
+﻿using System.Collections.Specialized;
+
+namespace VK_Metro.Models
 {
     using System;
     using System.Collections;
@@ -25,6 +27,12 @@
         public MainPageModel()
         {
             this.Init();
+        }
+
+        public void MarkDialogAsRead(VKDialogModel dialog)
+        {
+            dialog.Read = true;
+            this.NotifyPropertyChanged("VKDialogs");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

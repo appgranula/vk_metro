@@ -13,7 +13,11 @@
 
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
+
         private VKMessageModel scrollToMessage;
+
+        private bool online;
+
         public Dialog()
         {
             InitializeComponent();
@@ -27,6 +31,11 @@
         public IEnumerable Items { get; private set; }
 
         public string UserName { get; private set; }
+
+        public Visibility OnlineVisibility 
+        {
+            get { return this.online ? Visibility.Visible : Visibility.Collapsed; }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -49,11 +58,15 @@
                 this.Items = App.MainPageData.GetMessage(this.UID);
                 this.NotifyPropertyChanged("Items");
                 this.NotifyPropertyChanged("UserName");
+                this.online = App.MainPageData.GetOnline(this.UID);
+                this.NotifyPropertyChanged("OnlineVisibility");
                 if (parameters.ContainsKey("mid"))
                 {
                     scrollToMessage = App.MainPageData.GetMessageByMid(parameters["mid"]);
                 }
             }
+ 
+
             base.OnNavigatedTo(args);
             
         }

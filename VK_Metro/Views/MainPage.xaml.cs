@@ -164,6 +164,7 @@
         private void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var item = (VKDialogModel)((Grid)sender).DataContext;
+            dataContext.MarkDialogAsRead(item);
             string destination = "/Views/Dialog.xaml";
             destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
@@ -178,7 +179,7 @@
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
                         }, error => { });
-                        if (!e.Flags.Unread)
+                        if (!e.Flags.Outbox)
                         {
                             this.dataContext.UnreadMessages += 1;
                         }
@@ -240,5 +241,10 @@
             NavigationService.Navigate(new Uri("/Views/SearchMessage.xaml", UriKind.Relative));
         }
        
+        private void NewMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.PivotApp.SelectedIndex = 0;
+        }
+
     }
 }
