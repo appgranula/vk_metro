@@ -54,6 +54,8 @@
 
                                         this.dataContext.AddDialog((VKMessageModel[])result2);
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
+
+                                        //NavigationService.Navigate(new Uri("/Views/Attachments.xaml", UriKind.Relative));
                                     });
                                 }, error2 => { });
                             });

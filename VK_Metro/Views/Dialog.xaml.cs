@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
+using Microsoft.Phone.Tasks;
 
 namespace VK_Metro.Views
 {
@@ -25,6 +26,7 @@ namespace VK_Metro.Views
         {
             InitializeComponent();
             this.DataContext = this;
+            
             App.MainPageData.PropertyChanged += new PropertyChangedEventHandler(MainPageData_PropertyChanged);
             Loaded += new RoutedEventHandler(OnPageLoaded);
         }
@@ -188,11 +190,24 @@ namespace VK_Metro.Views
             });
         }
 
-        private void SendAppBar_Tap(object sender, EventArgs e)
+        private void SendAppBar_Click(object sender, EventArgs e)
         {
             this.SendMessage(this.MessageText);
         }
 
+        private void AttachPictureBarIconButton_Click(object sender, EventArgs e)
+        {
+            PhotoChooserTask photo = new PhotoChooserTask();
+            photo.Completed += this.ChooserTask_Completed;
+            photo.ShowCamera = true;
+
+            photo.Show();
+        }
+
+        private void ChooserTask_Completed(object sender, PhotoResult e)
+        {
+            int i = 8;
+        }
     }
 
     public class MessageContentPresenter : ContentControl
@@ -210,7 +225,7 @@ namespace VK_Metro.Views
         {
             var phoneThemeBrush = (SolidColorBrush) Resources["PhoneAccentBrush"];
             var darkenPhoneColorBrush = Darken(phoneThemeBrush.Color, 0.2).ToString();
-var q = 0x123F;
+
             base.OnContentChanged(oldContent, newContent);
             VKMessageModel message = newContent as VKMessageModel;
             string xaml =
