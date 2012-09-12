@@ -67,8 +67,10 @@
                 {
                     scrollToMessage = App.MainPageData.GetMessageByMid(parameters["mid"]);
                     this.Mid = parameters["mid"];
+                    this.MarkMessagesAsRead();
                 }
                 this.MarkMessagesAsRead();
+
             }
             base.OnNavigatedTo(args);
         }
@@ -116,7 +118,7 @@
                     {
                         if (res.ToString() == "1")
                         {
-                            App.MainPageData.MarkDialogAsReadByMid(this.Mid);
+                            App.MainPageData.MarkDialogAsReadByUid(this.UID);
                             App.MainPageData.UnreadMessages -= count;
                         }
                     },

@@ -485,7 +485,14 @@
 
         public void MarkDialogAsReadByMid(string mid)
         {
-            var dialog = this.vkDialogs.Where(x => x.Mid == mid);
+            //var dialog = this.vkDialogs.Where(x => x.Mid == mid);
+            //dialog.First().Read = true;
+            //this.NotifyPropertyChanged("VKDialogs");
+        }
+
+        public void MarkDialogAsReadByUid(string uid)
+        {
+            var dialog = this.vkDialogs.Where(x => x.UID == uid);
             dialog.First().Read = true;
             this.NotifyPropertyChanged("VKDialogs");
         }

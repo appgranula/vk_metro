@@ -192,7 +192,7 @@
         {
             //dataContext.MarkDialogAsRead(item);
             var destination = "/Views/Dialog.xaml";
-            destination += string.Format("?UID={0}&Name={1}&mid={2}", item.UID, item.Name, item.Mid);
+            destination += string.Format("?UID={0}&Name={1}", item.UID, item.Name);
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
 
