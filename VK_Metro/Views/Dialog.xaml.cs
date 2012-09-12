@@ -1,4 +1,7 @@
-﻿namespace VK_Metro.Views
+﻿using System;
+using System.Windows.Media;
+
+namespace VK_Metro.Views
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -67,8 +70,10 @@
                 {
                     scrollToMessage = App.MainPageData.GetMessageByMid(parameters["mid"]);
                     this.Mid = parameters["mid"];
+                    this.MarkMessagesAsRead();
                 }
                 this.MarkMessagesAsRead();
+
             }
             base.OnNavigatedTo(args);
         }
@@ -116,7 +121,7 @@
                     {
                         if (res.ToString() == "1")
                         {
-                            App.MainPageData.MarkDialogAsReadByMid(this.Mid);
+                            App.MainPageData.MarkDialogAsReadByUid(this.UID);
                             App.MainPageData.UnreadMessages -= count;
                         }
                     },
@@ -151,15 +156,21 @@
             var textBox = (TextBox)sender;
             if ((e.Key == System.Windows.Input.Key.Enter || e.PlatformKeyCode == 10) && textBox.Text.Length != 0)
             {
-                App.VK.SendMessage(this.UID, textBox.Text, result =>
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        textBox.Text = "";
-                    });
-                }, error => {
-                });
+                this.SendMessage(textBox);
             }
+        }
+
+        private void SendMessage(TextBox textBox)
+        {
+            App.VK.SendMessage(this.UID, textBox.Text, result =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    textBox.Text = "";
+                });
+            }, error =>
+            {
+            });
         }
 
         private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -177,12 +188,29 @@
             });
         }
 
+        private void SendAppBar_Tap(object sender, EventArgs e)
+        {
+            this.SendMessage(this.MessageText);
+        }
+
     }
 
     public class MessageContentPresenter : ContentControl
     {
+        private static Color Darken(Color inColor, double inAmount)
+        {
+            return Color.FromArgb(
+              inColor.A,
+              (byte)Math.Max(0, inColor.R - 255 * inAmount),
+              (byte)Math.Max(0, inColor.G - 255 * inAmount),
+              (byte)Math.Max(0, inColor.B - 255 * inAmount));
+        }
+
         protected override void OnContentChanged(object oldContent, object newContent)
         {
+            var phoneThemeBrush = (SolidColorBrush) Resources["PhoneAccentBrush"];
+            var darkenPhoneColorBrush = Darken(phoneThemeBrush.Color, 0.2).ToString();
+var q = 0x123F;
             base.OnContentChanged(oldContent, newContent);
             VKMessageModel message = newContent as VKMessageModel;
             string xaml =
@@ -214,7 +242,7 @@
             else
             {   //MeTemplate
                 xaml += "<Grid Margin='115, 10, 5, 0' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
-                            "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='0' Grid.RowSpan='2'/>" +
+                            "<Rectangle Fill='" + darkenPhoneColorBrush + "' Grid.Row='0' Grid.RowSpan='2'/>" +
                             "<StackPanel Grid.Row='0' Orientation='Vertical'>" +
                                 "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
                                            "Margin='10,5,10,0'/>";
@@ -225,7 +253,7 @@
                 xaml += "</StackPanel>" +
                             "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='1'/>" +
-                            "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
+                            "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='" + darkenPhoneColorBrush + "' " +
                                   "Margin='0,0,5,0' HorizontalAlignment='Right' Grid.Row='2'/>" +
                         "</Grid>";
             }
