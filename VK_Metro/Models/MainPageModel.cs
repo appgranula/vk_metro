@@ -127,6 +127,11 @@
             }
         }
 
+        public ObservableCollection<VKFriendModel> VKFriends 
+        {
+            get { return this.vkFriend; }
+        }
+
         public IEnumerable VKFriend
         { 
             get
@@ -147,6 +152,10 @@
                        orderby n.Key
                        select new GroupFriends<string, PhoneContactModel>(n);
             }
+        }
+
+        public ObservableCollection<PhoneContactModel> PhoneContactsCollection {
+            get { return this.phoneContacts; }
         }
 
         public IEnumerable VKDialogs

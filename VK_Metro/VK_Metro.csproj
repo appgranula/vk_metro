@@ -150,6 +150,12 @@
     <Compile Include="Views\Captcha.xaml.cs">
       <DependentUpon>Captcha.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SearchContacts.xaml.cs">
+      <DependentUpon>SearchContacts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchFriends.xaml.cs">
+      <DependentUpon>SearchFriends.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchMessage.xaml.cs">
       <DependentUpon>SearchMessage.xaml</DependentUpon>
     </Compile>
@@ -190,6 +196,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchContacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchFriends.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

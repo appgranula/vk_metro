@@ -253,5 +253,16 @@
             this.PivotApp.SelectedIndex = 0;
         }
 
+        private void SearchFriendsButton_Click(object sender, EventArgs e)
+        {
+            if(this.dataContext.IsDataLoaded)
+                NavigationService.Navigate(new Uri("/Views/SearchFriends.xaml", UriKind.Relative));
+        }
+
+        private void ContactsSearchButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SearchContacts.xaml", UriKind.Relative));
+        }
+
     }
 }

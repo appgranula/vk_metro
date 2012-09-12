@@ -5,15 +5,21 @@
     using System.Windows.Input;
     using Microsoft.Phone.Controls;
     using VK_Metro.Models;
+    using System.Windows.Threading;
 
     public partial class SearchMessage : PhoneApplicationPage
     {
         private static SearchMessagesModel searchdata = null;
-
+        private DispatcherTimer dispatcherTimer;
+        private string currentSearchText;
         public SearchMessage()
         {
             this.InitializeComponent();
             this.DataContext = SearchData;
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            dispatcherTimer.Tick += new EventHandler(TimerTick);
+
         }
 
         public static SearchMessagesModel SearchData
@@ -48,15 +54,21 @@
         
         private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            var searchBox = (TextBox)sender;
+            currentSearchText = ((TextBox)sender).Text;
+            dispatcherTimer.Stop();
+            dispatcherTimer.Start();
+        }
+        private void TimerTick(object sender, EventArgs e) 
+        {
             if (PivotApp.SelectedIndex == 0)
             {
-                SearchData.GetMessagesWithFilter(searchBox.Text);
+                SearchData.GetMessagesWithFilter(currentSearchText);
             }
             else
             {
-                SearchData.GetChatsWithFilter(searchBox.Text);
+                SearchData.GetChatsWithFilter(currentSearchText);
             }
+            dispatcherTimer.Stop();
         }
     }
 }
