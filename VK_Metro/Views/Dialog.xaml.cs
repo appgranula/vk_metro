@@ -156,15 +156,21 @@ namespace VK_Metro.Views
             var textBox = (TextBox)sender;
             if ((e.Key == System.Windows.Input.Key.Enter || e.PlatformKeyCode == 10) && textBox.Text.Length != 0)
             {
-                App.VK.SendMessage(this.UID, textBox.Text, result =>
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        textBox.Text = "";
-                    });
-                }, error => {
-                });
+                this.SendMessage(textBox);
             }
+        }
+
+        private void SendMessage(TextBox textBox)
+        {
+            App.VK.SendMessage(this.UID, textBox.Text, result =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    textBox.Text = "";
+                });
+            }, error =>
+            {
+            });
         }
 
         private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -180,6 +186,11 @@ namespace VK_Metro.Views
                 ListBoxItem listBoxItem = (ListBoxItem)this.ListMessages.ItemContainerGenerator.ContainerFromItem(scrollToMessage);
                 scrollToMessage = null;
             });
+        }
+
+        private void SendAppBar_Tap(object sender, EventArgs e)
+        {
+            this.SendMessage(this.MessageText);
         }
 
     }

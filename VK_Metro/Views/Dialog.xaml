@@ -110,7 +110,7 @@
             </Border>
         </Grid>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarIconButton Text="отправить" IconUri="/icons/appbar.send.text.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="отправить" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Tap"/>
             <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png"/>
             <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить карту" IconUri="/icons/appbar.checkin.rest.png"/>
             <WPExtensions:AdvancedApplicationBarIconButton Text="выбрать" IconUri="/icons/appbar.manage.rest.png"/>
