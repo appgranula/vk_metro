@@ -170,7 +170,7 @@
                             </ItemsPanelTemplate>
                         </toolkit:LongListSelector.GroupItemsPanel>
                     </toolkit:LongListSelector>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" x:Name="SearchFriendsButton" IconUri="/icons/appbar.feature.search.rest.png" Click="SearchFriendsButton_Click"/>
                     <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
                 </Grid>
             </controls:PivotItem>

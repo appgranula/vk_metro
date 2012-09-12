@@ -127,6 +127,11 @@
             }
         }
 
+        public ObservableCollection<VKFriendModel> VKFriends 
+        {
+            get { return this.vkFriend; }
+        }
+
         public IEnumerable VKFriend
         { 
             get
