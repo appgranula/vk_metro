@@ -134,7 +134,7 @@ namespace VK_Metro.Models
         {
             get 
             {
-                return VKFriendModel.Translite(name);
+                return name.Translite();
             }
         }
     }
