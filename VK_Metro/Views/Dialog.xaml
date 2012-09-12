@@ -18,6 +18,10 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <SolidColorBrush x:Key="BrushIn" Color="#5381ac" />
+        <Color x:Key="colorOut">#FF222222</Color>
+    </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
