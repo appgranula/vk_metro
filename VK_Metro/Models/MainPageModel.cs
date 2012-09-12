@@ -154,6 +154,10 @@
             }
         }
 
+        public ObservableCollection<PhoneContactModel> PhoneContactsCollection {
+            get { return this.phoneContacts; }
+        }
+
         public IEnumerable VKDialogs
         {
             get

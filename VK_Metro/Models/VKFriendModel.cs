@@ -158,7 +158,7 @@ namespace VK_Metro.Models
             get{ return Translite(name);}
         }
         public int hint { get; set; }
-        private string Translite(string str)
+        public static string Translite(string str)
         {
             FillTranslitDictionary();
             if (str.Length > 0)
@@ -181,7 +181,7 @@ namespace VK_Metro.Models
             }
             return str;
         }
-        private void FillTranslitDictionary()
+        private static void FillTranslitDictionary()
         {
             if (translit.Count == 0)
             {

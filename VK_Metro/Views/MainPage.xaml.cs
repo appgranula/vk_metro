@@ -257,5 +257,10 @@
                 NavigationService.Navigate(new Uri("/Views/SearchFriends.xaml", UriKind.Relative));
         }
 
+        private void ContactsSearchButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SearchContacts.xaml", UriKind.Relative));
+        }
+
     }
 }

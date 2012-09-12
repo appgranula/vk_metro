@@ -129,5 +129,13 @@ namespace VK_Metro.Models
                     return "#";
             }
         }
+
+        public string transliteName 
+        {
+            get 
+            {
+                return VKFriendModel.Translite(name);
+            }
+        }
     }
 }
