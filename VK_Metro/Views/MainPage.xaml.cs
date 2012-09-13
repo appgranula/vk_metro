@@ -12,6 +12,7 @@
     using Microsoft.Phone.UserData;
     using VK_Metro.Models;
     using VK_Metro.Utilities;
+    using System.Windows.Navigation;
 
     public partial class MainPage : PhoneApplicationPage
     {
@@ -67,6 +68,12 @@
                 //this.lpListener.Start();
             }
             //this.synchronizeButton_Click(new object(), new RoutedEventArgs());
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs args)
+        {
+            UpdateLayout();
+            base.OnNavigatedTo(args);
         }
 
         private void AdvancedApplicationBarMenuItem_Click(object sender, System.EventArgs e)

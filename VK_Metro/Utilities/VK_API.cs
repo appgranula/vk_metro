@@ -480,6 +480,30 @@
                 }
             }, onError);
         }
+
+        public void DeleteMessages(string mids, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.delete";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("mids", mids);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    onSuccess(new object());
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+
         public void GetMessagesWithFilter(string query, CallBack onSuccess, CallBack onError) 
         {
             if (!this.connected) return;

@@ -397,6 +397,29 @@
                    select item;
         }
 
+        public void RemoveMessage(VKMessageModel message)
+        {
+            this.vkMessage.Remove(message);
+            var messages = from item in this.vkMessage
+                           where item.uid == message.uid
+                           orderby item.date
+                           select item;
+
+            VKMessageModel lastMessage = null;
+            if (messages.Count() != 0)
+            {
+                lastMessage = messages.Last() as VKMessageModel;
+            }
+            else
+            {
+                lastMessage = message;
+                lastMessage.body = "";
+            }
+                           
+            AddDialog(new VKMessageModel[]{lastMessage});
+            this.NotifyPropertyChanged("VKDialogs");
+        }
+
         public VKMessageModel GetMessageByMid(string mid) 
         {
             foreach (var message in vkMessage) 

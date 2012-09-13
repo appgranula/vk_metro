@@ -89,7 +89,10 @@ namespace VK_Metro.Views
                     this.Items = App.MainPageData.GetMessage(this.UID);
                     this.NotifyPropertyChanged("Items");
                     UpdateLayout();
-                    ListMessages.ScrollIntoView(ListMessages.Items.Last());
+                    if (ListMessages.Items.Count != 0)
+                    {
+                        ListMessages.ScrollIntoView(ListMessages.Items.Last());
+                    }
                 });
             }
         }
@@ -207,6 +210,39 @@ namespace VK_Metro.Views
         private void ChooserTask_Completed(object sender, PhotoResult e)
         {
             int i = 8;
+        }
+
+        private void ListMessages_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            VKMessageModel message = (sender as MenuItem).DataContext as VKMessageModel;
+       
+            App.VK.DeleteMessages(
+                message.mid,
+                res => Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.MainPageData.RemoveMessage(message);
+                    this.Items = App.MainPageData.GetMessage(this.UID);
+                    NotifyPropertyChanged("Items");
+                }),
+                err => 
+                {
+                });
+        }
+
+        private void ResendItem_Click(object sender, RoutedEventArgs e)
+        {
+            VKMessageModel message = (sender as MenuItem).DataContext as VKMessageModel;
+        }
+
+        private void CopyItem_Click(object sender, RoutedEventArgs e)
+        {
+            VKMessageModel message = (sender as MenuItem).DataContext as VKMessageModel;
+            Clipboard.SetText(message.body);
         }
     }
 
