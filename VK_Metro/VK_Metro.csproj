@@ -126,6 +126,9 @@
     <Compile Include="Utilities\VkMessageEventArgs.cs" />
     <Compile Include="Utilities\VkUserOfflineEventArgs.cs" />
     <Compile Include="Utilities\VK_API.cs" />
+    <Compile Include="Views\Attachments.xaml.cs">
+      <DependentUpon>Attachments.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
@@ -165,6 +168,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Views\Attachments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Authorization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -228,7 +235,7 @@
     <Content Include="icons\appbar.attachments-8.rest.png" />
     <Content Include="icons\appbar.attachments-9.rest.png" />
     <Content Include="icons\appbar.basecircle.rest.png" />
-    <Content Include="icons\appbar.cancel.rest.png" />
+    <Resource Include="icons\appbar.cancel.rest.png" />
     <Content Include="icons\appbar.checkin.rest.png" />
     <Content Include="icons\appbar.delete.rest.png" />
     <Content Include="icons\appbar.feature.camera.rest.png" />
@@ -242,6 +249,7 @@
     <Content Include="icons\appbar.send.text.rest.png" />
     <Content Include="icons\appbar.transport.pause.rest.png" />
     <Content Include="icons\appbar.transport.play.rest.png" />
+    <Resource Include="Images\808753_019.jpg" />
     <Content Include="Images\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -252,6 +260,7 @@
     <Resource Include="Images\dark\Requests_Icon.png" />
     <Resource Include="Images\dark\UnreadMessages_Icon.png" />
     <Resource Include="Images\light\UnreadMessages_Icon_Light.png" />
+    <Resource Include="Images\fuckyou.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
