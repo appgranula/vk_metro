@@ -104,5 +104,10 @@
                 );
             this.GoToContactInfoPage(querry);
         }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SearchGlobal.xaml?FRIENDS=true&CONTACTS=true&OTHERS=true", UriKind.Relative));
+        }
     }
 }
