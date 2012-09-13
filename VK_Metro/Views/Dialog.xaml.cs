@@ -7,8 +7,10 @@ namespace VK_Metro.Views
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using Microsoft.Phone.Controls;
     using VK_Metro.Models;
@@ -164,7 +166,7 @@ namespace VK_Metro.Views
 
         private void SendMessage(TextBox textBox)
         {
-            App.VK.SendMessage(this.UID, textBox.Text, result =>
+            App.VK.SendMessage(this.UID, textBox.Text, null, result =>
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
@@ -197,11 +199,42 @@ namespace VK_Metro.Views
 
         private void AttachPictureBarIconButton_Click(object sender, EventArgs e)
         {
-            PhotoChooserTask photo = new PhotoChooserTask();
-            photo.Completed += this.ChooserTask_Completed;
-            photo.ShowCamera = true;
+            App.VK.GetMessagesUploadServer(res =>
+            {
 
-            photo.Show();
+                PhotoChooserTask photo = new PhotoChooserTask();
+                photo.Completed +=
+                    (o, photoResult) =>
+                    {
+                        if (photoResult.TaskResult == TaskResult.Cancel)
+                        {
+                            return;
+                        }
+                        var im = new BitmapImage();
+                        im.CreateOptions = BitmapCreateOptions.None;
+                        im.SetSource(photoResult.ChosenPhoto);
+                        var wb = new WriteableBitmap(im);
+                        //var param = Convert.ToBase64String(App.VK.MakeBytesFromImage(new WriteableBitmap(im)));
+                        var ms = new MemoryStream();
+                        wb.SaveJpeg(ms, wb.PixelWidth, wb.PixelHeight, 0, 100);
+                        var myBytes = ms.ToArray();
+
+                        App.VK.UploadPhotoToServer(
+                            res.ToString(),
+                            myBytes,
+                            uploadPhotoresult =>
+                            {
+                                int pzshas = 9;
+                            },
+                            uploadPhotoresult =>
+                            {
+
+                            });
+                    };
+                photo.ShowCamera = true;
+                photo.Show();
+            },
+            res => { });
         }
 
         private void ChooserTask_Completed(object sender, PhotoResult e)

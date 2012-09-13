@@ -532,8 +532,9 @@ namespace VK_Metro
                 }
             }, onError);
         }
-        public void SendMessage(string uid, string message, CallBack onSuccess, CallBack onError)
+        public void SendMessage(string uid, string message, string attachment, CallBack onSuccess, CallBack onError)
         {
+            //attachment = "photo146877606_287611987";
             if (!this.connected) return;
             var access_token = this.access_token;
             string URL = "https://api.vk.com/method/messages.send";
@@ -541,6 +542,11 @@ namespace VK_Metro
             sendData.Add("access_token", access_token);
             sendData.Add("uid", uid);
             sendData.Add("message", message);
+            if (attachment != null)
+            {
+                sendData.Add("attachment", attachment);    
+            }
+
             this.GetQuery(URL, sendData, result =>
             {
                 var responseString = (string)result;
@@ -778,7 +784,9 @@ namespace VK_Metro
                     },
                 res =>
                     {
+                        //int I = 9;
                         // DO_SOMETHING
+                        this.ConnectToLongPoll();
                     });
         }
 
