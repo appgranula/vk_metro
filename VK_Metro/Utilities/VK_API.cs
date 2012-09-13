@@ -152,6 +152,44 @@
                                                     });
         }
 
+        public void SearchUsers(string query, CallBack onSuccess, CallBack onError) 
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/users.search";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("q",query);
+            sendData.Add("fields", "uid,first_name,last_name,photo");
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj =
+                    Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    obj["response"].First.Remove();
+                    VKFriendModel[] friends =
+                        obj["response"].ToObject<VKFriendModel[]>();
+                    if (friends.Length == 1)
+                    {
+                        onSuccess(friends[0]);
+                    }
+                    else
+                    {
+                        onSuccess(friends);
+                    }
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, error =>
+            {
+                onError(error);
+            });
+        }
+
         public void SignUp(string nummberPhone, string firstName, string lastName, CallBack onSuccess, CallBack onError)
         {
             var sendData = new Dictionary<string, string>

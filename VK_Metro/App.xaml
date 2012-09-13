@@ -10,7 +10,7 @@
         <Style x:Key="ListBoxItemStyleStretch" TargetType="ListBoxItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <!--<Setter Property="VerticalContentAlignment" Value="Stretch"/>-->
         </Style>
     </Application.Resources>
 

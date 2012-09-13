@@ -254,12 +254,12 @@
         private void SearchFriendsButton_Click(object sender, EventArgs e)
         {
             if(this.dataContext.IsDataLoaded)
-                NavigationService.Navigate(new Uri("/Views/SearchFriends.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Views/SearchGlobal.xaml?FRIENDS=true&CONTACTS=true", UriKind.Relative));
         }
 
         private void ContactsSearchButton_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/SearchContacts.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/SearchGlobal.xaml?CONTACTS=true", UriKind.Relative));
         }
 
     }
