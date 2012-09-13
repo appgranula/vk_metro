@@ -1,12 +1,11 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-
-namespace VK_Metro
+﻿namespace VK_Metro
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Text;
+
     public static class Extensions
     {
         public static string ToUrlData(this Dictionary<string, string> dict)

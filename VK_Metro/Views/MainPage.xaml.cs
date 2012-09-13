@@ -1,4 +1,9 @@
-﻿namespace VK_Metro.Views
+﻿using System.IO;
+using System.Text;
+using System.Windows.Media.Imaging;
+using Microsoft.Phone.Tasks;
+
+namespace VK_Metro.Views
 {
     using System;
     using System.Collections.Generic;
@@ -56,6 +61,43 @@
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
 
                                         //NavigationService.Navigate(new Uri("/Views/Attachments.xaml", UriKind.Relative));
+                                        App.VK.GetMessagesUploadServer(res =>
+                                        {
+                                            
+                                            PhotoChooserTask photo = new PhotoChooserTask();
+                                            photo.Completed +=
+                                                (o, photoResult) =>
+                                                    {
+                                                        if (photoResult.TaskResult == TaskResult.Cancel)
+                                                        {
+                                                            return;
+                                                        }
+                                                        var im = new BitmapImage();
+                                                        im.CreateOptions = BitmapCreateOptions.None;
+                                                        im.SetSource(photoResult.ChosenPhoto);
+                                                        var wb = new WriteableBitmap(im);
+                                                        //var param = Convert.ToBase64String(App.VK.MakeBytesFromImage(new WriteableBitmap(im)));
+                                                        var ms = new MemoryStream();
+                                                        wb.SaveJpeg(ms, wb.PixelWidth, wb.PixelHeight, 0, 100);
+                                                        var myBytes = ms.ToArray();
+
+                                                        App.VK.UploadPhotoToServer(
+                                                            res.ToString(),
+                                                            myBytes,
+                                                            uploadPhotoresult =>
+                                                                {
+                                                                    int pzshas = 9;
+                                                                },
+                                                            uploadPhotoresult =>
+                                                            {
+                                                                                                               
+                                                            });
+                                                    };
+                                            photo.ShowCamera = true;
+                                            photo.Show();
+                                        },
+                                        res => {});
+
                                     });
                                 }, error2 => { });
                             });
