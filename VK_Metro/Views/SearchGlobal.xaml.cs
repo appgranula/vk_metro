@@ -154,7 +154,16 @@
 
         private void OtherList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var selectedItem = (VKFriendModel)this.OtherList.SelectedItem;
+            //this.dataContext.CurrentContact = selectedItem;
+            var querry = String.Format(
+                "?Uid={0}&Name={1}&Photo={2}&AddFriend={3}",
+                HttpUtility.UrlEncode(selectedItem.uid),
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(selectedItem.photo_big),
+                HttpUtility.UrlEncode("true")
+                );
+            NavigationService.Navigate(new Uri("/Views/ContactInfo.xaml" + querry, UriKind.Relative));
         }
 
         private void GetGlobalUsers(string query) 

@@ -160,7 +160,7 @@
             Dictionary<string, string> sendData = new Dictionary<string, string>();
             sendData.Add("access_token", access_token);
             sendData.Add("q",query);
-            sendData.Add("fields", "uid,first_name,last_name,photo");
+            sendData.Add("fields", "uid,first_name,last_name,photo,photo_big");
             this.GetQuery(URL, sendData, result =>
             {
                 var responseString = (string)result;

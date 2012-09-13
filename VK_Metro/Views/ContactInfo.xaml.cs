@@ -103,6 +103,18 @@ namespace VK_Metro.Views
                 this.ShowRequestInfo();
             }
 
+            if (parameters.ContainsKey("AddFriend")) 
+            {
+                this.VkName = HttpUtility.UrlDecode(parameters["Name"]);
+                this.Picture = new BitmapImage(new Uri(HttpUtility.UrlDecode(parameters["Photo"])));
+                this.ContactName = this.VkName;
+                if (parameters.ContainsKey("Uid"))
+                {
+                    this.uid = HttpUtility.UrlDecode(parameters["Uid"]);
+                }
+                this.ShowAddFriend();
+            }
+
             base.OnNavigatedTo(e);
         }
 
@@ -112,6 +124,7 @@ namespace VK_Metro.Views
             this.RequestInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
             this.RegistredUserInfo.Visibility = Visibility.Visible;
+            this.AddFriend.Visibility = Visibility.Collapsed;
             this.NotifyPropertyChanged("AppBarVisible");
         }
 
@@ -121,6 +134,7 @@ namespace VK_Metro.Views
             this.RequestInfo.Visibility = Visibility.Collapsed;
             this.RegistredUserInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Visible;
+            this.AddFriend.Visibility = Visibility.Collapsed;
             this.NotifyPropertyChanged("AppBarVisible");
         }
 
@@ -130,9 +144,25 @@ namespace VK_Metro.Views
             this.RequestInfo.Visibility = Visibility.Visible;
             this.RegistredUserInfo.Visibility = Visibility.Collapsed;
             this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
+            this.AddFriend.Visibility = Visibility.Collapsed;
             this.NotifyPropertyChanged("AppBarVisible");
         }
 
+        private void ShowAddFriend()
+        {
+            this.RequestPageTitle.Visibility = Visibility.Collapsed;
+            this.RequestInfo.Visibility = Visibility.Collapsed;
+            this.RegistredUserInfo.Visibility = Visibility.Collapsed;
+            this.NonRegistredUserInfo.Visibility = Visibility.Collapsed;
+            this.AddFriend.Visibility = Visibility.Visible;
+            this.NotifyPropertyChanged("AppBarVisible");
+        }
+
+        private void ShowRequestSend() 
+        {
+            this.AddFriendButton.Visibility = Visibility.Collapsed;
+            this.AddFriendRequestText.Visibility = Visibility.Visible;
+        }
         private void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
         {
             var contacts = e.Results.ToArray();
@@ -152,7 +182,7 @@ namespace VK_Metro.Views
             }
         }
 
-        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        private void ConfirmFriendButton_Click(object sender, RoutedEventArgs e)
         {
             App.VK.AddVkFriend(
                 this.uid, 
@@ -222,6 +252,24 @@ namespace VK_Metro.Views
             //string destination = "/Views/Dialog.xaml";
             //destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
             //NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+        }
+
+        private void AddFriendButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) 
+        {
+            App.VK.AddVkFriend(
+                this.uid,
+                res =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(
+                        () =>
+                        {
+                            this.ShowRequestSend();
+                        });
+                 
+                },
+                res =>
+                {
+                });
         }
     }
 }
