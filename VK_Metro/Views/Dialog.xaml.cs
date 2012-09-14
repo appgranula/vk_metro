@@ -35,7 +35,11 @@ namespace VK_Metro.Views
             set
             {
                 numberOfAttachments = value;
-                
+                (this.bar.ButtonItems.First() as AdvancedApplicationBarIconButton).Visibility = Visibility.Collapsed;
+                this.NotifyPropertyChanged("ManageAttachmentsVisibility");
+                this.NotifyPropertyChanged("ImageIconVisibility");
+                this.NotifyPropertyChanged("ManageAttachmentsIconUri");
+                (this.bar.ButtonItems.First() as AdvancedApplicationBarIconButton).Visibility = Visibility.Visible;
             }
         }
 
@@ -80,7 +84,11 @@ namespace VK_Metro.Views
         {
             get
             {
-                return "/icons/appbar.attachments-" + this.numberOfAttachments + ".rest.png";
+                if (this.numberOfAttachments > 0)
+                {
+                    return "/icons/appbar.attachments-" + this.numberOfAttachments + ".rest.png";
+                }
+                return "/icons/appbar.attachments-1.rest.png";
             }
         }
         public string UID { get; private set; }
@@ -131,9 +139,9 @@ namespace VK_Metro.Views
             }
 
             this.NumberOfAttachments = App.Attachments.Count;
-            this.NotifyPropertyChanged("ImageIconVisibility");
-            this.NotifyPropertyChanged("ManageAttachmentsVisibility");
-            this.NotifyPropertyChanged("ManageAttachmentsIconUri");
+            //this.NotifyPropertyChanged("ManageAttachmentsVisibility");
+            //this.NotifyPropertyChanged("ImageIconVisibility");
+            //this.NotifyPropertyChanged("ManageAttachmentsIconUri");
             base.OnNavigatedTo(args);
         }
 
@@ -293,9 +301,9 @@ namespace VK_Metro.Views
                 this.MessageText.Text = "";
                 App.Attachments.Clear();
                 this.NumberOfAttachments = 0;
-                this.NotifyPropertyChanged("ImageIconVisibility");
-                this.NotifyPropertyChanged("ManageAttachmentsVisibility");
-                this.NotifyPropertyChanged("ManageAttachmentsIconUri");
+                //this.NotifyPropertyChanged("ImageIconVisibility");
+                //this.NotifyPropertyChanged("ManageAttachmentsVisibility");
+                //this.NotifyPropertyChanged("ManageAttachmentsIconUri");
                 UpdateLayout();
             });
         }
@@ -348,9 +356,9 @@ namespace VK_Metro.Views
                             App.Attachments.Clear();
                             App.Attachments.Add(newBitmapImage);
                             this.NumberOfAttachments++;
-                            this.NotifyPropertyChanged("ImageIconVisibility");
-                            this.NotifyPropertyChanged("ManageAttachmentsVisibility");
-                            this.NotifyPropertyChanged("ManageAttachmentsIconUri");
+                            //this.NotifyPropertyChanged("ImageIconVisibility");
+                            //this.NotifyPropertyChanged("ManageAttachmentsVisibility");
+                            //this.NotifyPropertyChanged("ManageAttachmentsIconUri");
                             //this.attachmentsImage.Add(new BitmapImage(new Uri(photoResult.OriginalFileName)));
                             //var newImage =
                                 //new BitmapImage(new Uri("/VK_Metro;component/Images/deactivated_c.png", UriKind.Relative));
