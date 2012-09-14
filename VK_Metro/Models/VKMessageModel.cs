@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace VK_Metro.Models
 {
@@ -35,7 +36,7 @@ namespace VK_Metro.Models
         public VKAttachmentModel[] attachments { get; set; }
 
         [JsonProperty("fwd_messages")]
-        public string fwd_messages { get; set; }
+        public List<object> fwd_messages { get; set; }
 
         [JsonProperty("chat_id")]
         public string chat_id { get; set; }
@@ -51,6 +52,8 @@ namespace VK_Metro.Models
 
         [JsonProperty("deleted")]
         public string deleted { get; set; }
+
+        
 
         public string Date
         {

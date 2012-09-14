@@ -58,6 +58,32 @@ namespace VK_Metro
             }
             return str;
         }
+
+        public static string ParseDate(this string str)
+        {
+            var dateStr = str;
+            var dateInt = Convert.ToInt64(dateStr);
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var d = origin.AddSeconds(dateInt).ToLocalTime();
+            var cur = DateTime.Today.ToLocalTime();
+            var razn = d.Date - cur;
+            var result = "";
+            if (razn.Days == 0)
+                result = AddZero(d.Hour) + ":" + AddZero(d.Minute);
+            else if (razn.Days == -1)
+                result = "вчера";
+            else
+                result = AddZero(d.Day) + "." + AddZero(d.Month);
+            return result;
+        }
+
+        private static string AddZero(int num)
+        {
+            if (num >= 0 && num <= 9)
+                return "0" + num.ToString();
+            return num.ToString();
+        }
+
         private static void FillTranslitDictionary()
         {
             if (translit.Count == 0)

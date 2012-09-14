@@ -237,6 +237,9 @@ namespace VK_Metro.Views
         private void ResendItem_Click(object sender, RoutedEventArgs e)
         {
             VKMessageModel message = (sender as MenuItem).DataContext as VKMessageModel;
+            var destination = "/Views/FriendsCheck.xaml";
+            destination += string.Format("?mids={0}", message.mid);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
 
         private void CopyItem_Click(object sender, RoutedEventArgs e)
@@ -284,9 +287,37 @@ namespace VK_Metro.Views
                     {
                         xaml += "<src:AudioTemplate Source='" + attachment.audio.url + "' Performer='" + attachment.audio.performer + "' Title='" + attachment.audio.title + "'/>";
                     }
+                if (message.fwd_messages != null)
+                {
+                    foreach (Dictionary<string, string> fwdmsg in message.fwd_messages)
+                    {
+                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='пересланное сообщение'/>" +
+                                "<Grid> " +
+                                    "<Grid.ColumnDefinitions>" +
+                                        "<ColumnDefinition Width='Auto'/>" +
+                                        "<ColumnDefinition Width='Auto'/>" +
+                                        "<ColumnDefinition Width='*'/>" +
+                                    "</Grid.ColumnDefinitions>" +
+                                    "<Path Grid.Column='0' Stretch='Fill' Stroke='Black' StrokeThickness='3' Opacity='0.6'  Width='22' Height='45' Data='M0,0 L0,1' />" +
+                                    "<Image Margin='0,0,10,0' Grid.Column='1' Width='40' Height='40' HorizontalAlignment='Left' Source='" + App.MainPageData.GetPhoto(fwdmsg["uid"]) + "'/>" +
+                                    "<Grid Grid.Column='2'>" +
+                                        "<Grid.RowDefinitions>" +
+                                            "<RowDefinition Height='Auto'/>" +
+                                            "<RowDefinition Height='*'/>" +
+                                        "</Grid.RowDefinitions>" +
+                                        "<StackPanel Grid.Row='0' Orientation='Horizontal'>" +
+                                            "<TextBlock Text='" + App.MainPageData.GetName(fwdmsg["uid"]) + "'/>" +
+                                            "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='7,0,0,0' Text='" + fwdmsg["date"].ParseDate() + "'/>" +
+                                        "</StackPanel>" +
+                                        "<TextBlock Grid.Row='1' Text='" + fwdmsg["body"] + "'/>" +
+                                    "</Grid>" +
+                                "</Grid>";
+
+                    }
+                }
                 xaml +=
                             "</StackPanel>" +
-                            "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
+                            "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='2'/>" +
                         "</Grid>";
             }
@@ -301,8 +332,36 @@ namespace VK_Metro.Views
                     xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
                 if (message.attachment != null && message.attachment.type == "audio")
                     xaml +=     "<src:AudioTemplate Source='" + message.attachment.audio.url + "' Performer='" + message.attachment.audio.performer + "' Title='" + message.attachment.audio.title + "'/>";
+                if (message.fwd_messages != null)
+                {
+                    foreach (Dictionary<string, string> fwdmsg in message.fwd_messages) 
+                    {
+                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='пересланное сообщение'/>" +
+                                "<Grid> "+
+                                    "<Grid.ColumnDefinitions>" +
+                                        "<ColumnDefinition Width='Auto'/>" +
+                                        "<ColumnDefinition Width='Auto'/>" +
+                                        "<ColumnDefinition Width='*'/>" +
+                                    "</Grid.ColumnDefinitions>" +
+                                    "<Path Grid.Column='0' Stretch='Fill' Stroke='Black' StrokeThickness='3' Opacity='0.6'  Width='22' Height='45' Data='M0,0 L0,1' />"+
+                                    "<Image Margin='0,0,10,0' Grid.Column='1' Width='40' Height='40' HorizontalAlignment='Left' Source='" + App.MainPageData.GetPhoto(fwdmsg["uid"]) + "'/>" +
+                                    "<Grid Grid.Column='2'>" +
+                                        "<Grid.RowDefinitions>" +
+                                            "<RowDefinition Height='Auto'/>" +
+                                            "<RowDefinition Height='*'/>" +
+                                        "</Grid.RowDefinitions>" +
+                                        "<StackPanel Grid.Row='0' Orientation='Horizontal'>"+
+                                            "<TextBlock Text='" + App.MainPageData.GetName(fwdmsg["uid"]) + "'/>" +
+                                            "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='7,0,0,0' Text='"+fwdmsg["date"].ParseDate()+"'/>"+
+                                        "</StackPanel>"+
+                                        "<TextBlock Grid.Row='1' Text='" + fwdmsg["body"] + "'/>"+
+                                    "</Grid>"+
+                                "</Grid>";
+                        
+                    }
+                }
                 xaml += "</StackPanel>" +
-                            "<TextBlock Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
+                            "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}'  Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='1'/>" +
                             "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='" + darkenPhoneColorBrush + "' " +
                                   "Margin='0,0,5,0' HorizontalAlignment='Right' Grid.Row='2'/>" +

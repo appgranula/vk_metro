@@ -447,6 +447,12 @@
                                                      obj["response"].First.Remove();
                                                      VKMessageModel[] messages =
                                                          obj["response"].ToObject<VKMessageModel[]>();
+                                                     for (int i = 0; i < messages.Length; i++)
+                                                     {
+                                                         List<object> retVal = new List<object>();
+                                                         messages[i].fwd_messages = ParseFwdMessages(messages[i].fwd_messages,retVal);
+                                                     }
+
                                                      onSuccess(messages);
                                                  }
                                                  else
@@ -468,11 +474,16 @@
             {
                 var responseString = (string)result;
                 Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                
                 if (obj["response"] != null)
                 {
                     obj["response"].First.Remove();
                     VKMessageModel[] messages = obj["response"].ToObject<VKMessageModel[]>();
-                    onSuccess(messages);
+                    VKMessageModel message = messages[0];
+                    List<object> retVal = new List<object>();
+                    message.fwd_messages = ParseFwdMessages(message.fwd_messages, retVal);
+                    onSuccess(new VKMessageModel[]{message});
+                    
                 }
                 else
                 {
@@ -552,6 +563,7 @@
                 }
             }, onError);
         }
+
         public void SendMessage(string uid, string message, CallBack onSuccess, CallBack onError)
         {
             if (!this.connected) return;
@@ -576,7 +588,33 @@
                 }
             }, onError);
         }
-        
+
+        public void ReSendMessage(string message, string uid, string mids, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.send";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("uid", uid);
+            sendData.Add("forward_messages", mids);
+            sendData.Add("message", message);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    string mid = obj["response"].ToObject<string>();
+                    onSuccess(mid);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(URL)); //создаем запрос
@@ -792,11 +830,10 @@
                         {
                             this.ConnectToLongPoll();
                         }
-
                     },
                 res =>
                     {
-                        // DO_SOMETHING
+                        this.ConnectToLongPoll();// DO_SOMETHING
                     });
         }
 
@@ -985,5 +1022,26 @@
                     onError(new object());
                 });
         }
+
+        private List<object> ParseFwdMessages(List<object> messagefwds, List<object> retVal)
+        {
+            if (messagefwds != null)
+            {
+                for (int i = 0; i < messagefwds.Count; i++)
+                {
+                    Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(messagefwds[i].ToString());
+                    VKForwardMessageModel vkfwd = obj.ToObject<VKForwardMessageModel>();
+                    if (vkfwd.fwd_messages != null)
+                        ParseFwdMessages(vkfwd.fwd_messages, retVal);
+                    else
+                    {
+                        var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(Newtonsoft.Json.Linq.JObject.FromObject(vkfwd).ToString());
+                        retVal.Add(values);
+                    }
+                }
+            }
+            return retVal;
+        }
     }
+
 }
