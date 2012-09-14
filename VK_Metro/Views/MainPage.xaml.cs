@@ -1,4 +1,9 @@
-﻿namespace VK_Metro.Views
+﻿using System.IO;
+using System.Text;
+using System.Windows.Media.Imaging;
+using Microsoft.Phone.Tasks;
+
+namespace VK_Metro.Views
 {
     using System;
     using System.Collections.Generic;
@@ -57,6 +62,7 @@
                                         this.dataContext.AddMessage((VKMessageModel[])result2);
 
                                         //NavigationService.Navigate(new Uri("/Views/Attachments.xaml", UriKind.Relative));
+
                                     });
                                 }, error2 => { });
                             });

@@ -119,6 +119,8 @@
     <Compile Include="Utilities\LongPollListener.cs" />
     <Compile Include="Models\UpdateModel.cs" />
     <Compile Include="Utilities\MessageStatus.cs" />
+    <Compile Include="Utilities\PostResponseEventArgs.cs" />
+    <Compile Include="Utilities\PostSubmitter.cs" />
     <Compile Include="Utilities\VkCallEventArgs.cs" />
     <Compile Include="Utilities\VkChatEventArgs.cs" />
     <Compile Include="Utilities\VkConvensionParamsChangedEventArgs.cs" />

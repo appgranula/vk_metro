@@ -1,4 +1,8 @@
-﻿namespace VK_Metro
+﻿using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using VK_Metro.Utilities;
+
+namespace VK_Metro
 {
     using System;
     using System.Collections.Generic;
@@ -564,8 +568,9 @@
             }, onError);
         }
 
-        public void SendMessage(string uid, string message, CallBack onSuccess, CallBack onError)
+        public void SendMessage(string uid, string message, string attachment, CallBack onSuccess, CallBack onError)
         {
+            //attachment = "photo146877606_287611987";
             if (!this.connected) return;
             var access_token = this.access_token;
             string URL = "https://api.vk.com/method/messages.send";
@@ -573,6 +578,11 @@
             sendData.Add("access_token", access_token);
             sendData.Add("uid", uid);
             sendData.Add("message", message);
+            if (attachment != null)
+            {
+                sendData.Add("attachment", attachment);    
+            }
+
             this.GetQuery(URL, sendData, result =>
             {
                 var responseString = (string)result;
@@ -617,8 +627,10 @@
 
         private void PostQuery(string URL, Dictionary<string, string> postData, CallBack onSuccess, CallBack onError)
         {
+            //string boundary = "----------" + DateTime.Now.Ticks.ToString();
             HttpWebRequest request = WebRequest.CreateHttp(new Uri(URL)); //создаем запрос
             request.ContentType = "application/x-www-form-urlencoded";
+            //request.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
             //request.Accept = "image/jpeg, application/x-ms-application, image/gif, application/xaml+xml, image/pjpeg, application/x-ms-xbap, application/x-shockwave-flash, application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, */*";
             request.UserAgent =
                 "Mozilla/5.0 (Windows; U; Windows NT 6.0; ru; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729)";
@@ -833,7 +845,7 @@
                     },
                 res =>
                     {
-                        this.ConnectToLongPoll();// DO_SOMETHING
+                        this.ConnectToLongPoll();
                     });
         }
 
@@ -1023,6 +1035,7 @@
                 });
         }
 
+
         private List<object> ParseFwdMessages(List<object> messagefwds, List<object> retVal)
         {
             if (messagefwds != null)
@@ -1041,6 +1054,108 @@
                 }
             }
             return retVal;
+        }
+
+        public void GetMessagesUploadServer(CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/photos.getMessagesUploadServer";
+            var sendData = new Dictionary<string, string>
+                               {
+                                    { "access_token", this.access_token }
+                               };
+            this.GetQuery(
+                url,
+                sendData,
+                res =>
+                {
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                    var answer = decodedResponse["response"];
+                    if (answer == null)
+                    {
+                        onError(new object());
+                        return;
+                    }
+
+                    onSuccess(answer["upload_url"].ToString());
+                },
+                res =>
+                {
+                    onError(new object());
+                });
+        }
+
+        public void SaveMessagesPhoto(string server, string photo, string hash, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected)
+            {
+                return;
+            }
+
+            var url = "https://api.vk.com/method/photos.saveMessagesPhoto";
+            var sendData = new Dictionary<string, string>
+            {
+                { "access_token", this.access_token },
+                {"server", server},
+                {"photo", photo},
+                {"hash", hash}
+            };
+
+            this.GetQuery(
+                url,
+                sendData,
+                res =>
+                {
+                    var decodedResponse = Newtonsoft.Json.Linq.JObject.Parse(res.ToString());
+                    var answer = decodedResponse["response"];
+                    if (answer == null)
+                    {
+                        onError(new object());
+                        return;
+                    }
+                    var idList = new List<string>();
+                    foreach (var i in answer)
+                    {
+                        idList.Add((JsonConvert.DeserializeObject<Dictionary<string, string>>(i.ToString()))["id"].ToString());
+                    }
+                    //var id = Newtonsoft.Json.Linq.JObject.Parse(answer.ToString());
+                    onSuccess(idList);
+                },
+                res =>
+                {
+                    onError(new object());
+                });
+        }
+
+        public void UploadPhotoToServer(string server, byte[] photo, CallBack onSuccess, CallBack onError)
+        {
+            var postData = new Dictionary<string, object>()
+                                                {
+                                                    {"access_token", this.access_token },
+                                                    {"photo", photo}
+                                                    //You can add other parameters here
+                                                };
+            var postToServer = new PostSubmitter { url = server, parameters = postData };
+            postToServer.PostResponseEvent += (sender, args) => this.SaveMessagesPhoto(
+                args.Server,
+                args.Photo,
+                args.Hash,
+                result =>
+                {
+                    
+                    int i = 8;
+                    onSuccess(result.ToString());
+                },
+                result =>
+                    {
+                        int i = 9;
+                    });
+            postToServer.Submit();
+
         }
     }
 
