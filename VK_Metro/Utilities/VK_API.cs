@@ -451,6 +451,12 @@ namespace VK_Metro
                                                      obj["response"].First.Remove();
                                                      VKMessageModel[] messages =
                                                          obj["response"].ToObject<VKMessageModel[]>();
+                                                     for (int i = 0; i < messages.Length; i++)
+                                                     {
+                                                         List<object> retVal = new List<object>();
+                                                         messages[i].fwd_messages = ParseFwdMessages(messages[i].fwd_messages,retVal);
+                                                     }
+
                                                      onSuccess(messages);
                                                  }
                                                  else
@@ -472,11 +478,16 @@ namespace VK_Metro
             {
                 var responseString = (string)result;
                 Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                
                 if (obj["response"] != null)
                 {
                     obj["response"].First.Remove();
                     VKMessageModel[] messages = obj["response"].ToObject<VKMessageModel[]>();
-                    onSuccess(messages);
+                    VKMessageModel message = messages[0];
+                    List<object> retVal = new List<object>();
+                    message.fwd_messages = ParseFwdMessages(message.fwd_messages, retVal);
+                    onSuccess(new VKMessageModel[]{message});
+                    
                 }
                 else
                 {
@@ -484,6 +495,30 @@ namespace VK_Metro
                 }
             }, onError);
         }
+
+        public void DeleteMessages(string mids, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.delete";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("mids", mids);
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    onSuccess(new object());
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+
         public void GetMessagesWithFilter(string query, CallBack onSuccess, CallBack onError) 
         {
             if (!this.connected) return;
@@ -532,6 +567,7 @@ namespace VK_Metro
                 }
             }, onError);
         }
+
         public void SendMessage(string uid, string message, string attachment, CallBack onSuccess, CallBack onError)
         {
             //attachment = "photo146877606_287611987";
@@ -547,6 +583,32 @@ namespace VK_Metro
                 sendData.Add("attachment", attachment);    
             }
 
+            this.GetQuery(URL, sendData, result =>
+            {
+                var responseString = (string)result;
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(responseString);
+                if (obj["response"] != null)
+                {
+                    string mid = obj["response"].ToObject<string>();
+                    onSuccess(mid);
+                }
+                else
+                {
+                    onError(new object());
+                }
+            }, onError);
+        }
+
+        public void ReSendMessage(string message, string uid, string mids, CallBack onSuccess, CallBack onError)
+        {
+            if (!this.connected) return;
+            var access_token = this.access_token;
+            string URL = "https://api.vk.com/method/messages.send";
+            Dictionary<string, string> sendData = new Dictionary<string, string>();
+            sendData.Add("access_token", access_token);
+            sendData.Add("uid", uid);
+            sendData.Add("forward_messages", mids);
+            sendData.Add("message", message);
             this.GetQuery(URL, sendData, result =>
             {
                 var responseString = (string)result;
@@ -780,12 +842,9 @@ namespace VK_Metro
                         {
                             this.ConnectToLongPoll();
                         }
-
                     },
                 res =>
                     {
-                        //int I = 9;
-                        // DO_SOMETHING
                         this.ConnectToLongPoll();
                     });
         }
@@ -976,6 +1035,27 @@ namespace VK_Metro
                 });
         }
 
+
+        private List<object> ParseFwdMessages(List<object> messagefwds, List<object> retVal)
+        {
+            if (messagefwds != null)
+            {
+                for (int i = 0; i < messagefwds.Count; i++)
+                {
+                    Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(messagefwds[i].ToString());
+                    VKForwardMessageModel vkfwd = obj.ToObject<VKForwardMessageModel>();
+                    if (vkfwd.fwd_messages != null)
+                        ParseFwdMessages(vkfwd.fwd_messages, retVal);
+                    else
+                    {
+                        var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(Newtonsoft.Json.Linq.JObject.FromObject(vkfwd).ToString());
+                        retVal.Add(values);
+                    }
+                }
+            }
+            return retVal;
+        }
+
         public void GetMessagesUploadServer(CallBack onSuccess, CallBack onError)
         {
             if (!this.connected)
@@ -1073,6 +1153,8 @@ namespace VK_Metro
                         int i = 9;
                     });
             postToServer.Submit();
+
         }
     }
+
 }

@@ -42,11 +42,21 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ListBox ItemsSource="{Binding Items}" x:Name="ListMessages" Grid.Row="0" SelectionChanged="ListMessages_SelectionChanged">
+            <ListBox ItemsSource="{Binding Items}" x:Name="ListMessages" Grid.Row="0" SelectionChanged="ListMessages_SelectionChanged"
+                     Tap="ListMessages_Tap">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <local:MessageContentPresenter Content="{Binding}">
-                        </local:MessageContentPresenter>
+                        <Grid>
+                            <local:MessageContentPresenter Content="{Binding}">
+                            </local:MessageContentPresenter>
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu Name="ContextMenu">
+                                    <toolkit:MenuItem Header="удалить" Click="RemoveItem_Click"/>
+                                    <toolkit:MenuItem Header="переслать" Click="ResendItem_Click"/>
+                                    <toolkit:MenuItem Header="копировать" Click="CopyItem_Click"/>
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <ListBox.Style>

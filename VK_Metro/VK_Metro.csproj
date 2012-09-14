@@ -108,6 +108,7 @@
     <Compile Include="Models\VKChatModel.cs" />
     <Compile Include="Models\VKDialogModel.cs" />
     <Compile Include="Models\VKDocModel.cs" />
+    <Compile Include="Models\VKForwardModel.cs" />
     <Compile Include="Models\VKMessageModel.cs" />
     <Compile Include="Models\VKPhotoModel.cs" />
     <Compile Include="Models\VKVideoModel.cs" />
@@ -142,6 +143,9 @@
     </Compile>
     <Compile Include="Views\Dialog.xaml.cs">
       <DependentUpon>Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FriendsCheck.xaml.cs">
+      <DependentUpon>FriendsCheck.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FriendsRequests.xaml.cs">
       <DependentUpon>FriendsRequests.xaml</DependentUpon>
@@ -187,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FriendsCheck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
