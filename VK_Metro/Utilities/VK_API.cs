@@ -1066,9 +1066,7 @@ namespace VK_Metro
                 args.Hash,
                 result =>
                 {
-                    
-                    int i = 8;
-                    onSuccess(result.ToString());
+                    onSuccess((result as List<string>)[0]);
                 },
                 result =>
                     {

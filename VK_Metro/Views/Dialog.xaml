@@ -16,7 +16,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" Unloaded="PhoneApplicationPage_Unloaded">
 
     <phone:PhoneApplicationPage.Resources>
         <SolidColorBrush x:Key="BrushIn" Color="#5381ac" />
@@ -111,8 +111,9 @@
         </Grid>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
             <WPExtensions:AdvancedApplicationBarIconButton Text="отправить" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Click"/>
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png" Click="AttachPictureBarIconButton_Click" />
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить карту" IconUri="/icons/appbar.checkin.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="AttachImageBarIcon"  Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png" Click="AttachPictureBarIconButton_Click" Visibility="{Binding ImageIconVisibility}"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="AttachMapBarIcon" Text="прикрепить карту" IconUri="/icons/appbar.checkin.rest.png" Visibility="{Binding ImageIconVisibility}"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="ManageAttachmentsBarIcon" Text="прикрепить карту" IconUri="{Binding ManageAttachmentsIconUri}" Visibility="{Binding  ManageAttachmentsVisibility}" Click="ManageAttachmentsBarIcon_Click"/>
             <WPExtensions:AdvancedApplicationBarIconButton Text="выбрать" IconUri="/icons/appbar.manage.rest.png"/>
             <WPExtensions:AdvancedApplicationBarMenuItem Text="удалить диалог"/>
         </WPExtensions:AdvancedApplicationBar>
