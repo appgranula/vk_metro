@@ -421,6 +421,33 @@ namespace VK_Metro.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на notification.
+        /// </summary>
+        public static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на off.
+        /// </summary>
+        public static string OFF {
+            get {
+                return ResourceManager.GetString("OFF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на on.
+        /// </summary>
+        public static string ON {
+            get {
+                return ResourceManager.GetString("ON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на online.
         /// </summary>
         public static string Online {

@@ -197,7 +197,7 @@
                             
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
-                            if (incomingSound != null && !e.Flags.Outbox)
+                            if (incomingSound != null && !e.Flags.Outbox && App.MainPageData.IsSoundEnabled)
                             {
                                 incomingSound.Stop();
                                 incomingSound.Play();
