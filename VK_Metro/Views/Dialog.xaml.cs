@@ -556,7 +556,13 @@ namespace VK_Metro.Views
                                 "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
                                            "Margin='10,5,10,0'/>";
                 if (message.attachment != null && message.attachment.type == "photo")
-                    xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
+                {
+                    foreach (var attachment in message.attachments)
+                    {
+                        //xaml += "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";    
+                        xaml += "<Image Source='" + attachment.photo.src_big + "' Margin='10' Stretch='Uniform'/>";    
+                    }
+                }
                 if (message.attachment != null && message.attachment.type == "audio")
                     foreach (var attachment in message.attachments)
                     {
@@ -603,8 +609,15 @@ namespace VK_Metro.Views
                             "<StackPanel Grid.Row='0' Orientation='Vertical'>" +
                                 "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
                                            "Margin='10,5,10,0'/>";
+                //if (message.attachment != null && message.attachment.type == "photo")
+                //    xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
                 if (message.attachment != null && message.attachment.type == "photo")
-                    xaml +=     "<Image Source='{Binding Path=attachment.photo.src_big}' Margin='10' Stretch='Uniform'/>";
+                {
+                    foreach (var attachment in message.attachments)
+                    {
+                        xaml += "<Image Source='" + attachment.photo.src_big + "' Margin='10' Stretch='Uniform'/>";
+                    }
+                }
                 if (message.attachment != null && message.attachment.type == "audio")
                     xaml +=     "<src:AudioTemplate Source='" + message.attachment.audio.url + "' Performer='" + message.attachment.audio.performer + "' Title='" + message.attachment.audio.title + "'/>";
                 if (message.fwd_messages != null)
