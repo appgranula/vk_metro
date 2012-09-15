@@ -277,11 +277,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\light\Requests_Icon_Light.png" />
-    <Resource Include="Images\dark\Requests_Icon.png" />
-    <Resource Include="Images\dark\UnreadMessages_Icon.png" />
     <Resource Include="Images\light\UnreadMessages_Icon_Light.png" />
     <Resource Include="Images\fuckyou.jpg" />
     <Content Include="Sounds\incoming.mp3" />
+    <Resource Include="Images\dark\Requests_Icon.png" />
+    <Resource Include="Images\dark\UnreadMessages_Icon.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

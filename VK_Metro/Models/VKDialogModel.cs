@@ -75,7 +75,8 @@ namespace VK_Metro.Models
                         return (SolidColorBrush) Application.Current.Resources["PhoneAccentBrush"];
                     }
                     //return new SolidColorBrush(Colors.Transparent);
-                    return new SolidColorBrush((Color) Application.Current.Resources["PhoneAccentBrush"]);
+                    //return new SolidColorBrush((Color) Application.Current.Resources["PhoneAccentBrush"]);
+                    return (SolidColorBrush) Application.Current.Resources["PhoneAccentBrush"];
                 }
                 return (SolidColorBrush)Application.Current.Resources["PhoneForegroundBrush"];
             }
