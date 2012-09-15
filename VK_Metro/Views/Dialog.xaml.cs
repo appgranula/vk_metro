@@ -249,39 +249,57 @@ namespace VK_Metro.Views
             string attch = null;
             if (this.numberOfAttachments > 0)
             {
-                //foreach (var attachment in App.Attachments)
-                //{
-                    
-                //}
+                // make array of byte images
+                List<byte[]> byteImages = new List<byte[]>();
+
+                foreach (var attachment in App.Attachments)
+                {
+                    var wb = new WriteableBitmap(attachment); 
+                    var ms = new MemoryStream();
+                    wb.SaveJpeg(ms, wb.PixelWidth, wb.PixelHeight, 0, 100);
+                    var myBytes = ms.ToArray();
+                    byteImages.Add(myBytes);
+                }
+
                 App.VK.GetMessagesUploadServer(
                     res =>
                         {
                             Deployment.Current.Dispatcher.BeginInvoke(() =>
                             {
-                                var wb =
-                                    new WriteableBitmap(
-                                        App.Attachments.First());
-                                var ms = new MemoryStream();
-                                wb.SaveJpeg(ms, wb.PixelWidth,
-                                            wb.PixelHeight, 0,
-                                            100);
-                                var myBytes = ms.ToArray();
+                                //var wb = new WriteableBitmap(App.Attachments.First());
+                                //var ms = new MemoryStream();
+                                //wb.SaveJpeg(ms, wb.PixelWidth,wb.PixelHeight, 0,100);
+                                //var myBytes = ms.ToArray();
 
-                                App.VK.UploadPhotoToServer(
-                                    res.ToString(),
-                                    myBytes,
-                                    uploadPhotoresult =>
-                                        {
-                                            Deployment.Current.Dispatcher.BeginInvoke(
-                                                () =>
-                                                {
-                                                    App.VK.SendMessage(this.UID, textBox.Text,uploadPhotoresult.ToString(),this.ResultOfSend,this.ErrorResultOfSend);
-                                                });
-                                        },
-                                    uploadPhotoresult =>
-                                        {
+                                //App.VK.UploadPhotoToServer(
+                                //    res.ToString(),
+                                //    myBytes,
+                                //    uploadPhotoresult =>
+                                //        {
+                                //            Deployment.Current.Dispatcher.BeginInvoke(
+                                //                () =>
+                                //                {
+                                //                    App.VK.SendMessage(this.UID, textBox.Text,uploadPhotoresult.ToString(),this.ResultOfSend,this.ErrorResultOfSend);
+                                //                });
+                                //        },
+                                //    uploadPhotoresult =>
+                                //        {
 
-                                        });
+                                //        });
+
+                                this.UploadAttachmentsAsQuery(
+                                    res.ToString(), 
+                                    byteImages, 
+                                    string.Empty, 
+                                    resultOfUploadAsQuery =>
+                                    {
+                                        Deployment.Current.Dispatcher.BeginInvoke(
+                                            () =>
+                                            {
+                                                App.VK.SendMessage(this.UID, textBox.Text, resultOfUploadAsQuery.ToString(), this.ResultOfSend, this.ErrorResultOfSend);
+                                            });
+                                    });
+
                             });
                         },
                     res =>
@@ -292,6 +310,30 @@ namespace VK_Metro.Views
             {
                 App.VK.SendMessage(this.UID, textBox.Text, null, this.ResultOfSend, this.ErrorResultOfSend);   
             }
+        }
+
+        private void UploadAttachmentsAsQuery(string server, List<byte[]> attachments, string resultIDs, CallBack cb)
+        {
+            App.VK.UploadPhotoToServer(
+                server,
+                attachments.First(),
+                uploadPhotoresult =>
+                {
+                    resultIDs += uploadPhotoresult.ToString() + ",";
+                    attachments.Remove(attachments.First());
+                    if (attachments.Count > 0)
+                    {
+                        this.UploadAttachmentsAsQuery(server, attachments, resultIDs, cb);
+                    }
+                    else
+                    {
+                        resultIDs = resultIDs.Remove(resultIDs.LastIndexOf(","));
+                        cb(resultIDs);
+                    }
+                },
+                uploadPhotoresult =>
+                {
+                });
         }
 
         private void ResultOfSend(object result)
