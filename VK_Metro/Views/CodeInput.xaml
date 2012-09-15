@@ -33,21 +33,21 @@
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Canvas>
             <TextBlock Canvas.Left="24" Canvas.Top="80"
-                       Text="Код из SMS-сообщения:"
+                       Text="{Binding Path=LocalizedResources.SMSCode, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="100"
                      x:Name="CodeText"
                      Height="72" Width="456" 
                      TextChanged="TextChanged"/>
             <TextBlock Canvas.Left="24" Canvas.Top="192"
-                       Text="Придумайте пароль:"
+                       Text="{Binding Path=LocalizedResources.Password, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <PasswordBox Canvas.Left="12" Canvas.Top="212"
                          x:Name="Password"
                          Height="72" Width="456"
                          PasswordChanged="PasswordChanged"/>
             <TextBlock Canvas.Left="24" Canvas.Top="304"
-                       Text="Повторите пароль:"
+                       Text="{Binding Path=LocalizedResources.RepeatPassword, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <PasswordBox Canvas.Left="12" Canvas.Top="324"
                          x:Name="PasswordRepeat"
@@ -60,7 +60,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="отправить код" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
+                            <TextBlock Text="{Binding Path=LocalizedResources.Confirm, Source={StaticResource LocalizedStrings}}" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
                                        Canvas.Left="-117" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>
@@ -72,7 +72,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="я не получил SMS!" FontSize="25"
+                            <TextBlock Text="{Binding Path=LocalizedResources.SendVerificationCodeAgain, Source={StaticResource LocalizedStrings}}" FontSize="25"
                                        Canvas.Left="-117" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>

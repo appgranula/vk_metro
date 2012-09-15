@@ -47,7 +47,7 @@ namespace VK_Metro.Views
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             IDictionary<string, string> parameters = this.NavigationContext.QueryString;
-            MessageText.Text = "тескт сообщения";
+            MessageText.Text = Localization.AppResources.Message;
             if (parameters.ContainsKey("mids"))
             {
                 this.mids = parameters["mids"];
@@ -82,7 +82,7 @@ namespace VK_Metro.Views
         {
             if (checkedFriend != null)
             {
-                MessageText.Text = "отправка сообщения...";
+                MessageText.Text = Localization.AppResources.SendingMessage;
                 App.VK.ReSendMessage(
                     ResendMessageBody.Text,
                     checkedFriend.uid,
@@ -95,7 +95,7 @@ namespace VK_Metro.Views
                     }),
                     err => Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        MessageText.Text = "что-то пошло не так";
+                        MessageText.Text = Localization.AppResources.SendingError;
                     }));
             }
         }

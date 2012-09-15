@@ -63,7 +63,7 @@
                 </DataTemplate>
             </controls:Pivot.TitleTemplate>
             <!--Первый элемент Pivot-->
-            <controls:PivotItem Header="сообщения">
+            <controls:PivotItem Header="{Binding Path=LocalizedResources.Messages, Source={StaticResource LocalizedStrings}}">
                 <Grid>
                     <ListBox ItemsSource="{Binding VKDialogs}">
                         <ListBox.ItemTemplate>
@@ -112,15 +112,15 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>                        
                     </ListBox>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Создать" IconUri="/icons/appbar.add.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton x:Name="searchMessageButton" Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png" 
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Create, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.add.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Refresh, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.refresh.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton x:Name="searchMessageButton" Text="{Binding Path=LocalizedResources.Search, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.feature.search.rest.png" 
                                                                    Click="searchMessageButton_Click"/>
                 </Grid>
             </controls:PivotItem>
 
             <!--Второй элемент Pivot-->
-            <controls:PivotItem Header="друзья">
+            <controls:PivotItem Header="{Binding Path=LocalizedResources.Friends, Source={StaticResource LocalizedStrings}}">
                 <Grid x:Name="ContactsPanel">
                     <Grid.Resources>
                         <DataTemplate x:Key="contactsData">
@@ -170,17 +170,17 @@
                             </ItemsPanelTemplate>
                         </toolkit:LongListSelector.GroupItemsPanel>
                     </toolkit:LongListSelector>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" x:Name="SearchFriendsButton" IconUri="/icons/appbar.feature.search.rest.png" Click="SearchFriendsButton_Click"/>
-                    <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Search, Source={StaticResource LocalizedStrings}}" x:Name="SearchFriendsButton" IconUri="/icons/appbar.feature.search.rest.png" Click="SearchFriendsButton_Click"/>
+                    <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Refresh, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.refresh.rest.png"/>
                 </Grid>
             </controls:PivotItem>
 
             <!--Третий элемент Pivot-->
-            <controls:PivotItem Header="контакты">
+            <controls:PivotItem Header="{Binding Path=LocalizedResources.Contacts, Source={StaticResource LocalizedStrings}}">
                 <Grid>
                     <Canvas x:Name="SynchronizeDialogCanvas">
-                        <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24">Вы можете синхронизировать список друзей VK с записной книжкой Вашего телефона.</TextBlock>
-                        <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="синхронизировать контакты" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
+                        <TextBlock Width="419" Height="151" TextWrapping="Wrap" FontSize="24" Text="{Binding Path=LocalizedResources.YouCanSync, Source={StaticResource LocalizedStrings}}"/>
+                        <Button x:Name = "synchronizeButton"  Canvas.Top="120" Canvas.Left="-10" Width="390" Height="77" Content="{Binding Path=LocalizedResources.SyncContacts, Source={StaticResource LocalizedStrings}}" Padding="10,3,10,5" Click="synchronizeButton_Click"></Button>
                     </Canvas>
 
                     <Grid x:Name="SynchronizeContactsGrid" Grid.Row="1">
@@ -228,7 +228,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" 
-                            FontSize="48" VerticalAlignment="Top" >пригласить друга</TextBlock>
+                            FontSize="48" VerticalAlignment="Top" Text="{Binding Path=LocalizedResources.YouCanSync, Source={StaticResource LocalizedStrings}}"/>
 
                         <toolkit:LongListSelector Grid.Row="1" Grid.Column="0"
                             x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"
@@ -241,15 +241,15 @@
                                 </ItemsPanelTemplate>
                             </toolkit:LongListSelector.GroupItemsPanel>
                         </toolkit:LongListSelector>
-                        
-                        <WPExtensions:AdvancedApplicationBarIconButton Text="Поиск" IconUri="/icons/appbar.feature.search.rest.png" x:Name="ContactsSearchButton" Click="ContactsSearchButton_Click"/>
-                        <WPExtensions:AdvancedApplicationBarIconButton Text="Обновить" IconUri="/icons/appbar.refresh.rest.png"/>
+
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Search, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.feature.search.rest.png" x:Name="ContactsSearchButton" Click="ContactsSearchButton_Click"/>
+                        <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Refresh, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.refresh.rest.png"/>
                     </Grid>
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarMenuItem Text="Настройки" Click="AdvancedApplicationBarMenuItem_Click"/>
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="{Binding Path=LocalizedResources.Settings, Source={StaticResource LocalizedStrings}}" Click="AdvancedApplicationBarMenuItem_Click"/>
         </WPExtensions:AdvancedApplicationBar>
     </Grid>
 

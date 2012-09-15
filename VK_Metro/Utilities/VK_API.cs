@@ -1152,7 +1152,6 @@ namespace VK_Metro
                         int i = 9;
                     });
             postToServer.Submit();
-
         }
     }
 

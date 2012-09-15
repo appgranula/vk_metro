@@ -572,7 +572,7 @@ namespace VK_Metro.Views
                 {
                     foreach (Dictionary<string, string> fwdmsg in message.fwd_messages)
                     {
-                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='пересланное сообщение'/>" +
+                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='" + Localization.AppResources.ForwardedMessage + "'/>" +
                                 "<Grid> " +
                                     "<Grid.ColumnDefinitions>" +
                                         "<ColumnDefinition Width='Auto'/>" +
@@ -624,7 +624,7 @@ namespace VK_Metro.Views
                 {
                     foreach (Dictionary<string, string> fwdmsg in message.fwd_messages) 
                     {
-                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='пересланное сообщение'/>" +
+                        xaml += "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Margin='11,0,0,0' Text='"+Localization.AppResources.ForwardedMessage+"'/>" +
                                 "<Grid> "+
                                     "<Grid.ColumnDefinitions>" +
                                         "<ColumnDefinition Width='Auto'/>" +
