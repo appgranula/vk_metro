@@ -158,14 +158,17 @@
         private void PhoneContactsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var selectedItem = (PhoneContactModel) this.PhoneContactsList.SelectedItem;
-            var querry = String.Format(
-                "?ContactName={0}&Name={1}&Phone={2}&Uid={3}", 
+            if (selectedItem != null)
+            {
+                var querry = String.Format(
+                "?ContactName={0}&Name={1}&Phone={2}&Uid={3}",
                 HttpUtility.UrlEncode(selectedItem.name),
                 HttpUtility.UrlEncode(selectedItem.vkName),
                 HttpUtility.UrlEncode(selectedItem.phone),
                 HttpUtility.UrlEncode(selectedItem.uid)
                 );
-            this.GoToContactInfoPage(querry);
+                this.GoToContactInfoPage(querry);
+            }
         }
 
         private void GoToContactInfoPage(string querry)
@@ -227,11 +230,15 @@
 
         private void FriendList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+
             var selectedItem = (VKFriendModel)this.Contacts.SelectedItem;
-            var uid = selectedItem.uid;
-            string destination = "/Views/Dialog.xaml";
-            destination += String.Format("?UID={0}&Name={1}", uid, selectedItem.name);
-            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+            if (selectedItem != null)
+            {
+                var uid = selectedItem.uid;
+                string destination = "/Views/Dialog.xaml";
+                destination += String.Format("?UID={0}&Name={1}", uid, selectedItem.name);
+                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+            }
         }
 
         private void ContactsPanel_Hold(object sender, System.Windows.Input.GestureEventArgs e)
