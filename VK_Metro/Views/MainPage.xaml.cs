@@ -191,10 +191,12 @@
                     {
                         App.VK.GetMessage(e.Id.ToString(), result => Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
+                            
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
-                            if (incomingSound != null)
+                            if (incomingSound != null && !e.Flags.Outbox)
                             {
+                                incomingSound.Stop();
                                 incomingSound.Play();
                             }
                         }), error => { });
