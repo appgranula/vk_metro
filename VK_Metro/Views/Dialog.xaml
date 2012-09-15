@@ -121,13 +121,18 @@
             </Border>
         </Grid>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Send, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Click"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name ="SendMessageButton"  Text="{Binding Path=LocalizedResources.Send, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Click" Visibility="{Binding OtherIconsVisibility}"/>
             <WPExtensions:AdvancedApplicationBarIconButton x:Name="AttachImageBarIcon"  Text="{Binding Path=LocalizedResources.Photo, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.feature.camera.rest.png" Click="AttachPictureBarIconButton_Click" Visibility="{Binding ImageIconVisibility}"/>
             <WPExtensions:AdvancedApplicationBarIconButton x:Name="AttachMapBarIcon" Text="{Binding Path=LocalizedResources.Map, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.checkin.rest.png" Visibility="{Binding ImageIconVisibility}"/>
             <WPExtensions:AdvancedApplicationBarIconButton x:Name="ManageAttachmentsBarIcon" Text="{Binding Path=LocalizedResources.Attachments, Source={StaticResource LocalizedStrings}}" IconUri="{Binding ManageAttachmentsIconUri}" Visibility="{Binding  ManageAttachmentsVisibility}" Click="ManageAttachmentsBarIcon_Click"/>
-            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Сhoose, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.manage.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="ChooseMessagesButton" Text="{Binding Path=LocalizedResources.Сhoose, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.manage.rest.png" Click="AdvancedApplicationBarIconButton_Click" Visibility="{Binding OtherIconsVisibility}"/>
             <WPExtensions:AdvancedApplicationBarMenuItem Text="{Binding Path=LocalizedResources.RemoveDialog, Source={StaticResource LocalizedStrings}}"/>
+
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="FwdMessages" Text="{Binding Path=LocalizedResources.Forward, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed" IconUri="/icons/appbar.forward.rest.png" Click="FwdMessages_Click"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="DeleteMessages" Text="{Binding Path=LocalizedResources.Delete, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed" IconUri="/icons/appbar.delete.rest.png" Click="DeleteMessages_Click"/>
+            <WPExtensions:AdvancedApplicationBarIconButton x:Name="CancelSelecting" Text="{Binding Path=LocalizedResources.Cancel, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed" IconUri="/icons/appbar.cancel.rest.png" Click="CancelSelecting_Click"/>
         </WPExtensions:AdvancedApplicationBar>
+        
     </Grid>
 
     <toolkit:TransitionService.NavigationInTransition>

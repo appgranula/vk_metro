@@ -90,7 +90,7 @@ namespace VK_Metro.Views
                     res => Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         var destination = "/Views/Dialog.xaml";
-                        destination += string.Format("?UID={0}&Name={1}", checkedFriend.uid, checkedFriend.name);
+                        destination += string.Format("?UID={0}&Name={1}&ClearBackStack=true", checkedFriend.uid, checkedFriend.name);
                         NavigationService.Navigate(new Uri(destination, UriKind.Relative));
                     }),
                     err => Deployment.Current.Dispatcher.BeginInvoke(() =>

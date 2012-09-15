@@ -28,6 +28,8 @@ namespace VK_Metro.Views
 
         private List<string> attachments = new List<string>();
 
+        private bool isManagingMessages = false;
+
         private int numberOfAttachments;
         private int NumberOfAttachments
         {
@@ -50,8 +52,7 @@ namespace VK_Metro.Views
             App.MainPageData.PropertyChanged += new PropertyChangedEventHandler(MainPageData_PropertyChanged);
             Loaded += new RoutedEventHandler(OnPageLoaded);
         }
-
-
+        
         //private List<BitmapImage> attachmentsImage = new List<BitmapImage>();
 
         public Visibility ImageIconVisibility 
@@ -59,7 +60,7 @@ namespace VK_Metro.Views
             get
             {
                 //if (this.attachments.Count > 0)
-                if (this.numberOfAttachments > 0)
+                if (this.numberOfAttachments > 0 || isManagingMessages)
                 {
                     return Visibility.Collapsed;
                 }
@@ -67,6 +68,19 @@ namespace VK_Metro.Views
             }
         }
 
+        public Visibility OtherIconsVisibility 
+        { 
+            get
+            {
+                //if (this.attachments.Count > 0)
+                if (isManagingMessages)
+                {
+                    return Visibility.Collapsed;
+                }
+                return Visibility.Visible;
+            }
+        }
+        
         public Visibility ManageAttachmentsVisibility
         {
             get
@@ -137,7 +151,10 @@ namespace VK_Metro.Views
                 this.MarkMessagesAsRead();
 
             }
-
+            if (parameters.ContainsKey("ClearBackStack"))
+            {
+                NavigationService.RemoveBackEntry();
+            }
             this.NumberOfAttachments = App.Attachments.Count;
             //this.NotifyPropertyChanged("ManageAttachmentsVisibility");
             //this.NotifyPropertyChanged("ImageIconVisibility");
@@ -489,7 +506,7 @@ namespace VK_Metro.Views
 
         private void ListMessages_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            
         }
 
         private void RemoveItem_Click(object sender, RoutedEventArgs e)
@@ -522,6 +539,86 @@ namespace VK_Metro.Views
             VKMessageModel message = (sender as MenuItem).DataContext as VKMessageModel;
             Clipboard.SetText(message.body);
         }
+
+        private void AdvancedApplicationBarIconButton_Click(object sender, EventArgs e)
+        {
+            ShowEditAppBar();
+        }
+
+        private void ShowEditAppBar() 
+        {
+            this.isManagingMessages = true;
+            SendMessageButton.Visibility = Visibility.Collapsed;
+            ChooseMessagesButton.Visibility = Visibility.Collapsed;
+            this.NotifyPropertyChanged("ImageIconVisibility");
+            this.NotifyPropertyChanged("OtherIconVisibility");
+            
+
+            FwdMessages.Visibility = Visibility.Visible;
+            DeleteMessages.Visibility = Visibility.Visible;
+            CancelSelecting.Visibility = Visibility.Visible;
+        }
+
+        private void HideEditAppBar()
+        {
+            FwdMessages.Visibility = Visibility.Collapsed;
+            DeleteMessages.Visibility = Visibility.Collapsed;
+            CancelSelecting.Visibility = Visibility.Collapsed;
+            SendMessageButton.Visibility = Visibility.Visible;
+            ChooseMessagesButton.Visibility = Visibility.Visible;
+            this.isManagingMessages = false;
+            this.NotifyPropertyChanged("ImageIconVisibility");
+            this.NotifyPropertyChanged("OtherIconVisibility");
+        }
+
+        private void CancelSelecting_Click(object sender, EventArgs e)
+        {
+            HideEditAppBar();
+        }
+
+        private void DeleteMessages_Click(object sender, EventArgs e)
+        {
+            this.Items = App.MainPageData.GetMessage(this.UID);
+            List<string> mids = new List<string>();
+            List<VKMessageModel> messages = new List<VKMessageModel>();
+            foreach (VKMessageModel item in Items)
+            {
+                mids.Add(item.mid);
+                messages.Add(item);
+            }
+            string midsWithSeparator = string.Join(",", mids.ToArray());
+            App.VK.DeleteMessages(
+                midsWithSeparator,
+                res => Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    foreach (VKMessageModel message in messages)
+                    {
+                        App.MainPageData.RemoveMessage(message);
+                    }
+                    this.Items = App.MainPageData.GetMessage(this.UID);
+                    NotifyPropertyChanged("Items");
+                }),
+                err =>
+                {
+                });
+            HideEditAppBar();
+        }
+
+        private void FwdMessages_Click(object sender, EventArgs e)
+        {
+            this.Items = App.MainPageData.GetMessage(this.UID);
+            List<string> mids = new List<string>();
+            foreach (VKMessageModel item in Items)
+            {
+                mids.Add(item.mid);
+            }
+            string midsWithSeparator = string.Join(",", mids.ToArray());
+            var destination = "/Views/FriendsCheck.xaml";
+            destination += string.Format("?mids={0}", midsWithSeparator);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+            HideEditAppBar();
+        }
+
     }
 
     public class MessageContentPresenter : ContentControl
@@ -659,5 +756,7 @@ namespace VK_Metro.Views
             xaml += "</DataTemplate>";
             ContentTemplate = (DataTemplate)XamlReader.Load(xaml);
         }
+
+
     }
 }
