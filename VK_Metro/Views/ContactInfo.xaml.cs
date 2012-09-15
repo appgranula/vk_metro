@@ -247,11 +247,9 @@ namespace VK_Metro.Views
 
         private void SendMessageButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //var item = (VKDialogModel)((Grid)sender).DataContext;
-            //var dialog = App.MainPageData.VKDialogs
-            //string destination = "/Views/Dialog.xaml";
-            //destination += String.Format("?UID={0}&Name={1}", item.UID, item.Name);
-            //NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+            string destination = "/Views/Dialog.xaml";
+            destination += String.Format("?UID={0}&Name={1}", this.uid, this.VkName);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
         }
 
         private void AddFriendButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) 
@@ -270,6 +268,14 @@ namespace VK_Metro.Views
                 res =>
                 {
                 });
+        }
+
+        private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var smsTask = new SmsComposeTask();
+            smsTask.To = this.Phone;
+            smsTask.Body = "Пришло время зарегистрировать вконтакт! Вконтакт сам себя не зарегистрирует! http://www.vk.com";
+            smsTask.Show();
         }
     }
 }
