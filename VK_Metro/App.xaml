@@ -13,6 +13,7 @@
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <!--<Setter Property="VerticalContentAlignment" Value="Stretch"/>-->
         </Style>
+        <MediaElement x:Name="IncomingPlayer" Source="/Sounds/incoming.mp3" AutoPlay="False"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

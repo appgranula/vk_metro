@@ -16,9 +16,17 @@
 
     public partial class MainPage : PhoneApplicationPage
     {
+        MediaElement incomingSound;
         public MainPage()
         {
             InitializeComponent();
+
+
+            if (App.Current.Resources.Contains("IncomingPlayer"))
+            {
+                incomingSound = App.Current.Resources["IncomingPlayer"] as MediaElement;
+            }
+
 
             this.dataContext = App.MainPageData;
             DataContext = this.dataContext;
@@ -181,10 +189,15 @@
             Deployment.Current.Dispatcher.BeginInvoke(
                 () =>
                     {
-                        App.VK.GetMessage(e.Id.ToString(), result => {
+                        App.VK.GetMessage(e.Id.ToString(), result => Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
                             App.MainPageData.AddMessage((VKMessageModel[])result);
                             App.MainPageData.AddDialog((VKMessageModel[])result);
-                        }, error => { });
+                            if (incomingSound != null)
+                            {
+                                incomingSound.Play();
+                            }
+                        }), error => { });
                         if (!e.Flags.Outbox)
                         {
                             this.dataContext.UnreadMessages += 1;
