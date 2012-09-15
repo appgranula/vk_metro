@@ -45,7 +45,7 @@
         <StackPanel x:Name="NonRegistredUserInfo" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
             <Image Height="180" Width="180" Source="{Binding Picture}" HorizontalAlignment="Left"></Image>
             <TextBlock Margin="0,30,0,0" FontSize="24" Height="84" Width="469" TextWrapping="Wrap">Пользователь еще не зарегистрирован. Вы можете отправить ему приглашение.</TextBlock>
-            <Button Content="выслать приглашение" Margin="-10,0,0,0" Width="366" HorizontalAlignment="Left"></Button>
+            <Button Content="выслать приглашение" Margin="-10,0,0,0" Width="366" HorizontalAlignment="Left" Tap="Button_Tap"></Button>
         </StackPanel>
 
         <StackPanel x:Name="AddFriend" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">

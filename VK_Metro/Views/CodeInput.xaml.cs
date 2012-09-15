@@ -75,7 +75,7 @@
         {
             App.VK.ConfirmSignUp(
                 this.CodeText.Text, 
-                "galort6713", 
+                this.Password.Password, 
                 result =>
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(
