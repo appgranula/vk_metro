@@ -548,11 +548,11 @@ namespace VK_Metro.Views
                                   "xmlns:src='clr-namespace:Templates;assembly=Templates'>";
             if (message.type == "0")
             {   //YouTemplate
-                xaml += "<Grid Margin='5, 0, 115, 10' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
+                xaml += "<Grid Margin='5, 0, 115, 10' contribControls:GridUtils.RowDefinitions='Auto,Auto,Auto' contribControls:GridUtils.ColumnDefinitions='*,Auto' Width='335'>" +
                             "<Path Data='m 0,0 l 0,12 l 12,0 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
-                                  "Margin='5,0,0,0' HorizontalAlignment='Left' Grid.Row='0'/>" +
-                            "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='1' Grid.RowSpan='2'/>" +
-                            "<StackPanel Grid.Row='1' Orientation='Vertical'>" +
+                                  "Margin='5,0,0,0' HorizontalAlignment='Left' Grid.Row='0'  Grid.Column='0'/>" +
+                            "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='1' Grid.RowSpan='2' Grid.Column='0'/>" +
+                            "<StackPanel Grid.Row='1' Grid.Column='0' Orientation='Vertical'>" +
                                 "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
                                            "Margin='10,5,10,0'/>";
                 if (message.attachment != null && message.attachment.type == "photo")
@@ -599,7 +599,8 @@ namespace VK_Metro.Views
                 xaml +=
                             "</StackPanel>" +
                             "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
-                                       "Margin='10,0,10,5' Grid.Row='2'/>" +
+                                       "Margin='10,0,10,5' Grid.Row='2' Grid.Column='0'/>" +
+                            "<CheckBox Style='{StaticResource CheckBoxStyle1}' IsChecked='True' Grid.Column='1' Grid.Row='1' Grid.RowSpan='2'/>" +
                         "</Grid>";
             }
             else
