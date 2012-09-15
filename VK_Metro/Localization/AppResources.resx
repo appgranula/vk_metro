@@ -363,6 +363,9 @@
   <data name="InputMessage" xml:space="preserve">
     <value>message</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>account</value>
+  </data>
   <data name="Notification" xml:space="preserve">
     <value>notification</value>
   </data>

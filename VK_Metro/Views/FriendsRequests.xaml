@@ -78,7 +78,8 @@
                     <ListBox ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     x:Name="MaybeFriendsList" ItemsSource="{Binding PossibleFriends1}"
                                     ItemTemplate="{StaticResource contactsData}"
-                                    Margin="0,0,0,0" VerticalContentAlignment="Stretch">
+                                    Margin="0,0,0,0" VerticalContentAlignment="Stretch"
+                                    Tap="MaybeFriendsList_Tap">
                         <ListBox.Style>
                             <Style TargetType="ListBox">
                                 <Setter Property="ItemsPanel">

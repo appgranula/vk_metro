@@ -363,6 +363,9 @@
   <data name="InputMessage" xml:space="preserve">
     <value>введите сообщение</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>аккаунт</value>
+  </data>
   <data name="Notification" xml:space="preserve">
     <value>оповещения в приложении</value>
   </data>

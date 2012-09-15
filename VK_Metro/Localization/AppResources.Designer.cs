@@ -61,6 +61,15 @@ namespace VK_Metro.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на account.
+        /// </summary>
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на add friend.
         /// </summary>
         public static string AddFriend {
