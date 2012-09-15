@@ -382,25 +382,32 @@ namespace VK_Metro.Views
 
         private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.MessageText.IsEnabled = false;
-            if (((ListBox)sender).SelectedIndex == -1)
-                return;
-            var prop = (VKMessageModel)((ListBox)sender).SelectedItem;
-            ////prop.Checked = !prop.Checked;
-            if (prop.Checked == "True" || prop.Checked == "true")
+            if (isManagingMessages)
             {
-                prop.Checked = "False";
+                this.MessageText.IsEnabled = false;
+                if (((ListBox)sender).SelectedIndex == -1)
+                    return;
+                var prop = (VKMessageModel)((ListBox)sender).SelectedItem;
+                ////prop.Checked = !prop.Checked;
+                if (prop.Checked == "True" || prop.Checked == "true")
+                {
+                    prop.Checked = "False";
+                }
+                else
+                {
+                    prop.Checked = "True";
+                }
+                this.Items = App.MainPageData.GetMessage(this.UID);
+                this.NotifyPropertyChanged("Items");
+                this.ListMessages.Focus();
+                //UpdateLayout();
+                ((ListBox)sender).SelectedIndex = -1;
+                this.MessageText.IsEnabled = true;
             }
-            else
+            else 
             {
-                prop.Checked = "True";
+                ((ListBox)sender).SelectedIndex = -1;
             }
-            this.Items = App.MainPageData.GetMessage(this.UID);
-            this.NotifyPropertyChanged("Items");
-            this.ListMessages.Focus();
-            //UpdateLayout();
-            ((ListBox)sender).SelectedIndex = -1;
-            this.MessageText.IsEnabled = true;
         }
 
         void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -619,11 +626,17 @@ namespace VK_Metro.Views
             List<VKMessageModel> messages = new List<VKMessageModel>();
             foreach (VKMessageModel item in Items)
             {
-                mids.Add(item.mid);
-                messages.Add(item);
+                if (item.Checked == "true" || item.Checked == "True")  
+                {
+                    mids.Add(item.mid);
+                    messages.Add(item);
+                }
+                
             }
             string midsWithSeparator = string.Join(",", mids.ToArray());
-            App.VK.DeleteMessages(
+            if (mids.Count > 0) 
+            {
+                App.VK.DeleteMessages(
                 midsWithSeparator,
                 res => Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
@@ -637,7 +650,8 @@ namespace VK_Metro.Views
                 err =>
                 {
                 });
-            HideEditAppBar();
+                HideEditAppBar();
+            }
         }
 
         private void FwdMessages_Click(object sender, EventArgs e)
@@ -646,13 +660,21 @@ namespace VK_Metro.Views
             List<string> mids = new List<string>();
             foreach (VKMessageModel item in Items)
             {
-                mids.Add(item.mid);
+                if (item.Checked == "true" || item.Checked == "True")
+                {
+                    mids.Add(item.mid);
+                    item.Checked = "false";
+                }
             }
-            string midsWithSeparator = string.Join(",", mids.ToArray());
-            var destination = "/Views/FriendsCheck.xaml";
-            destination += string.Format("?mids={0}", midsWithSeparator);
-            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
-            HideEditAppBar();
+            if (mids.Count > 0)
+            {
+                string midsWithSeparator = string.Join(",", mids.ToArray());
+                var destination = "/Views/FriendsCheck.xaml";
+                destination += string.Format("?mids={0}", midsWithSeparator);
+                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+                HideEditAppBar();
+            }
+            
         }
 
         public void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -737,14 +759,14 @@ namespace VK_Metro.Views
                             "</StackPanel>" +
                             "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='2' Grid.Column='0'/>" +
-                            "<CheckBox  Style='{StaticResource CheckBoxStyle1}' Visibility='{Binding Path=Checked}' IsChecked='{Binding Path=Checked}' Grid.Column='1' Grid.Row='1' Grid.RowSpan='2'/>" +
+                            "<CheckBox  IsEnabled='False'  Style='{StaticResource CheckBoxStyle1}' Visibility='{Binding Path=Checked}' IsChecked='{Binding Path=Checked}' Grid.Column='1' Grid.Row='1' Grid.RowSpan='2'/>" +
                         "</Grid>";
             }
             else
             {   //MeTemplate
-                xaml += "<Grid Margin='115, 10, 5, 0' contribControls:GridUtils.RowDefinitions=',,' Width='335'>" +
-                            "<Rectangle Fill='" + darkenPhoneColorBrush + "' Grid.Row='0' Grid.RowSpan='2'/>" +
-                            "<StackPanel Grid.Row='0' Orientation='Vertical'>" +
+                xaml += "<Grid Margin='65, 10, 5, 0' contribControls:GridUtils.RowDefinitions=',,' contribControls:GridUtils.ColumnDefinitions='Auto,*' Width='385' >" +
+                            "<Rectangle Fill='" + darkenPhoneColorBrush + "' Grid.Row='0' Grid.RowSpan='2'  Grid.Column='1'/>" +
+                            "<StackPanel Grid.Row='0' Grid.Column='1' Orientation='Vertical'>" +
                                 "<TextBlock Text='{Binding Path=Message}' HorizontalAlignment='Left' TextWrapping='Wrap' " +
                                            "Margin='10,5,10,0'/>";
                 //if (message.attachment != null && message.attachment.type == "photo")
@@ -788,9 +810,10 @@ namespace VK_Metro.Views
                 }
                 xaml += "</StackPanel>" +
                             "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}'  Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
-                                       "Margin='10,0,10,5' Grid.Row='1'/>" +
+                                       "Margin='10,0,10,5' Grid.Row='1' Grid.Column='1'/>" +
                             "<Path Data='m 0,0 l 12,0 l 0,12 l -12,-12' Fill='" + darkenPhoneColorBrush + "' " +
-                                  "Margin='0,0,5,0' HorizontalAlignment='Right' Grid.Row='2'/>" +
+                                  "Margin='0,0,5,0' HorizontalAlignment='Right' Grid.Row='2' Grid.Column='1'/>" +
+                            "<CheckBox  IsEnabled='False' Style='{StaticResource CheckBoxStyle1}' Visibility='{Binding Path=Checked}' IsChecked='{Binding Path=Checked}' Grid.Column='0' Grid.Row='0' Grid.RowSpan='2'/>" +
                         "</Grid>";
             }
             xaml += "</DataTemplate>";
