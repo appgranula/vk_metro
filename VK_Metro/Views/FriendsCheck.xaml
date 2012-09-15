@@ -47,7 +47,7 @@
         </Grid.Resources>
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="переслать" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=LocalizedResources.Forward, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
         <ListBox Grid.Row="1"
             x:Name="FriendsList" ItemsSource="{Binding Path=VKFriends}"
@@ -55,13 +55,13 @@
             ItemContainerStyle="{StaticResource ListBoxItemStyleStretch}"
             Tap="FriendsList_Tap">
         </ListBox>
-        <TextBlock x:Name="MessageText" Grid.Row="2" Style="{StaticResource PhoneTextSmallStyle}" Text="тескт сообщения"/>
+        <TextBlock x:Name="MessageText" Grid.Row="2" Style="{StaticResource PhoneTextSmallStyle}" Text="{Binding Path=LocalizedResources.Message, Source={StaticResource LocalizedStrings}}"/>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" x:Name="ConfirmFriendButton" Click="ConfirmFriendButton_Click" Content="переслать" Width="200" Height="80" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"></Button>
+            <Button Grid.Column="1" x:Name="ConfirmFriendButton" Click="ConfirmFriendButton_Click" Content="{Binding Path=LocalizedResources.Forward, Source={StaticResource LocalizedStrings}}" Width="200" Height="80" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"></Button>
             <TextBox Grid.Column="0" x:Name = "ResendMessageBody"/>
         </Grid>
         

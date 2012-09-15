@@ -23,7 +23,7 @@
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
-            <TextBlock x:Name="RequestPageTitle" Text="5 вложений" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" Visibility="Visible" FontSize="40"/>
+            <TextBlock x:Name="RequestPageTitle" Text="{Binding Path=LocalizedResources.Attachments5, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" Visibility="Visible" FontSize="40"/>
         </StackPanel>
         
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
@@ -127,8 +127,8 @@
         </Grid>
         <!--<VisibilityToBooleanConverter></VisibilityToBooleanConverter>-->
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png"/>
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить  карту" IconUri="/icons/appbar.checkin.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.TakePhoto, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.feature.camera.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.ShareLocation, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.checkin.rest.png"/>
         </WPExtensions:AdvancedApplicationBar>
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->

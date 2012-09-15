@@ -18,7 +18,7 @@
             this.InitializeComponent();
             this.DataContext = this;
             App.MainPageData.PropertyChanged += this.MainPageDataOnPropertyChanged;
-            this.RequestCountString = "заявки в друзья (0)";
+            this.RequestCountString = Localization.AppResources.FriendsRequests + " (0)";
             this.possibleFriends1 = App.MainPageData.PossibleFriends;
             this.requests = App.MainPageData.VkFriendsRequests;
             if (this.possibleFriends1.Count == 0) this.MakeRequestForPossibleFriends();
@@ -42,7 +42,7 @@
         protected override void OnNavigatedTo(NavigationEventArgs args)
         {
             this.UpdateLayout();
-            this.RequestCountString = "заявки в друзья (" + this.Requests.Count.ToString() + ")";
+            this.RequestCountString = Localization.AppResources.FriendsRequests + " (" + this.Requests.Count.ToString() + ")";
             this.NotifyPropertyChanged("RequestCountString");
             base.OnNavigatedTo(args);
         }
@@ -51,7 +51,7 @@
         {
             if (propertyChangedEventArgs.PropertyName == "VkFriendsRequests")
             {
-                this.RequestCountString = "заявки в друзья (" + this.Requests.Count.ToString() + ")";
+                this.RequestCountString = Localization.AppResources.FriendsRequests + " (" + this.Requests.Count.ToString() + ")";
                 this.NotifyPropertyChanged("RequestCountString");
                 this.NotifyPropertyChanged("Requests");
             }

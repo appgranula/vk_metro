@@ -33,26 +33,23 @@
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Canvas>
             <TextBlock Canvas.Left="24" Canvas.Top="80"
-                       Text="Номер Вашего телефона"
+                       Text="{Binding Path=LocalizedResources.YourPhoneNumber, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="100"
                      x:Name="NumberPhone"
-                     Height="72" Width="456" TextChanged="NumberPhone_TextChanged" 
-                     Text="79630804002"/>
+                     Height="72" Width="456" TextChanged="NumberPhone_TextChanged"/>
             <TextBlock Canvas.Left="24" Canvas.Top="192"
-                       Text="Ваше имя"
+                       Text="{Binding Path=LocalizedResources.YourName, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="212"
                          x:Name="First_Name"
-                         Height="72" Width="456" TextChanged="First_Name_TextChanged" 
-                         Text="Василий"/>
+                         Height="72" Width="456" TextChanged="First_Name_TextChanged"/>
             <TextBlock Canvas.Left="24" Canvas.Top="304"
-                       Text="Ваша фамилия"
+                       Text="{Binding Path=LocalizedResources.YourLastName, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="324"
                          x:Name="Last_Name"
-                         Height="72" Width="456" TextChanged="Last_Name_TextChanged" 
-                         Text="Кк"/>
+                         Height="72" Width="456" TextChanged="Last_Name_TextChanged"/>
             <Button Canvas.Left="12" Canvas.Top="412" x:Name="SignUpButton"
                     Height="72" Width="305"
                     IsEnabled="{Binding SignUpButtonEnabled}"
@@ -60,7 +57,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="зарегистрироваться" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
+                            <TextBlock Text="{Binding Path=LocalizedResources.SignUp, Source={StaticResource LocalizedStrings}}" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
                                        Canvas.Left="-117" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>

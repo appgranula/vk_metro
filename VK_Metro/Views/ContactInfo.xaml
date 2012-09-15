@@ -23,18 +23,18 @@
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
-            <TextBlock x:Name="RequestPageTitle" Text="заявка в друзья" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" Visibility="Visible" FontSize="40"/>
+            <TextBlock x:Name="RequestPageTitle" Text="{Binding Path=LocalizedResources.FriendRequest, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" Visibility="Visible" FontSize="40"/>
             <TextBlock x:Name="PageTitle" Text="{Binding ContactName}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="Segoe WP" />
         </StackPanel>
 
         <StackPanel x:Name="RegistredUserInfo" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
             <Image Source="{Binding Picture}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
-            <Button Content="отправить сообщение" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="SendMessageButton_Tap"></Button>
+            <Button Content="{Binding Path=LocalizedResources.WriteAMessage, Source={StaticResource LocalizedStrings}}" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="SendMessageButton_Tap"></Button>
             <Button BorderThickness="0" HorizontalAlignment="Left" FontFamily="Segoe WP" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="CallButtonTap" Visibility="{Binding CallButtonVisibility}">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="позвонить" FontSize="40" FontWeight="Normal"></TextBlock>
+                            <TextBlock Text="{Binding Path=LocalizedResources.CallTo, Source={StaticResource LocalizedStrings}}" FontSize="40" FontWeight="Normal"></TextBlock>
                             <TextBlock Text="{Binding DataContext.Phone, ElementName=LayoutRoot}" FontWeight="Normal" Foreground="#FF085A9F"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -44,14 +44,14 @@
         
         <StackPanel x:Name="NonRegistredUserInfo" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
             <Image Height="180" Width="180" Source="{Binding Picture}" HorizontalAlignment="Left"></Image>
-            <TextBlock Margin="0,30,0,0" FontSize="24" Height="84" Width="469" TextWrapping="Wrap">Пользователь еще не зарегистрирован. Вы можете отправить ему приглашение.</TextBlock>
-            <Button Content="выслать приглашение" Margin="-10,0,0,0" Width="366" HorizontalAlignment="Left"></Button>
+            <TextBlock Margin="0,30,0,0" FontSize="24" Height="84" Width="469" TextWrapping="Wrap" Text="{Binding Path=LocalizedResources.UserIsNotRegisteredYet, Source={StaticResource LocalizedStrings}}"/>
+            <Button Content="{Binding Path=LocalizedResources.SendInvation, Source={StaticResource LocalizedStrings}}" Margin="-10,0,0,0" Width="366" HorizontalAlignment="Left"></Button>
         </StackPanel>
 
         <StackPanel x:Name="AddFriend" Orientation="Vertical" Visibility="Collapsed" Margin="12,130,0,28">
             <Image Source="{Binding Picture}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
-            <Button x:Name="AddFriendButton" Content="добавить в друзья" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="AddFriendButton_Tap"></Button>
-            <TextBlock x:Name="AddFriendRequestText" FontSize="24" Height="84" Width="469" Visibility="Collapsed">заявка отправлена</TextBlock>
+            <Button x:Name="AddFriendButton" Content="{Binding Path=LocalizedResources.AddFriend, Source={StaticResource LocalizedStrings}}" BorderThickness="0" HorizontalAlignment="Left" FontSize="40" FontFamily="Segoe WP" HorizontalContentAlignment="Left" Margin="-10,0,0,0" Padding="0,3,10,5" Tap="AddFriendButton_Tap"></Button>
+            <TextBlock x:Name="AddFriendRequestText" FontSize="24" Height="84" Width="469" Visibility="Collapsed" Text="{Binding Path=LocalizedResources.RequestSend, Source={StaticResource LocalizedStrings}}"/>
         </StackPanel>
         
         <Grid Grid.Row="1" x:Name="RequestInfo" >
@@ -64,13 +64,13 @@
                     <Image Source="{Binding Picture}" Height="210" Width="210" HorizontalAlignment="Left"></Image>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="#FF1F1F1F" Width="{Binding ElementName=LayoutRoot,Path=ActualWidth}"  VerticalAlignment="Bottom" Grid.Row="1" Height="80">
-                    <Button x:Name="ConfirmFriendButton" Content="добавить" Width="240" Click="ConfirmFriendButton_Click"></Button>
-                    <Button x:Name="DeleteFriendButton" Content="отклонить" Width="240" Click="DeleteFriendButton_Click"></Button>
+                <Button x:Name="ConfirmFriendButton" Content="{Binding Path=LocalizedResources.AddFriend, Source={StaticResource LocalizedStrings}}" Width="240" Click="ConfirmFriendButton_Click"></Button>
+                <Button x:Name="DeleteFriendButton" Content="{Binding Path=LocalizedResources.DeclineRequest, Source={StaticResource LocalizedStrings}}" Width="240" Click="DeleteFriendButton_Click"></Button>
                 </StackPanel>
         </Grid>
         <!--<VisibilityToBooleanConverter></VisibilityToBooleanConverter>-->
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="{Binding AppBarVisible}" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarMenuItem Text="удалить из друзей" Click="DeleteFriendBar_Tap"/>
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="{Binding Path=LocalizedResources.DeleteFriend, Source={StaticResource LocalizedStrings}}" Click="DeleteFriendBar_Tap"/>
         </WPExtensions:AdvancedApplicationBar>
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->

@@ -46,12 +46,13 @@
                                    TextWrapping="Wrap"
                                    FontSize="30"
                                    VerticalAlignment="Stretch"
-                                   Visibility="{Binding DataContext.EmptyTextVisibility, ElementName=LayoutRoot}">Вы можете искать среди Ваших контактов и друзей</TextBlock>
+                                   Visibility="{Binding DataContext.EmptyTextVisibility, ElementName=LayoutRoot}"
+                                   Text="{Binding Path=LocalizedResources.SearchYourFriendsAndContacts, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock x:Name="SearchFriendsTextBox" Style="{StaticResource PhoneTextSmallStyle}"
                                    FontSize="26" FontWeight="Normal" FontFamily="Segoe WP" TextAlignment="Left"
-                                   Visibility="{Binding DataContext.FriendsVisibility, ElementName=LayoutRoot}">
-                            друзья
-                    </TextBlock>
+                                   Visibility="{Binding DataContext.FriendsVisibility, ElementName=LayoutRoot}"
+                                   Text="{Binding Path=LocalizedResources.Friends, Source={StaticResource LocalizedStrings}}"/>
+                    
                     <ListBox
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 x:Name="FriendsList" ItemsSource="{Binding Path=VKFriends}"
@@ -61,9 +62,8 @@
                     </ListBox>
                     <TextBlock x:Name="SearchContactsTextBox" Style="{StaticResource PhoneTextSmallStyle}"
                                    FontSize="26" FontWeight="Normal" FontFamily="Segoe WP" TextAlignment="Left"
-                                   Visibility="{Binding DataContext.ContactsVisibility, ElementName=LayoutRoot}">
-                            контакты
-                    </TextBlock>
+                                   Visibility="{Binding DataContext.ContactsVisibility, ElementName=LayoutRoot}"
+                                   Text="{Binding Path=LocalizedResources.Contacts, Source={StaticResource LocalizedStrings}}"/>
                     <ListBox
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 VerticalContentAlignment="Stretch"
@@ -75,9 +75,8 @@
                     </ListBox>
                     <TextBlock x:Name="SearchOthersTextBox" Style="{StaticResource PhoneTextSmallStyle}"
                                    FontSize="26" FontWeight="Normal" FontFamily="Segoe WP" TextAlignment="Left"
-                                   Visibility="{Binding DataContext.OthersVisibility, ElementName=LayoutRoot}">
-                            другие пользователи
-                    </TextBlock>
+                                   Visibility="{Binding DataContext.OthersVisibility, ElementName=LayoutRoot}"
+                                   Text="{Binding Path=LocalizedResources.Others, Source={StaticResource LocalizedStrings}}"/>
                     <ListBox
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 VerticalContentAlignment="Stretch"

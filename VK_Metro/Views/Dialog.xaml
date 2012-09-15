@@ -51,9 +51,9 @@
                             </local:MessageContentPresenter>
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu Name="ContextMenu">
-                                    <toolkit:MenuItem Header="удалить" Click="RemoveItem_Click"/>
-                                    <toolkit:MenuItem Header="переслать" Click="ResendItem_Click"/>
-                                    <toolkit:MenuItem Header="копировать" Click="CopyItem_Click"/>
+                                    <toolkit:MenuItem Header="{Binding Path=LocalizedResources.Delete, Source={StaticResource LocalizedStrings}}" Click="RemoveItem_Click"/>
+                                    <toolkit:MenuItem Header="{Binding Path=LocalizedResources.Forward, Source={StaticResource LocalizedStrings}}" Click="ResendItem_Click"/>
+                                    <toolkit:MenuItem Header="{Binding Path=LocalizedResources.Copy, Source={StaticResource LocalizedStrings}}" Click="CopyItem_Click"/>
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
                         </Grid>
@@ -120,11 +120,11 @@
             </Border>
         </Grid>
         <WPExtensions:AdvancedApplicationBar x:Name="bar" IsVisible="True" IsMenuEnabled="True">
-            <WPExtensions:AdvancedApplicationBarIconButton Text="отправить" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Click"/>
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить снимок" IconUri="/icons/appbar.feature.camera.rest.png" Click="AttachPictureBarIconButton_Click" />
-            <WPExtensions:AdvancedApplicationBarIconButton Text="прикрепить карту" IconUri="/icons/appbar.checkin.rest.png"/>
-            <WPExtensions:AdvancedApplicationBarIconButton Text="выбрать" IconUri="/icons/appbar.manage.rest.png"/>
-            <WPExtensions:AdvancedApplicationBarMenuItem Text="удалить диалог"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Send, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.send.text.rest.png"  Click="SendAppBar_Click"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Photo, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.feature.camera.rest.png" Click="AttachPictureBarIconButton_Click" />
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Map, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.checkin.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarIconButton Text="{Binding Path=LocalizedResources.Choose, Source={StaticResource LocalizedStrings}}" IconUri="/icons/appbar.manage.rest.png"/>
+            <WPExtensions:AdvancedApplicationBarMenuItem Text="{Binding Path=LocalizedResources.RemoveDialog, Source={StaticResource LocalizedStrings}}"/>
         </WPExtensions:AdvancedApplicationBar>
     </Grid>
 

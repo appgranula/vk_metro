@@ -72,7 +72,7 @@
 
                     <!--TitlePanel содержит имя приложения и заголовок страницы-->
                     <StackPanel Margin="0,30,0,30">
-                        <TextBlock Text="возможные друзья" Style="{StaticResource PhoneTextSmallStyle}" FontSize="26" FontWeight="Normal" FontFamily="Segoe WP" TextAlignment="Left" />
+                        <TextBlock Text="{Binding Path=LocalizedResources.PeopleYouMayKnow, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" FontSize="26" FontWeight="Normal" FontFamily="Segoe WP" TextAlignment="Left" />
                     </StackPanel>
 
                     <ListBox ScrollViewer.VerticalScrollBarVisibility="Disabled"

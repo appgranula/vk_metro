@@ -28,7 +28,7 @@
                            KeyUp="SearchTextBox_KeyUp" />
                 </DataTemplate>
             </controls:Pivot.TitleTemplate>
-            <controls:PivotItem Header="сообщения">
+            <controls:PivotItem Header="{Binding Path=LocalizedResources.Messages, Source={StaticResource LocalizedStrings}}">
                 <Grid>
                     <ListBox ItemsSource="{Binding VKMessages}" ItemContainerStyle="{StaticResource ListBoxItemStyleStretch}">
                         <ListBox.ItemTemplate>
@@ -79,7 +79,7 @@
                     </ListBox>
                 </Grid>
             </controls:PivotItem>
-            <controls:PivotItem Header="диалоги">
+            <controls:PivotItem Header="{Binding Path=LocalizedResources.Dialogs, Source={StaticResource LocalizedStrings}}">
                 <Grid>
                     <ListBox ItemsSource="{Binding VKChats}">
                         <ListBox.ItemTemplate>

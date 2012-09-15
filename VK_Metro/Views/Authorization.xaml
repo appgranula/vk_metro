@@ -35,14 +35,14 @@
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Canvas>
             <TextBlock Canvas.Left="24" Canvas.Top="80"
-                       Text="Номер телефона, логин или e-mail"
+                       Text="{Binding Path=LocalizedResources.PhoneLoginEmail, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <TextBox Canvas.Left="12" Canvas.Top="100" x:Name="email"
                      Height="72" Width="456" TextChanged="email_TextChanged" 
                      Text="79823334882"
                      />
             <TextBlock Canvas.Left="24" Canvas.Top="192"
-                       Text="Пароль"
+                       Text="{Binding Path=LocalizedResources.Password, Source={StaticResource LocalizedStrings}}"
                        FontSize="19"/>
             <PasswordBox Canvas.Left="12" Canvas.Top="212" x:Name="pass"
                          Height="72" Width="456" PasswordChanged="pass_PasswordChanged" 
@@ -54,7 +54,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <TextBlock Text="войти" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
+                            <TextBlock Text="{Binding Path=LocalizedResources.LogIn, Source={StaticResource LocalizedStrings}}" FontSize="25" Foreground="{Binding DataContext.ColorTextEnterButton, ElementName=LayoutRoot}"
                                        Canvas.Left="-34" Canvas.Top="-19"/>
                         </Canvas>
                     </DataTemplate>
@@ -67,9 +67,9 @@
                 <Button.ContentTemplate>
                     <DataTemplate >
                         <Canvas>
-                            <TextBlock Text="зарегистрироваться" FontSize="25" Foreground="{Binding BorderBrush, ElementName=SignUpButton}"
+                            <TextBlock Text="{Binding Path=LocalizedResources.SignUp, Source={StaticResource LocalizedStrings}}" FontSize="25" Foreground="{Binding BorderBrush, ElementName=SignUpButton}"
                                        Canvas.Left="-200" Canvas.Top="-47"/>
-                            <TextBlock Text="Вы сможете бесплатно обмениваться  мгновенными сообщениями с друзьями."
+                            <TextBlock Text="{Binding Path=LocalizedResources.FreeMessaging, Source={StaticResource LocalizedStrings}}"
                                        Canvas.Left="-200" Canvas.Top="-13"
                                        Width="400" TextWrapping="Wrap" FontSize="19" Foreground="{StaticResource PhoneDisabledBrush}" />
                         </Canvas>
