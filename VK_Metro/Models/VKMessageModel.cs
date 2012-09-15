@@ -53,7 +53,30 @@ namespace VK_Metro.Models
         [JsonProperty("deleted")]
         public string deleted { get; set; }
 
-        
+        private bool check = false;
+
+        public string Checked
+        {
+            get
+            {
+                if (this.check)
+                {
+                    return "true";
+                }
+                return "false";
+            }
+            set
+            {
+                if (value == "True" || value == "true")
+                {
+                    this.check = true;
+                }
+                else
+                {
+                    this.check = false;
+                }
+            }
+        }
 
         public string Date
         {

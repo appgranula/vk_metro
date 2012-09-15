@@ -19,7 +19,6 @@ namespace VK_Metro.Views
     using VK_Metro.Models;
     using WPExtensions;
 
-
     public partial class Dialog : PhoneApplicationPage, INotifyPropertyChanged
     {
         private VKMessageModel scrollToMessage;
@@ -43,6 +42,15 @@ namespace VK_Metro.Views
                 this.NotifyPropertyChanged("ManageAttachmentsIconUri");
                 (this.bar.ButtonItems.First() as AdvancedApplicationBarIconButton).Visibility = Visibility.Visible;
             }
+        }
+
+        private Visibility checkboxVisibility;
+        public Visibility CheckboxVisibility 
+        { get
+        {
+            return Visibility.Collapsed;
+        }
+            set { this.checkboxVisibility = value; }
         }
 
         public Dialog()
@@ -374,7 +382,25 @@ namespace VK_Metro.Views
 
         private void ListMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            this.MessageText.IsEnabled = false;
+            if (((ListBox)sender).SelectedIndex == -1)
+                return;
+            var prop = (VKMessageModel)((ListBox)sender).SelectedItem;
+            ////prop.Checked = !prop.Checked;
+            if (prop.Checked == "True" || prop.Checked == "true")
+            {
+                prop.Checked = "False";
+            }
+            else
+            {
+                prop.Checked = "True";
+            }
+            this.Items = App.MainPageData.GetMessage(this.UID);
+            this.NotifyPropertyChanged("Items");
+            this.ListMessages.Focus();
+            //UpdateLayout();
             ((ListBox)sender).SelectedIndex = -1;
+            this.MessageText.IsEnabled = true;
         }
 
         void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -389,6 +415,16 @@ namespace VK_Metro.Views
 
         private void SendAppBar_Click(object sender, EventArgs e)
         {
+            ////if ( this.CheckboxVisibility == Visibility.Visible)
+            ////{
+            ////    this.CheckboxVisibility = Visibility.Collapsed;
+            ////}
+            ////else
+            ////{
+            ////    this.CheckboxVisibility = Visibility.Visible;
+            ////}
+            //this.NotifyPropertyChanged("CheckboxVisibility");
+            //return;
             this.SendMessage(this.MessageText);
         }
 
@@ -619,6 +655,10 @@ namespace VK_Metro.Views
             HideEditAppBar();
         }
 
+        public void Grid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
     }
 
     public class MessageContentPresenter : ContentControl
@@ -645,7 +685,7 @@ namespace VK_Metro.Views
                                   "xmlns:src='clr-namespace:Templates;assembly=Templates'>";
             if (message.type == "0")
             {   //YouTemplate
-                xaml += "<Grid Margin='5, 0, 115, 10' contribControls:GridUtils.RowDefinitions='Auto,Auto,Auto' contribControls:GridUtils.ColumnDefinitions='*,Auto' Width='335'>" +
+                xaml += "<Grid Margin='5, 0, 65, 10' contribControls:GridUtils.RowDefinitions='Auto,Auto,Auto' contribControls:GridUtils.ColumnDefinitions='*,Auto' Width='385' >" +
                             "<Path Data='m 0,0 l 0,12 l 12,0 l -12,-12' Fill='{StaticResource PhoneAccentBrush}' " +
                                   "Margin='5,0,0,0' HorizontalAlignment='Left' Grid.Row='0'  Grid.Column='0'/>" +
                             "<Rectangle Fill='{StaticResource PhoneAccentBrush}' Grid.Row='1' Grid.RowSpan='2' Grid.Column='0'/>" +
@@ -697,7 +737,7 @@ namespace VK_Metro.Views
                             "</StackPanel>" +
                             "<TextBlock Style = '{StaticResource PhoneTextSubtleStyle}' Text='{Binding Path=Date}' HorizontalAlignment='Right' " +
                                        "Margin='10,0,10,5' Grid.Row='2' Grid.Column='0'/>" +
-                            "<CheckBox Style='{StaticResource CheckBoxStyle1}' IsChecked='True' Grid.Column='1' Grid.Row='1' Grid.RowSpan='2'/>" +
+                            "<CheckBox  Style='{StaticResource CheckBoxStyle1}' Visibility='{Binding Path=Checked}' IsChecked='{Binding Path=Checked}' Grid.Column='1' Grid.Row='1' Grid.RowSpan='2'/>" +
                         "</Grid>";
             }
             else
