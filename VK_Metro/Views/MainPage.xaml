@@ -228,7 +228,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" 
-                            FontSize="48" VerticalAlignment="Top" Text="{Binding Path=LocalizedResources.YouCanSync, Source={StaticResource LocalizedStrings}}"/>
+                            FontSize="48" VerticalAlignment="Top" Text="{Binding Path=LocalizedResources.InviteFriend, Source={StaticResource LocalizedStrings}}"/>
 
                         <toolkit:LongListSelector Grid.Row="1" Grid.Column="0"
                             x:Name="PhoneContactsList" IsFlatList="False" ItemsSource="{Binding Path=PhoneContacts}"

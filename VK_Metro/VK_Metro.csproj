@@ -279,6 +279,7 @@
     <Resource Include="Images\light\Requests_Icon_Light.png" />
     <Resource Include="Images\light\UnreadMessages_Icon_Light.png" />
     <Resource Include="Images\fuckyou.jpg" />
+    <Content Include="Sounds\incoming.mp3" />
     <Resource Include="Images\dark\Requests_Icon.png" />
     <Resource Include="Images\dark\UnreadMessages_Icon.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -309,6 +310,7 @@
       <LastGenOutput>AppResources.ru-RU.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

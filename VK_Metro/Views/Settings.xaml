@@ -28,7 +28,23 @@
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="{Binding Path=LocalizedResources.Exit, Source={StaticResource LocalizedStrings}}" Click="Button_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Style="{StaticResource PhoneTextGroupHeaderStyle}" Text="{Binding Path=LocalizedResources.Notification, Source={StaticResource LocalizedStrings}}"/>
+            <toolkit:ToggleSwitch 
+                Grid.Row="1"
+                x:Name="SoundToggle"
+                IsChecked="{Binding IsSoundEnabled}"
+                Content="{Binding SoundToggleText}"
+                Header="{Binding Path=LocalizedResources.Sound, Source={StaticResource LocalizedStrings}}"
+                Checked="SoundToggle_Checked"
+                Unchecked="SoundToggle_Unchecked"/>
+            <TextBlock Grid.Row="2" Style="{StaticResource PhoneTextGroupHeaderStyle}" Text="{Binding Path=LocalizedResources.Account, Source={StaticResource LocalizedStrings}}"/>
+            <Button Grid.Row="3" Content="{Binding Path=LocalizedResources.Exit, Source={StaticResource LocalizedStrings}}" Click="Button_Click"/>
         </Grid>
     </Grid>
 

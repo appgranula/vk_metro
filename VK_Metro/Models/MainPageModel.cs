@@ -21,6 +21,7 @@
         private int unreadMessages;
         private ObservableCollection<VKFriendModel> vkRequestsFriends;
         private ObservableCollection<VKFriendModel> possibleFriends;
+        private bool isSoundEnabled = true;
 
         public MainPageModel()
         {
@@ -32,6 +33,11 @@
         public bool IsDataLoaded { get; set; }
 
         public PhoneContactModel CurrentContact { get; set; }
+
+        public bool IsSoundEnabled 
+        {
+            get { return isSoundEnabled; }
+        }
 
         public string TitleImageUri
         {
@@ -214,6 +220,16 @@
             this.IsDataLoaded = false;
             this.FriendsRequests = 0;
             this.UnreadMessages = 0;
+        }
+
+        public void DisableSound()
+        {
+            isSoundEnabled = false;
+        }
+
+        public void EnableSound()
+        {
+            isSoundEnabled = true;
         }
 
         public string GetPhoto(string uid)

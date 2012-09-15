@@ -109,5 +109,18 @@
         {
             NavigationService.Navigate(new Uri("/Views/SearchGlobal.xaml?FRIENDS=true&CONTACTS=true&OTHERS=true", UriKind.Relative));
         }
+
+        private void MaybeFriendsList_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var selectedItem = (VKFriendModel)this.MaybeFriendsList.SelectedItem;
+            //this.dataContext.CurrentContact = selectedItem;
+            var querry = String.Format(
+                "?Request={0}&Name={1}&Photo={2}",
+                HttpUtility.UrlEncode(selectedItem.uid),
+                HttpUtility.UrlEncode(selectedItem.name),
+                HttpUtility.UrlEncode(selectedItem.photo_big)
+                );
+            this.GoToContactInfoPage(querry);
+        }
     }
 }
