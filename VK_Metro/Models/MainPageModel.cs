@@ -75,6 +75,40 @@
             }
         }
 
+
+        public string UnreadMessagesIcon
+        {
+            get
+            {
+                var darkVisibility = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"];
+                if (darkVisibility == Visibility.Visible)
+                {
+                    return "/VK_Metro;component/Images/dark/UnreadMessages_Icon.png";
+                }
+                else
+                {
+                    return "/VK_Metro;component/Images/light/UnreadMessages_Icon_Light.png";
+                }
+            }
+        }
+
+
+        public string RequestsIcon
+        {
+            get
+            {
+                var darkVisibility = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"];
+                if (darkVisibility == Visibility.Visible)
+                {
+                    return "/VK_Metro;component/Images/dark/Requests_Icon.png";
+                }
+                else
+                {
+                    return "/VK_Metro;component/Images/light/Requests_Icon_Light.png";
+                }
+            }
+        }
+
         public int UnreadMessages 
         { 
             get
