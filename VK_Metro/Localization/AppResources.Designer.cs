@@ -70,6 +70,15 @@ namespace VK_Metro.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на attachments.
+        /// </summary>
+        public static string Attachments {
+            get {
+                return ResourceManager.GetString("Attachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на 5 attachments.
         /// </summary>
         public static string Attachments5 {
@@ -120,6 +129,15 @@ namespace VK_Metro.Localization {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
             }
         }
         
@@ -300,6 +318,15 @@ namespace VK_Metro.Localization {
         public static string InAppNotifications {
             get {
                 return ResourceManager.GetString("InAppNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на message.
+        /// </summary>
+        public static string InputMessage {
+            get {
+                return ResourceManager.GetString("InputMessage", resourceCulture);
             }
         }
         

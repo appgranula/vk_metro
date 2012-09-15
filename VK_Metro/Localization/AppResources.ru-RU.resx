@@ -211,7 +211,7 @@
     <value>войти</value>
   </data>
   <data name="Map" xml:space="preserve">
-    <value>карта</value>
+    <value>прикрепить карту</value>
   </data>
   <data name="Message" xml:space="preserve">
     <value>сообщение</value>
@@ -244,7 +244,7 @@
     <value>номер телефона, логин или e-mail</value>
   </data>
   <data name="Photo" xml:space="preserve">
-    <value>фотография</value>
+    <value>прикрепить снимок</value>
   </data>
   <data name="PushNotifications" xml:space="preserve">
     <value>push-оповещения</value>
@@ -277,7 +277,7 @@
     <value>Вы можете искать своих друзей и знакомых среди всех пользователей</value>
   </data>
   <data name="Send" xml:space="preserve">
-    <value>отпр.</value>
+    <value>отправить</value>
   </data>
   <data name="SendingError" xml:space="preserve">
     <value>что-то пошло не так</value>
@@ -295,7 +295,7 @@
     <value>настройки</value>
   </data>
   <data name="ShareLocation" xml:space="preserve">
-    <value>прикрепить местоположение</value>
+    <value>прикрепить карту</value>
   </data>
   <data name="SignUp" xml:space="preserve">
     <value>зарегистрироваться</value>
@@ -356,5 +356,11 @@
   </data>
   <data name="String1" xml:space="preserve">
     <value />
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>вложения</value>
+  </data>
+  <data name="InputMessage" xml:space="preserve">
+    <value>введите сообщение</value>
   </data>
 </root>

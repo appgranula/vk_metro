@@ -1,14 +1,19 @@
-﻿namespace VK_Metro
+﻿using System.Windows.Media.Imaging;
+
+namespace VK_Metro
 {
     using System.Windows;
     using System.Windows.Navigation;
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
     using VK_Metro.Utilities;
+using System.Collections.Generic;
 
     public partial class App : Application
     {
         private static VK_API vk = null;
+
+        public static List<BitmapImage> Attachments = new List<BitmapImage>();
 
         private static LongPollListener lpListener;
 

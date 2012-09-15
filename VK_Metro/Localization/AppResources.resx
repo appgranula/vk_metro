@@ -354,4 +354,13 @@
   <data name="Сhoose" xml:space="preserve">
     <value>сhoose</value>
   </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>attachments</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InputMessage" xml:space="preserve">
+    <value>message</value>
+  </data>
 </root>

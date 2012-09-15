@@ -1,9 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using System.Windows.Media.Imaging;
-using Microsoft.Phone.Tasks;
-
-namespace VK_Metro.Views
+﻿namespace VK_Metro.Views
 {
     using System;
     using System.Collections.Generic;
@@ -70,9 +65,8 @@ namespace VK_Metro.Views
                     error =>
                     {
                     });
-                //this.lpListener = new LongPollListener(App.VK);
-                //this.lpListener.Start();
             }
+            App.Attachments.Clear(); // quick and dirty hack
             //this.synchronizeButton_Click(new object(), new RoutedEventArgs());
         }
 

@@ -1136,8 +1136,7 @@ namespace VK_Metro
             var postData = new Dictionary<string, object>()
                                                 {
                                                     {"access_token", this.access_token },
-                                                    {"photo", photo}
-                                                    //You can add other parameters here
+                                                    {"photo", photo},
                                                 };
             var postToServer = new PostSubmitter { url = server, parameters = postData };
             postToServer.PostResponseEvent += (sender, args) => this.SaveMessagesPhoto(
@@ -1146,9 +1145,7 @@ namespace VK_Metro
                 args.Hash,
                 result =>
                 {
-                    
-                    int i = 8;
-                    onSuccess(result.ToString());
+                    onSuccess((result as List<string>)[0]);
                 },
                 result =>
                     {
